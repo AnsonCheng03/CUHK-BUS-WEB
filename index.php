@@ -1157,7 +1157,7 @@
 
       <!--Notes!-->
         <br>
-        <h2><a style="color: #685206; text-decoration: none;" href="https://forms.gle/g4xDpa5oEVqzHjFt7g"><?php echo $translation["Update-Request"][$lang] ?></a></h2>
+        <h2><a style="color: #685206; text-decoration: none;" href="https://forms.gle/g4xDpa5oEVqzHjFt7"><?php echo $translation["Update-Request"][$lang] ?></a></h2>
         <h2><a style="color: #685206; text-decoration: none;" href="https://github.com/AnsonCheng03"><?php echo $translation["author-notes"][$lang] ?>@AnsonCheng03</a></h2>
         <hr>
         <h2 style="color: #685206; text-decoration: none;"><?php echo $translation["credit-notes"][$lang] ?></h2>
