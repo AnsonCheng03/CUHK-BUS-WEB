@@ -42,7 +42,6 @@
         <link rel="stylesheet" href="Essential/mainpage.css?v=<?php echo $version?>">
         <link rel="stylesheet" href="Essential/component.css?v=<?php echo $version?>">
         <script src="Essential/mainpage.js?v=<?php echo $version?>"></script>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
     </head>
 
     <body>
