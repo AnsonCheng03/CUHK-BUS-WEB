@@ -1,0 +1,8 @@
+Type,CHINESE,ENGLISH
+Alert/,本系統將於今夜11:00 - 4:00進行維護，屆時或會無法連接。,"The system will be undergoing maintenance tonight from 11:00 pm to 4:00 am, hence it may be inaccessible temporarily."
+Info,"如有錯漏，<a style="" text-decoration: none;"" href=""https://forms.gle/g4xDpa5oEVqzHjFt7""><p style=""color: #0000EE; display: inline;"">按此</p>更正資料，感激不盡！</a>","<a style="" text-decoration: none;"" href=""https://forms.gle/g4xDpa5oEVqzHjFt7""> If there are errors or omissions, click <p style=""color: #0000EE; display: inline;""> here </p> to update or amend! Thanks!</a>"
+Draft,v. 3.0.0 更新<br>新增路線上下行顯示功能,
+Info/,"v. 5.0.0 更新<br>新增行車時間估算<br>數據仍在測試中 僅供參考 <br><a href=""https://bus.cuhk-page.info/?mode=realtime"" style=""color: blue;"">「做白老鼠」</a>","The realtime data is still under test. For reference only.<br> <a href=""https://bus.cuhk-page.info/?mode=realtime&lang=en"" style=""color: blue"">""Click here to test""</a>"
+Alert/," 如八號颱風警告信號於上課時始告發出，各班須立即停課。<br> <br>轉堂校巴（5, 6A, 6B, 7）將停止服務。  <br> <br> 穿梭校巴（1A, 1B, 2, 3, 4, 8, N）將繼續行走一小時。","If Typhoon Warning Signal No. 8 is issued during class, classes must be suspended immediately.  <br> <br>The transfer school bus (5, 6A, 6B, 7) will stop service.  <br> <br> The shuttle bus (1A, 1B, 2, 3, 4, 8, N) will be maintained for one hour."
+Info,"<a style=""text-decoration: none;"" href=""https://ansoncheng03.github.io/CUHK_Timetable_fetch/""><p style=""color: #0000EE; display: inline;"">[網站推薦]</p> 將CUSIS時間表加到行事曆～</a>",
+Info,"<a style=""text-decoration: none;"" href=""https://ansoncheng03.github.io/CUHK_School_Bus_Permit/""><p style=""color: #0000EE; display: inline;"">[網站推薦]</p> 獲取校巴證</a>",

@@ -1,0 +1,44 @@
+{
+    "2022-08-25 16:45:04": {
+        "1A": "normal",
+        "1B": "normal",
+        "2": "normal",
+        "3": "normal",
+        "4": "normal",
+        "8": "normal",
+        "N": "normal",
+        "H": "normal",
+        "5": "no",
+        "6A": "normal",
+        "6B": "normal",
+        "7": "normal"
+    },
+    "2022-08-25 16:46:04": {
+        "1A": "normal",
+        "1B": "normal",
+        "2": "normal",
+        "3": "normal",
+        "4": "normal",
+        "8": "normal",
+        "N": "normal",
+        "H": "no",
+        "5": "normal",
+        "6A": "normal",
+        "6B": "normal",
+        "7": "normal"
+    },
+    "2022-08-25 16:47:04": {
+        "1A": "no",
+        "1B": "normal",
+        "2": "normal",
+        "3": "normal",
+        "4": "no",
+        "8": "normal",
+        "N": "normal",
+        "H": "normal",
+        "5": "normal",
+        "6A": "no",
+        "6B": "normal",
+        "7": "normal"
+    }
+}

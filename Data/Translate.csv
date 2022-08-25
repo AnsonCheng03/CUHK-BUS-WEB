@@ -1,0 +1,272 @@
+Code,Append to js?,中文,ENG
+//WEBSITE,,,
+WEB-Title,,中大巴士資訊站,CU BUS INFOPAGE
+DescTxt1,,請選擇路綫,Select Route
+Btn-Map,,地圖查詢,Map Search
+Btn-Adv,,偏好設定,Preference
+Form-Start,,出發點： ,FROM:    
+Form-Dest,,目的地： ,DEST: 
+route-submit,,帶我去,GO!
+table-line,,路線,No.
+table-route,,中途站,Route
+table-est,,行車時間,Travel time
+table-transfer,,轉乘站： ,Interchange Station: 
+New-Feature,,敬請期待,Coming Soon
+mode-map,,地圖搜索,Map
+mode-station,,站名搜索,Station
+mode-building,,找建築物,Building
+No-BUS,,在一次轉乘次數内，該地點無法到達。<br>（或已過服務時間）,This location cannot be reached. <br> (or not in service currently)
+No-bus-time,,已過服務時間 或 30分鐘內沒有校巴,No school bus in 30 minutes (or not in service currently)
+Update-Request,,請按此修改/更新數據，感激不盡！,Click here to update or amend! Thanks!
+info-running,,運作中路線： ,Operating: 
+stop-running,,目前所有巴士停止運作。,All bus service suspended currently.
+building-error,,輸入的建築物無效，請重新輸入！,"Invalid inupt, please enter again!"
+info-deptnow,,現在出發,Depart Now
+bus-time-reminder,,"請注意：5, 6A, 6B, 7線只在教學日開出、H線只在假日開出。","Note: Lines 5, 6A, 6B, and 7 are only available on school days, and Line H is only available on holidays."
+info-sch,,開出時間 (分鐘)： ,Departure time (min) : 
+last-update,,最後更新： ,Last Update: 
+samestation-info,,起點或終點相同/接近 請自行衡量是否需要乘坐巴士,Same starting point and end point. <br> Please consider whether you should take a bus.
+fetch-error,,錯誤：中大伺服器故障 (大部分功能仍可使用),Error: Unable to fetch data from CUHK server (Most services still works)
+showallroute-info,,顯示所有可能路線,Show all possible routes
+nearst_txt,Y,最近之車站,Stations Nearby
+nearst_warning,Y,你選擇的車站至少距離你500m，是否仍要搜尋？,"The station you chose is at least 500m from you, continue? "
+refresh-btn,,刷新,Refresh
+cancel_btntxt,Y,取消,Cancel
+continue_btntxt,Y,繼續,Continue
+beta_version_notice,Y,目前此功能仍處於測試階段 數據可能不準確 敬請留意,This function is still in the test phase. Data probably not accurate.
+GPS-error,Y,沒有權限獲取GPS / 地址錯誤,No permission / Address Error
+GPS-notsupp,Y,此瀏覽器不支持GPS,GPS is not supported by this browser
+addhomeios-heading,,添加到主屏幕 (Safari 適用),Add to Home Screen (For Safari)
+addhomeios-text1,,1) 點擊下方菜單欄上的「共享」按鈕。,1) Press the 'Share' button on the menu bar below.
+addhomeios-text2,,2) 點擊「添加到主屏幕」。,2) Press 'Add to Home Screen'.
+delay-alert,,服務受阻：,Delay: 
+suspended-alert,,服務暫停：,Suspension: 
+credit-notes,,"合作夥伴：<a style=""color: #685206"" href=""https://instagram.com/rational_cartographic?utm_medium=copy_link"">@rational_cartographic</a><br>特別鳴謝：<a style=""color: #685206"" href=""https://instagram.com/cuhk_infopage?utm_medium=copy_link"">@cuhk_infopage </a> | <a style=""color: #685206"" href=""https://instagram.com/cuhkminecraft?utm_medium=copy_link"">@Project CUHK@Minecraft </a> | <a style=""color: #685206"" href=""https://instagram.com/go_to_cuhk_by_bus?utm_medium=copy_link""> @go_to_cuhk_by_bus</a> | <a style=""color: #685206"" href=""https://instagram.com/cuhkinfo?utm_medium=copy_link""> @cuhkinfo </a>","Partner: <a style=""color: #685206"" href=""https://instagram.com/rational_cartographic?utm_medium=copy_link"" >@rational_cartographic</a><br>Special thanks to: <a style=""color: #685206"" href=""https://instagram.com/cuhk_infopage?utm_medium=copy_link"">@cuhk_infopage </a> | <a style=""color: #685206"" href=""https://instagram.com/cuhkminecraft?utm_medium=copy_link"">@Project CUHK@Minecraft </a> | <a style=""color: #685206"" href=""https://instagram.com/go_to_cuhk_by_bus?utm_medium=copy_link""> @go_to_cuhk_by_bus </a> | <a style=""color: #685206"" href=""https://instagram.com/cuhkinfo?utm_medium=copy_link""> @cuhkinfo </a>"
+author-notes,,開發者： ,Author: 
+mode-realtime,,到站時間,Schedule
+time-missed,,你或已錯過本班車,You may have missed the bus
+time-arriving,,即將抵達,Arriving Soon
+time-heading-arriving,,車程：,Duration:
+time-travel,,等待：,Arrival in:
+Request-Support,,伺服器費用不菲 望能多多支持,"Servers are expensive, please support."
+Search-btn,,搜尋,Search
+Support-btn,,請我食CC Can,Buy me a coffee
+table-detals,,詳情,Details
+info-dept,,出發時間：,Departure:
+warning-showbus,,目前仍在運作的巴士：,Buses still in operation:
+warning-noinput,,請輸入出發地/目的地,Please enter your origin and destination.
+justeos-alert,,【試下趕尾班車】<br>以下巴士在30分鐘前從總站開出：,[Try to board the final bus] <br>The following buses departed from the terminal in 30 minutes:
+justeos-warning,,注意：巴士在30分鐘前從總站開出,Remark: The bus departs the terminal 30 minutes prior.
+,,,
+//Attribute,,,
+HD,,假日,Holiday
+NT,,非教學日,Non-Teaching Day
+TD,,教學日,Teaching Day
+WK-Mon,,星期一,Monday
+WK-Tue,,星期二,Tuesday
+WK-Wed,,星期三,Wednesday
+WK-Thu,,星期四,Thursday
+WK-Fri,,星期五,Friday
+WK-Sat,,星期六,Saturday
+WK-Sun,,星期日,Sunday
+UPPERST,,上行,Upward
+DOWNST,,下行,Downward
+,,,
+//ROUTE,,,
+AREA39,,39區,Area 39
+RESI15,,十五苑,Residence No. 15
+RESI10,,十苑,Residence No. 10
+RESI34,,三、四苑,Residences No. 3 & 4
+UADM,,大學行政樓,Univ. Admin. Bldg.
+SPORTC,,大學體育中心,Univ. Sports Centre
+SHAWHALL,,邵逸夫堂,Sir Run Run Shaw Hall
+SCIC,,科學館,Science Centre
+CCTEA,,崇基教學樓,Chung Chi Teaching Blocks
+YIAP,,康本國際學術園,Yasumoto International Academic Park
+CCHH,,陳震夏宿舍,Chan Chun Ha Hostel
+SHHC,,善衡書院,S.H. Ho College
+MTR,,地鐵大學站,Univ. Station
+MTRP,,地鐵大學站廣場,Station Piazza
+SHAWC,,逸夫書院,Shaw College
+FKHB,,馮景禧樓,Fung King Hey Bldg.
+CWCC,,敬文書院,C.W. Chu College
+NAC,,新亞書院,New Asia College
+CCEN,,環迴北站,Campus Circuit North
+CCEE,,環迴東站,Campus Circuit East
+UCSR,,聯合苑,U.C. Staff Residence
+UC,,聯合書院,United College
+JCPH,,賽馬會研究生宿舍,Jockey Club Postgraduate Hall
+,,,
+//Building,,,
+AB1,,教研樓一座,Academic Building No.1 
+AMEW,,中國文化研究所文物館,Art Museum 
+ARC,,李兆基建築學大樓,Lee Shau Kee Architecture Building 
+BMS,,基本醫學大樓,Basic Medical Sciences Building 
+CCCC,,崇基禮拜堂,Chung Chi College Chapel 
+CCT,,崇基神學樓,Chung Chi College Theology Building 
+CK,,崇基圖書館,C.C. Library 
+CKB,,陳國本樓,Chen Kou Bun Building 
+CML,,錢穆圖書館,Ch'ien Mu Library 
+CYT,,鄭裕彤樓,Cheng Yu Tung Building 
+ELB,,利黃瑤璧樓,Esther Lee Building 
+ERB,,蒙民偉工程學大樓,William M.W. Mong Engineering Building 
+FYB,,王福元樓,Wong Foo Yuan Building 
+HCA,,碧秋樓,Pi Chiu Building 
+HCF,,夏鼎基運動場,Sir Philip Haddon-Cave Sports Field 
+HTB,,何添樓,Ho Tim Building 
+HTC,,夏鼎基網球場,Haddon-Cave Tennis Court 
+HYS,,許讓成樓,Hui Yeung Shing Building 
+IBSB,,羅桂祥綜合生物醫學大樓,Lo Kwee-Seong Integrated Biomedical Sciences Building 
+ICS,,中國文化研究所,Institute of Chinese Studies 
+KKB,,梁銶琚樓,Leung Kau Kui Building 
+KSB,,汾陽體育樓,Kwok Sports Building 
+LDS,,李達三樓,Li Dak Sum Building 
+LHC,,潤昌堂,Y.C. Liang Hall 
+LHCH,,利希慎音樂廳,Lee Hysan Concert Hall 
+LN,,嶺南體育館,Lingnan Stadium 
+LPN LT,,黎陳佩昂演講廳,Lai Chan Pui Ngong Lecture Theatre 
+LSB,,邵逸夫夫人樓,Lady Shaw Building 
+LSK,,李兆基樓,Lee Shau Kee Building 
+LWC,,李慧珍樓,Li Wai Chun Building 
+MCO,,晨興書院研討室,Morningside College Seminar Room 
+MMW,,蒙民偉樓,Mong Man Wai Building 
+NAA,,誠明館,Cheng Ming Building 
+NAG,,新亞體育館,New Asia College Gymnasium 
+NAH,,人文館,Humanities Building 
+NATT,,新亞書院乒乓球室,New Asia College Table Tennis Room 
+PSC,,龐萬倫學生中心,Pommerenke Student Centre 
+PWH,,威爾斯親王醫院,Prince of Wales Hospital 
+SB,,信和樓,Sino Building 
+SCSH,,逸夫書院室內體育及多功能館,Multi-purpose Sports Hall - Shaw College 
+SCTT,,逸夫書院乒乓球室,Table Tennis Room - Shaw College 
+SHB,,何善衡工程學大樓,Ho Sin-Hang Engineering Building 
+SP,,游泳池,Swimming Pool 
+SWC LT,,逸夫書院演講廳,Lecture Theatre - Shaw College 
+SWH,,太古堂,Swire Hall 
+TC,,網球場,Tennis Court 
+UC TT,,聯合書院乒乓球室,Table Tennis Room - United College 
+UCA,,曾肇添樓,Tsang Shiu Tim Building 
+UCC,,鄭棟材樓,T.C. Cheng Building 
+UCG,,聯合體育館,The Thomas H.C. Cheung Gymnasium of United College 
+UG,,楊明標室內體育館,University Gymnasium 
+WLS,,文瀾堂,Wen Lan Tang 
+WMY,,伍何曼原樓,Wu Ho Man Yuen Building 
+WS1,,和聲書院南座,Lee W.S. College South Block 
+WYST,,伍宜孫書院演藝廳,Wu Yee Sun College Theatre 
+YCT,,容啟東校長紀念樓,President Chi-tung Yung Memorial Building 
+ULIB,,大學圖書館,University Library
+WTY,,王統元堂,T.Y. Wong Hall
+CCADM,,崇基行政樓,Chung Chi College Admin. Bldg.
+SCIM,,飯煲底,
+UNIMALL,,百萬大道 / 林蔭大道,The University Mall
+CBEC,,烽火台,The Beacon
+GOW,,《仲門》,Gate of Wisdom
+JCPH3,,賽馬會研究生宿舍三號,Jockey Club Postgrad Hall No.3
+ENTRANCE,,華表,the traditional Huabiao
+ENTRANCEW,,榜木,publicity post
+CAMPCS,,文化廣場,Cultural Square
+CAMPHG,,中藥園,Herbal Garden
+CCWL,,未圓湖 ,Weiyuan Lake (Lake Ad Excellentiam)
+CCPP,,哲徑,Philosophy Path 
+CCISE,,止於至善,In Search of Excellence 
+CCCBAB,,曲橋、拱橋,the Crooked Bridge and the Arched Bridge 
+NACO,,圓形廣場,New Asia Concourse 
+NASC,,孔子像,The Statue of Confucius 
+NAWT,,新亞水塔 / 君子塔,The Water Tower / the Gentleman Tower
+NACT,,鐘樓,The Clock Tower 
+NAPH,,合一亭 / 天人合一,Pavilion of Harmony 
+SCCSM,,書院標記及壁畫,College Sign and Mural 
+SCLT,,逸夫大講堂,Shaw Lecture Theatre 
+SCCMPG,,草苓香中草藥園,The HERBSnSENSES Chinese Medicinal Plants Garden 
+UCWT,,聯合水塔 / 淑女塔,The Water Tower / the Lady Tower 
+WCSB,,聯合書院銅鐘,United College School Bell 
+UCSG,,雕塑園,The Sculpture Garden 
+UCSUM,,《光輝聯合人》,Glorious United Man 
+UCOM,,聯合《調》,UC OM 
+UCULC,,《終極秩序》,Ultimate Cosmos 
+UCREL,,《開放》,Release 
+UCPG,,平臺花園,Podium Garden 
+UCTC,,瀑布,The Cascade 
+UCMDM,,明德壁,Ming De Mural
+HSB,,恒生銀行,Hang Seng Bank
+BEA,,東亞銀行,Bank of East Asia
+JFC,,富爾敦樓,John Fulton Centre
+TCP,,商務印書館,The Commercial Press 
+BFC,,范克廉樓,Benjamin Franklin Centre
+CHS,,COMER Hair Salon,COMER Hair Salon
+UHS,,大學保健處,University Health Service
+CMS,,中醫專科診所暨臨床教研中心,Chinese Medicine Specialty Clinic cum Clinical Teaching and Research Centre
+SOVC,,紀念品銷售處,Souvenir Counter
+FUSION,,Fusion 超級市場,Fusion Supermarket
+MEDCAN,,李卓敏基本醫學大樓小食店,Basic Medical Sciences Building Snack Bar
+BFCCC,,范克廉樓咖啡閣,Benjamin Franklin Centre Coffee Corner
+BFCSF,,范克廉樓教職員餐廳,Benjamin Franklin Centre Staff Canteen
+BFCSC,,范克廉樓學生膳堂,Benjamin Franklin Centre Student Canteen
+BFCVF,,范克廉樓素食餐廳,Benjamin Franklin Centre Vegetarian Food Shop
+LSKBSC,,李兆基樓小食店,Lee Shau Kee Building Snack Bar
+WCS,,女工合作社,Women Cooperative Store
+CCCSF,,崇基學院教職員聯誼會會所,Chung Chi College Staff Club
+CCCAN,,崇基學院學生膳堂,Chung Chi College Student Canteen
+LWCBC,,李慧珍樓咖啡室,Li Wai Chun Building Café
+ORLO,,蘭苑,Orchid Lodge
+Paper&Coffee,,龐萬倫學生中心咖啡室,Pommerenke Student Centre Café
+LWCH,,李慧珍樓清真餐廳,Li Wai Chun Building Halal Food Outlet
+NACSF,,新亞書院教職員餐廳,New Asia College Staff Canteen
+NACSC,,新亞書院學生餐廳,New Asia College Student Canteen
+NAYCH,,新亞書院雲起軒,New Asia College Yun Chi Hsien
+NACLC,,新亞書院咖啡店 / Coffee Lover Café,New Asia College Coffee Shop / Coffee Lover Café
+UCSFC,,聯合書院教職員膳堂聚賢軒,United College Staff Canteen
+UCSCR,,聯合書院教職員會所文怡閣,United College Staff Common Room
+UCCAN,,聯合書院學生膳堂,United College Student Canteen
+UCSY,,聯合書院思源館,United College Si Yuan Amenities Centre
+SCRC,,大學教職員會所,Staff Common Room Clubhouse
+SSY,,逸夫書院餐廳 / 咖啡閣,SeeYou@Shaw / Café
+MSDH,,晨興書院宴會廳,Morningside College Dining Hall
+MSC,,晨興書院咖啡閣,Morningside College Café
+SHCAN,,善衡書院餐廳,Canteen of S.H. Ho College
+SHHCR,,善衡書院教職員會所「雅薈」,"Connexion, S.H. Ho College Staff Common Room"
+SHC,,善衡書院咖啡閣,S.H. Ho College Café
+CWCAN,,敬文書院餐廳,Canteen of CW Chu College
+WYSCSC,,伍宜孫書院學生飯堂,Wu Yee Sun College Student Canteen
+WYSSD,,伍宜孫書院教職員飯堂,Wu Yee Sun College Staff Dining Room
+WSP,,和聲書院WS Pavilion,Lee Woo Sing College - WS Pavilion
+WSTH,,和聲滬軒,Lee Woo Sing College - The Harmony
+WSCT,,和聲書院Cafe Tolo,Lee Woo Sing College - Cafe Tolo
+WSTG,,和聲書院綠茵廊,Lee Woo Sing College - The Green
+TS,,The Stage,The Stage
+C330,,Café 330,Café 330
+JCPHC,,賽馬會研究生宿舍三座咖啡室,Postgraduate Hall 3 Café
+INNO,,Inno330,Inno330
+INNOP,,博文苑,InnoPort
+CCHLT,,華連堂,Hua Lien Tang
+CCLSPH,,利樹培堂,Lee Shu Pui Hall
+CCMSHHH,,何善衡夫人宿舍,Madam S. H. Ho Hall
+CCMHT,,明華堂,Ming Hua Tang
+CCPMHH,,五旬節會樓高座,Pentecostal Mission Hall Complex (High Block)
+CCPMHL,,五旬節會樓低座,Pentecostal Mission Hall Complex (Low Block)
+CCTB,,神學樓,Theology Building
+CCWCT,,文質堂,Wen Chih Tang
+CCWLT,,文林堂,Wen Lin Tang
+CCYLT,,應林堂,Ying Lin Tang
+NACHH,,知行樓,Chih Hsing Hall
+NAXH,,學思樓,Xuesi Hall
+NAGTH,,志文樓,Grace Tien Hall
+NADLH,,紫霞樓,Daisy Li Hall
+UCASR,,湯若望宿舍,Adam Schall Residence
+UCBH,,伯利衡宿舍,Bethlehem Hall
+UCHSH,,恒生樓,Hang Seng Hall
+SHAWKMH,,國楙樓,Kuo Mou Hall
+SHAWSHII,,逸夫第二學生宿舍,Shaw Student Hostel II
+MSH,,晨興書院宿舍,Morningside Hostel
+SHHTH,,何添堂,Ho Tim Hall
+SHLQW,,利國偉堂,Lee Quo Wei Hall
+CWH,,敬文書院宿舍,CW Chu Hostel
+WYSH,,伍宜孫書院宿舍,Wu Yee Sun Hostel
+WSFFH,,顧鐵華費肇芬伉儷樓,
+WSNH,,和聲北座,
+LGS,,民主女神像,Liberty Goddess Statue
+YIAE,,七小龍,
+CCEXP,,小橋流水,
+AIT,,綜合教學大樓,
+THRB,,三兄弟,
+UCMIR,,聯合鏡房,
