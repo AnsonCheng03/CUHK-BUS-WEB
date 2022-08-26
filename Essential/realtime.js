@@ -88,17 +88,14 @@ function distanceBetweenTwoPlace(firstLat, firstLon, secondLat, secondLon, unit)
   return distance
 }
 
-function submitform(form, replacecontent, target = "/") {
-  submitted = 1;
+function refreshform(form, replacecontent, target = "/") {
   const elm = document.querySelector(replacecontent);
-  elm.innerHTML = "";
   const xhr = new XMLHttpRequest();
   const formData = new FormData(form);
   xhr.withCredentials = true;
   xhr.open("POST", target);
   xhr.onreadystatechange = function () {
     if (document.querySelector(replacecontent) && this.response !== "" && this.readyState == 4) {
-
       elm.innerHTML = this.response;
       Array.from(elm.querySelectorAll("script")).forEach(oldScript => {
         const newScript = document.createElement("script");
@@ -113,3 +110,29 @@ function submitform(form, replacecontent, target = "/") {
   return false;
 }
 
+function submitform(form, replacecontent, target = "/") {
+  refreshform(form, replacecontent, target)
+  if (submitted != 0) clearInterval(submitted);
+  submitted = setInterval(() => {
+    refreshform(form, replacecontent, target)
+  }, 5000)
+}
+
+function realtimesubmit(objbtn) {
+  if(!confirm("確認提交？ \nDo you really want to submit?"))
+    return;
+  const xhr = new XMLHttpRequest();
+  const formData = new FormData();
+  formData.append('linename', objbtn.getAttribute('data'));
+  formData.append('CSRF', objbtn.getAttribute('tk'));
+  formData.append('stop', objbtn.getAttribute('stop'));
+  formData.append('lang', objbtn.getAttribute('lang'));
+  xhr.withCredentials = true;
+  xhr.open("POST", 'realtime/report.php');
+  xhr.onreadystatechange = function () {
+    if (this.response !== "" && this.readyState == 4) 
+      window.alert(this.response);
+  }
+  xhr.send(formData);
+  return false;
+}

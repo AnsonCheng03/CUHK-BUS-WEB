@@ -28,7 +28,7 @@
 
     <div class="navbar">
         <div class="back nav">
-            <button onclick="append_query('mode','route');" />↩</button>
+            <button onclick="append_query('mode','route');" /><?php echo $translation["back_btn"][$lang]?></button>
         </div>
         <div class="lang-selector nav">
             <button onclick="append_query('lang','tc');" />中文</button>
@@ -49,11 +49,6 @@
     </div>
 
     <?php
-
-
-
-
-
 
     foreach ($bus as $busnum) {
         foreach ($busnum["stations"]["name"] as $busstops) {
@@ -82,9 +77,7 @@
     </form>
 
 
-    <div class="realtimeresult">
-    
-    </div>
+    <div class="realtimeresult"></div>
 
 
 

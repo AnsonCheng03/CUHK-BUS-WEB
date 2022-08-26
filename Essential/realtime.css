@@ -170,7 +170,7 @@ form span {
   background-color: #fff;
 }
 
-.busname {
+.bussect .busname {
   text-align: left;
   margin: 5px 15px;
   border-left: 3px solid #62529c;
@@ -188,6 +188,22 @@ form span {
 }
 
 .arrtime {
+  float: right;
+}
+
+.arrived {
+  background: #f4efef;
+  font-weight: light;
+}
+
+.userreport {
+  background-color: #ffff9f;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  font-weight: bolder;
+}
+
+.userreport .arrtime {
   float: right;
 }
 

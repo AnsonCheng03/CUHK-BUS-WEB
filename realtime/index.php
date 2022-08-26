@@ -1,5 +1,6 @@
 <?php
 
+
 date_default_timezone_set("Asia/Hong_Kong");
 include('../Essential/functions/functions.php');
 $lang = $_POST['lang'];
@@ -73,20 +74,54 @@ $outputschedule = array_filter($busschedule, function ($key) {
     return explode("|", $key)[0] == $_POST['Dest'];
 }, ARRAY_FILTER_USE_KEY);
 
+session_start();
+$conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");
+if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+$_SESSION['_token'] = bin2hex(openssl_random_pseudo_bytes(32));
+
+$stmt = $conn->prepare("SELECT 
+DATE_FORMAT(`Time`,'%H'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2 , COUNT(*) 
+FROM `report` 
+WHERE (`Time` > (now() - interval 30 minute)) AND `BusNum` = ? AND `StopAttr` = ? 
+GROUP BY CONCAT( DATE_FORMAT(`Time`,'%m-%d-%Y %H:'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2)");
+$stmt->bind_param("ss", $busnum, $Stop);
+
+
+
+
+
 $countoutput = 0;
 foreach ($outputschedule as $stationname => $schedule) {
+    ksort($schedule);
     foreach ($schedule as $busno => $timetable) {
-        if (isset($bus[$busno])) {
+        if (isset($bus[$busno]) && $timetable) {
             echo "
-        <div class='bussect'>
-            <div class='busname'>" . $busno .
-            "<button onclick='window.alert(\"Coming Soon\")'>".$translation['bus-arrive-btn'][$lang]."</button>".
-            "</div>";
+                <div class='bussect'>
+                    <div class='busname'>" . $busno .
+                "<button data='" . $busno . "' lang='" . $lang . "' tk='" . $_SESSION['_token'] . "' stop='" .  $stationname . "' onclick='realtimesubmit(this);'>" . $translation['bus-arrive-btn'][$lang] . "</button>" .
+                "</div>";
+
+            $busnum = $busno;
+            $Stop = $stationname;
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            while ($row = $result->fetch_array(MYSQLI_NUM)) {
+                echo "
+                    <div class=\"userreport\">
+                        <div class=\"businfo\">[ " . $row[2] . " ] " . $translation['schoolbus_arrival'][$lang] . "</div>
+                        <div class=\"arrtime\"> ~ " . $row[0] . ":" . sprintf('%02d', $row[1]) . "</div>
+                    </div>
+                ";
+            }
+
             $outputcountcount = 0;
+            $nowtime = (new DateTime())->format('H:i:s');
             $currtime = (new DateTime())->modify("-30 minutes")->format('H:i:s');
+            sort($timetable);
             foreach ($timetable as $time) {
                 if ($time >= $currtime) {
-                    echo "<div class='bustype'>";
+                    echo "<div class='bustype" . ($time <= $nowtime ? ' arrived' : "") . "'>";
                     echo "<div class='businfo'>" .
                         (explode("|", $stationname)[1] ? $translation[explode("|", $stationname)[1]][$lang] : $translation["mode-realtime"][$lang]) .
                         "</div>";
@@ -98,11 +133,14 @@ foreach ($outputschedule as $stationname => $schedule) {
             }
             $countoutput++;
             echo "
-        </div>
-        ";
+                </div>
+            ";
         }
     }
 }
-if($countoutput == 0) {
-    echo '<div class=\'bussect\'><div class=\'busname\'>'.$translation["No-bus-time"][$lang].'</div></div>';
+if ($countoutput == 0) {
+    echo '<div class=\'bussect\'><div class=\'busname\'>' . $translation["No-bus-time"][$lang] . '</div></div>';
 }
+
+$stmt->close();
+$conn->close();
