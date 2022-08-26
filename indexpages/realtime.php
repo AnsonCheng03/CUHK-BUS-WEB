@@ -9,6 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="revisit-after" content="7 days">
     <meta name="author" content="Anson Cheng">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="Images/bus.ico" type="image/x-icon">
     <link rel="shortcut icon" href="Images/bus.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="Images/bus.ico" />
@@ -19,12 +20,21 @@
 
 <body>
 
-<?php
-    include('Essential/functions/functions.php');
+    <?php
+    include_once('Essential/functions/functions.php');
     $lang = urlquery("lang") == "en" ? 1 : 0;
     include('Essential/functions/initdatas.php');
-?>
+    ?>
 
+    <div class="navbar">
+        <div class="back nav">
+            <button onclick="append_query('mode','route');" />↩</button>
+        </div>
+        <div class="lang-selector nav">
+            <button onclick="append_query('lang','tc');" />中文</button>
+            <button onclick="append_query('lang','en');" />ENG</button>
+        </div>
+    </div>
 
     <!--GPS Details Box!-->
     <div id="details-box">
@@ -58,11 +68,11 @@
     ?>
 
     <form class="stopselector" onchange="submitform(this, '.realtimeresult', 'realtime/index.php');">
-        <span><?php echo $translation['DescTxt-yrloc'][$lang]?>
+        <span><?php echo $translation['DescTxt-yrloc'][$lang] ?>
             <img class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
         </span>
         <select mode="station" class="select-box" name="Dest" id="Dest">
-            <option disabled selected><?php echo $translation['DescTxt2'][$lang]?></option>
+            <option disabled selected><?php echo $translation['DescTxt2'][$lang] ?></option>
             <?php
             foreach ($allbusstop as $value)
                 echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
@@ -72,7 +82,9 @@
     </form>
 
 
-    <div class="realtimeresult"></div>
+    <div class="realtimeresult">
+    
+    </div>
 
 
 

@@ -58,7 +58,7 @@ if (isset($fetcherror)) {
             unset($bus[$index]);
 
         //Base on weekday or day
-        if (strpos($busarr["schedule"][4], "WK-".(new DateTime())->format('D')) === false)
+        if (strpos($busarr["schedule"][4], "WK-" . (new DateTime())->format('D')) === false)
             unset($bus[$index]);
     }
 } else {
@@ -69,36 +69,40 @@ if (isset($fetcherror)) {
 $bus = array_filter($bus);
 
 
-
 $outputschedule = array_filter($busschedule, function ($key) {
     return explode("|", $key)[0] == $_POST['Dest'];
 }, ARRAY_FILTER_USE_KEY);
 
+$countoutput = 0;
 foreach ($outputschedule as $stationname => $schedule) {
     foreach ($schedule as $busno => $timetable) {
-        if(isset($bus[$busno])) {
-        echo "
+        if (isset($bus[$busno])) {
+            echo "
         <div class='bussect'>
-            <div class='busname'>" . $busno . "</div>";
-        $outputcountcount = 0;
-        $currtime = (new DateTime())->modify("-30 minutes")->format('H:i:s');
-
-        foreach ($timetable as $time) {
-
-            if ($time >= $currtime) {
-                echo "<div class='bustype'>";
-                    echo "<div class='businfo'>".
-                        (explode("|", $stationname)[1] ? $translation[explode("|", $stationname)[1]][$lang] : $translation["mode-realtime"][$lang] ).
-                    "</div>";
-                    echo "<div class='arrtime'>".$time."</div>";
-                echo "</div>";
-                $outputcountcount++;
+            <div class='busname'>" . $busno .
+            "<button onclick='window.alert(\"Coming Soon\")'>".$translation['bus-arrive-btn'][$lang]."</button>".
+            "</div>";
+            $outputcountcount = 0;
+            $currtime = (new DateTime())->modify("-30 minutes")->format('H:i:s');
+            foreach ($timetable as $time) {
+                if ($time >= $currtime) {
+                    echo "<div class='bustype'>";
+                    echo "<div class='businfo'>" .
+                        (explode("|", $stationname)[1] ? $translation[explode("|", $stationname)[1]][$lang] : $translation["mode-realtime"][$lang]) .
+                        "</div>";
+                    echo "<div class='arrtime'> ~ " . substr($time, 0, -3) . "</div>";
+                    echo "</div>";
+                    $outputcountcount++;
+                }
+                if ($outputcountcount >= 5) break;
             }
-            if ($outputcountcount >= 5) break;
-        }
-        echo "
+            $countoutput++;
+            echo "
         </div>
         ";
+        }
     }
-    }
+}
+if($countoutput == 0) {
+    echo '<div class=\'bussect\'><div class=\'busname\'>'.$translation["No-bus-time"][$lang].'</div></div>';
 }

@@ -2,6 +2,7 @@ Code,Append to js?,中文,ENG
 //WEBSITE,,,
 WEB-Title,,中大巴士資訊站,CU BUS INFOPAGE
 DescTxt1,,請選擇路綫,Select Route
+DescTxt2,,---請選擇---,Select Here
 Btn-Map,,地圖查詢,Map Search
 Btn-Adv,,偏好設定,Preference
 Form-Start,,出發點： ,FROM:    
@@ -17,7 +18,7 @@ mode-station,,站名搜索,Station
 mode-building,,找建築物,Building
 No-BUS,,在一次轉乘次數内，該地點無法到達。<br>（或已過服務時間）,This location cannot be reached. <br> (or not in service currently)
 No-bus-time,,已過服務時間 或 30分鐘內沒有校巴,No school bus in 30 minutes (or not in service currently)
-Update-Request,,請按此修改/更新數據，感激不盡！,Click here to update or amend! Thanks!
+Update-Request,,如有錯漏，按此更正資料，感激不盡！,"If there are errors or omissions, click here to update or amend! Thanks!"
 info-running,,運作中路線： ,Operating: 
 stop-running,,目前所有巴士停止運作。,All bus service suspended currently.
 building-error,,輸入的建築物無效，請重新輸入！,"Invalid inupt, please enter again!"
@@ -29,7 +30,8 @@ samestation-info,,起點或終點相同/接近 請自行衡量是否需要乘坐
 fetch-error,,錯誤：中大伺服器故障 (大部分功能仍可使用),Error: Unable to fetch data from CUHK server (Most services still works)
 showallroute-info,,顯示所有可能路線,Show all possible routes
 nearst_txt,Y,最近之車站,Stations Nearby
-nearst_warning,Y,你選擇的車站至少距離你500m，是否仍要搜尋？,"The station you chose is at least 500m from you, continue? "
+nearst_warning,Y,所有車站至少距離你500m，是否仍要搜尋？,"At least 500 meters separate you from each station, continue? "
+nearst_error,Y,所有車站至少距離你500m,At least 500 meters separate you from each station.
 refresh-btn,,刷新,Refresh
 cancel_btntxt,Y,取消,Cancel
 continue_btntxt,Y,繼續,Continue
@@ -46,17 +48,20 @@ author-notes,,開發者： ,Author:
 mode-realtime,,到站時間,Schedule
 time-missed,,你或已錯過本班車,You may have missed the bus
 time-arriving,,即將抵達,Arriving Soon
-time-heading-arriving,,車程：,Duration:
+time-heading-arriving,,車程,Duration:
 time-travel,,等待：,Arrival in:
 Request-Support,,伺服器費用不菲 望能多多支持,"Servers are expensive, please support."
 Search-btn,,搜尋,Search
+bus-arrive-btn,,有巴士到,A bus is nearby.
 Support-btn,,請我食CC Can,Buy me a coffee
 table-detals,,詳情,Details
 info-dept,,出發時間：,Departure:
 warning-showbus,,目前仍在運作的巴士：,Buses still in operation:
 warning-noinput,,請輸入出發地/目的地,Please enter your origin and destination.
-justeos-alert,,【試下趕尾班車】<br>以下巴士在30分鐘前從總站開出：,[Try to board the final bus] <br>The following buses departed from the terminal in 30 minutes:
-justeos-warning,,注意：巴士在30分鐘前從總站開出,Remark: The bus departs the terminal 30 minutes prior.
+justeos-alert,,【試下趕尾班車】<br>以下巴士在30分鐘前從總站開出：,[Try to board the final bus] <br>The following buses just departed from the terminal 30 minutes ago: 
+justeos-warning,,注意：巴士已在30分鐘前從總站開出,Remark: The bus departs the terminal 30 minutes prior.
+DescTxt-yrloc,,你身處的巴士站,Bus Stop
+
 ,,,
 //Attribute,,,
 HD,,假日,Holiday

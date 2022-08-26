@@ -21,7 +21,7 @@ select::-ms-expand {
 }
 
 h1 {
-  margin: 10vmin auto auto auto;
+  margin: 100px auto auto auto;
   color: #111;
   font-size: max(40px, 5vmin);
   font-weight: bold;
@@ -74,15 +74,15 @@ a:active {
 
 .nav button {
   display: inline-block;
-  background-color: #2ea44f;
-  border: 1px solid rgba(27, 31, 35, .15);
+  background-color: #62529c;
+  border: none;
   border-radius: 6px;
   box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
   color: #fff;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  padding: 6px 20px;
+  padding: 10px 20px;
   text-align: center;
   vertical-align: middle;
 }

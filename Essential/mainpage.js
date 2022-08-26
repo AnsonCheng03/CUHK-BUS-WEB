@@ -155,10 +155,6 @@ function comparetime() {
   return (dissmisstime - currenttime) > 0
 }
 
-function lang_change(lang) {
-  append_query("lang", lang)
-}
-
 function zoom (e, mode) {
   if (mode == "move") {
     document.getElementById('busmapimg').style.opacity = 0;

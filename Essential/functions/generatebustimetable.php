@@ -1,7 +1,12 @@
 <?php
 
+if (isset($_SERVER['REMOTE_ADDR'])) {
+    header('HTTP/1.0 403 Forbidden');
+    die('No Permission');
+}
+
 include(__DIR__ . '/functions.php');
-foreach (csv_to_array(__DIR__ . "/../Data/Route") as $busno) {
+foreach (csv_to_array(__DIR__ . "/../../Data/Route") as $busno) {
     $bus[$busno[0]]["schedule"] = array($busno[1], $busno[2], $busno[3], $busno[4], $busno[5]);
     foreach (array_filter(array_slice($busno, 6)) as $key => $value) {
         $statnm = strstr($value, '|', true) ?: $value;
@@ -51,5 +56,8 @@ foreach ($bus as $busno => $busline) {
         }
     }
 }
+
+echo "a";
+print_r($bustime);
 
 file_put_contents(__DIR__ . '/../../Data/timetable.json', json_encode($bustime, JSON_PRETTY_PRINT));
