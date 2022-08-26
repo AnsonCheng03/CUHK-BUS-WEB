@@ -185,9 +185,12 @@ form span {
 
 .businfo {
   display: inline-block;
+  width: 60%;
 }
 
 .arrtime {
+  width: 40%;
+  text-align: right;
   float: right;
 }
 

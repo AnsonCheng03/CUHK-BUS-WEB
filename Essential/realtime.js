@@ -119,20 +119,44 @@ function submitform(form, replacecontent, target = "/") {
 }
 
 function realtimesubmit(objbtn) {
-  if(!confirm("確認提交？ \nDo you really want to submit?"))
+  if (!confirm("確認提交？ \nDo you really want to submit?"))
     return;
-  const xhr = new XMLHttpRequest();
-  const formData = new FormData();
-  formData.append('linename', objbtn.getAttribute('data'));
-  formData.append('CSRF', objbtn.getAttribute('tk'));
-  formData.append('stop', objbtn.getAttribute('stop'));
-  formData.append('lang', objbtn.getAttribute('lang'));
-  xhr.withCredentials = true;
-  xhr.open("POST", 'realtime/report.php');
-  xhr.onreadystatechange = function () {
-    if (this.response !== "" && this.readyState == 4) 
-      window.alert(this.response);
-  }
-  xhr.send(formData);
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(() => {
+      const xhr = new XMLHttpRequest();
+      const formData = new FormData();
+      formData.append('linename', objbtn.getAttribute('data'));
+      formData.append('CSRF', objbtn.getAttribute('tk'));
+      formData.append('stop', objbtn.getAttribute('stop'));
+      formData.append('lang', objbtn.getAttribute('lang'));
+      xhr.withCredentials = true;
+      xhr.open("POST", 'realtime/report.php');
+      xhr.onreadystatechange = function () {
+        if (this.response !== "" && this.readyState == 4)
+          window.alert(this.response);
+      }
+      xhr.send(formData);
+    }, () => {
+      window.alert('無法獲取地址，不能確認你是否在校巴站附近。\n We cannot verity that you are close to the bus stop.');
+      return;
+    }, { timeout: 500 })};
+
+
+
   return false;
 }
+
+window.addEventListener('load', () => {
+  try {
+    const startingpt = localStorage.getItem('startingpt').split(" (")[0]
+    document.querySelectorAll('.select-box option').forEach(ele => {
+      if (startingpt == ele.textContent)
+        document.querySelector('.select-box').value = ele.value;
+    })
+    submitform(document.querySelector('.stopselector'), '.realtimeresult', 'realtime/index.php');
+    localStorage.removeItem('startingpt');
+  } catch (e) {
+    
+  }
+})

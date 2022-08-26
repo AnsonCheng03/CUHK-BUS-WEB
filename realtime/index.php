@@ -79,14 +79,16 @@ $conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubu
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 $_SESSION['_token'] = bin2hex(openssl_random_pseudo_bytes(32));
 
-$stmt = $conn->prepare("SELECT 
+$conn->query("SET SESSION time_zone = '+8:00'");
+$stmt = $conn->prepare("SELECT
 DATE_FORMAT(`Time`,'%H'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2 , COUNT(*) 
 FROM `report` 
-WHERE (`Time` > (now() - interval 30 minute)) AND `BusNum` = ? AND `StopAttr` = ? 
+WHERE (`Time` >= (now() - interval 30 minute)) AND `BusNum` = ? AND `StopAttr` = ? 
 GROUP BY CONCAT( DATE_FORMAT(`Time`,'%m-%d-%Y %H:'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2)");
+
 $stmt->bind_param("ss", $busnum, $Stop);
 
-
+ 
 
 
 

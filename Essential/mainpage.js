@@ -269,3 +269,35 @@ function submitform(form, replacecontent, target = "/") {
   xhr.send(formData);
   return false;
 }
+
+
+/*
+function saveValue(e){
+  var val = e.value; 
+  localStorage.setItem("inputfield-" + e.name, val);
+}
+
+function getSavedValue (v, output = ""){
+  if (!localStorage.getItem(v)) {
+      return output;
+  }
+  return localStorage.getItem(v);
+}
+
+window.addEventListener('load', ()=> {
+
+  document.querySelectorAll('input select').forEach(elm => {
+    console.log(elm)
+    elm.value = getSavedValue("inputfield-" + elm.name);
+  })
+
+  document.querySelectorAll('input select').forEach(elm => {
+    console.log("a");
+    elm.addEventListener('change', () => {
+      console.log("a")
+      saveValue(this);
+    })
+  })
+})
+
+*/

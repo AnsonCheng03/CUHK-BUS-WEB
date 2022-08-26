@@ -62,7 +62,9 @@
 
     ?>
 
-    <form class="stopselector" onchange="submitform(this, '.realtimeresult', 'realtime/index.php');">
+    <form class="stopselector" method="POST"
+        onchange="submitform(this, '.realtimeresult', 'realtime/index.php');"
+    >
         <span><?php echo $translation['DescTxt-yrloc'][$lang] ?>
             <img class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
         </span>

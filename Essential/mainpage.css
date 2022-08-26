@@ -445,6 +445,17 @@ input:checked+.slider:before {
   color: #fff;
 }
 
+.detailsbtn {
+  display: block;
+  outline: none;
+  border: none;
+  margin: 10px auto 0 auto;
+  background-color: #62529c;
+  border-radius: 5px;
+  padding: 3px 7px;
+  color: #fff;
+  cursor: pointer;
+}
 
 /* Others */
 

@@ -18,7 +18,7 @@ if(!isset($_POST['CSRF']) || $_POST['CSRF'] != $_SESSION['_token'] ) die('Token 
 
 if(isset($_SESSION['Lastpost'])) 
     if($_SESSION['Lastpost'] >= (new DateTime())->modify("-1 minutes")->format('YmdHis'))
-        die('你在五分鐘內已提交過，請稍後再試');
+        die($translation['repeat_submit'][$lang]);
 
 // Create connection
 $conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");

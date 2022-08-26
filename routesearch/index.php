@@ -518,8 +518,10 @@ foreach ($routegroupresult as $start => $temp) {
                             echo '<br><span class="eoswarning">' . $translation["justeos-warning"][$lang] . '</span>';
                     echo  '</td>
                             <td style="text-align:center;">' .
-                        $translation["time-heading-arriving"][$lang] . "<br>" . $busroutes["timeused"][$index] . " min<br>" .
-                        '</td>
+                                $translation["time-heading-arriving"][$lang] . "<br>" . $busroutes["timeused"][$index] . " min<br>";
+                    if($busroutes["timeused"][$index] != "N/A")    
+                        echo "<button class='detailsbtn' onclick=\" localStorage.setItem('startingpt', '".$start."'); append_query('mode', 'realtime'); \">".$translation['table-detals'][$lang]."</button>";
+                    echo    '</td>
                             </tr> ';
                 }
             }
