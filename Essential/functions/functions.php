@@ -21,7 +21,7 @@ function urlquery($key, $default = '', $data_type = '')
 }
 
 function alert($img, $msg){
-  $icon = glob("./Images/".strtolower($img).".*");
+  $icon = glob("../Images/".strtolower($img).".*");
   $content = $msg;
   if(isset($icon[0]) && $content != ""){
     echo '<div class="alert-box">'.

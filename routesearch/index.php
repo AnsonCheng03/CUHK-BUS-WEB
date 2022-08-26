@@ -38,16 +38,16 @@ $thirtyminbusservice = array_pop(array_slice($busservices, -30, 1));
 $currentbusservices = end($busservices);
 if (isset($currentbusservices['ERROR'])) {
     $fetcherror = true;
-    alert("alert", $translation["fetch-error"][$lang] . " (" . $host . ")");
+    alert("alert", $translation["fetch-error"][$lang]);
 } else {
     foreach ($currentbusservices as $busnumber => $busstatus) {
         $bus[$busnumber]["stats"]["status"] = $busstatus;
         $bus[$busnumber]["stats"]["prevstatus"] = $thirtyminbusservice[$busnumber];
         if (isset($bus[$busnumber . "#"])) {
-          $bus[$busnumber . "#"]["stats"]["status"] = $busstatus;
-          $bus[$busnumber . "#"]["stats"]["prevstatus"] = $thirtyminbusservice[$busnumber];
+            $bus[$busnumber . "#"]["stats"]["status"] = $busstatus;
+            $bus[$busnumber . "#"]["stats"]["prevstatus"] = $thirtyminbusservice[$busnumber];
         }
-      }
+    }
 }
 
 
@@ -82,7 +82,7 @@ if (!isset($_POST['deptnow'])) {
     }
 } else {
     foreach ($bus as $index => $busarr)
-        if (($busarr["stats"]["status"] == "no" && $busarr["stats"]["prevstatus"] != "normal")|| ($busarr["stats"]["status"] == "suspended" && $busarr["stats"]["prevstatus"] != "normal"))
+        if (($busarr["stats"]["status"] == "no" && $busarr["stats"]["prevstatus"] != "normal") || ($busarr["stats"]["status"] == "suspended" && $busarr["stats"]["prevstatus"] != "normal"))
             unset($bus[$index]);
 
 
@@ -213,7 +213,7 @@ do {
                     $routeresult["end"][] = $endpos;
                     $routeresult["time"][] = array_sum($newlinetime);
                     if (isset($bus[$busno . "#"]) || strpos($busno, "#") !== false) {
-                        $routeresult["route"][] = $startpos . " ➤ " . implode(" ➤ ", $newline) . "<br><br><span class=\"departtime\">" . $translation["info-sch"][$lang] . $bus[$busno]["schedule"][2]."</span>";
+                        $routeresult["route"][] = $startpos . " ➤ " . implode(" ➤ ", $newline) . "<br><br><span class=\"departtime\">" . $translation["info-sch"][$lang] . $bus[$busno]["schedule"][2] . "</span>";
                     } else {
                         $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $newline);
                     }
@@ -262,7 +262,7 @@ do {
                             $routeresult["end"][] = $endpos;
                             $routeresult["time"][] = array_sum($newlinetime);
                             if (isset($bus[$busno . "#"]) || strpos($busno, "#") !== false) {
-                                $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $newline) . "<br><br><span class=\"departtime\">" . $translation["info-sch"][$lang] . $bus[$busno]["schedule"][2] ."</span>";
+                                $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $newline) . "<br><br><span class=\"departtime\">" . $translation["info-sch"][$lang] . $bus[$busno]["schedule"][2] . "</span>";
                             } else {
                                 $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $newline);
                             }
@@ -458,7 +458,7 @@ do {
 
 if (empty($routeresult)) {
     $routeresult["busno"] = array("N/A");
-    $routeresult["route"] = array($translation["No-BUS"][$lang] . "<br><br>" . $translation["warning-showbus"][$lang] . implode(", ", array_keys($bus)));
+    $routeresult["route"] = array($translation["No-BUS"][$lang] . (isset($_POST['deptnow']) ? "<br><br>" . ($bus ? $translation["warning-showbus"][$lang] . implode(", ", array_keys($bus)) : $translation['stop-running'][$lang]) : ""));
     $noroute = 1;
 }
 
@@ -506,20 +506,20 @@ foreach ($routegroupresult as $start => $temp) {
 
             foreach ($busroutes["busno"] as $index => $busno) {
                 $busnostr = [explode("→", $busno)[0], explode("→", $busno)[1]];
-                if($busnostr[0]."#" != $busnostr[1] && $busnostr[1]."#" != $busnostr[0]) {
+                if ($busnostr[0] . "#" != $busnostr[1] && $busnostr[1] . "#" != $busnostr[0]) {
                     echo '<tr style="background-color: #ecf0f1;">
-                            <td style="text-align:center;">' . 
-                                $busno . 
-                            '</td>
-                            <td>' . 
-                                $busroutes["route"][$index] . "<br>" ;
-                    if(isset($_POST['deptnow']))
-                        if(($bus[$busnostr[0]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[0]]["stats"]["status"] == "no") || ($bus[$busnostr[1]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[1]]["stats"]["status"] == "no"))
-                            echo '<br><span class="eoswarning">' . $translation["justeos-warning"][$lang].'</span>';
+                            <td style="text-align:center;">' .
+                        $busno .
+                        '</td>
+                            <td>' .
+                        $busroutes["route"][$index] . "<br>";
+                    if (isset($_POST['deptnow']))
+                        if (($bus[$busnostr[0]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[0]]["stats"]["status"] == "no") || ($bus[$busnostr[1]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[1]]["stats"]["status"] == "no"))
+                            echo '<br><span class="eoswarning">' . $translation["justeos-warning"][$lang] . '</span>';
                     echo  '</td>
                             <td style="text-align:center;">' .
-                                $translation["time-heading-arriving"][$lang] . "<br>" . $busroutes["timeused"][$index] . " min<br>" .
-                            '</td>
+                        $translation["time-heading-arriving"][$lang] . "<br>" . $busroutes["timeused"][$index] . " min<br>" .
+                        '</td>
                             </tr> ';
                 }
             }

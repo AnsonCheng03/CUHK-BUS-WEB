@@ -1,0 +1,164 @@
+body {
+  background-color: #ecf0f1;
+  font-family: Noto Sans TC, 微軟正黑體, 新細明體, sans-serif;
+  animation-name: fade;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  margin: 0;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
+/* GPS location */
+
+.image-wrapper {
+  width: 23px;
+  padding: 5px;
+  margin-left: 20px;
+  border: 1px solid black;
+  border-radius: 30%;
+  cursor: pointer;
+}
+
+#details-box {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.details-box {
+  overflow: scroll;
+  box-shadow: rgba(240, 46, 170, 0.4) -5px 5px, rgba(240, 46, 170, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px, rgba(240, 46, 170, 0.1) -20px 20px, rgba(240, 46, 170, 0.05) -25px 25px;
+  align-items: center;
+  background-color: #51F5EA;
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+  z-index: 999999;
+}
+
+.showdetails {
+  float: center;
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+#details-box-heading {
+  display: inline;
+  color: black;
+  margin: auto;
+}
+
+#GPSresult {
+  overflow: auto;
+}
+
+.map-submit-btn {
+  font-size: max(16px, 1.9vmin);
+  background-color: #62529c;
+  color: #fff;
+  padding: 15px 30px;
+  margin: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  width: max(120px, 3vw);
+}
+
+/* Title & Alert */
+.alert-box {
+  margin: 40px auto;
+  padding: 10px;
+  border-radius: 5px;
+  color: rgb(97, 26, 21);
+  background-color: #fff;
+  box-shadow: none;
+  width: 80%;
+}
+
+.alert-box table {
+  width: 100%;
+}
+
+.alert-box table td:first-child {
+  width: 100px;
+  text-align: center;
+  margin: 10px auto;
+}
+
+
+
+/* Form */
+
+.stopselector {
+  text-align: center;
+  padding: 25px;
+  border-radius: 20px;
+  margin: 4vmin auto;
+  box-shadow: 0 5px 10px rgba(154, 160, 185, .05), 0 15px 40px rgba(166, 173, 201, .2);
+  background-color: #fff;
+  width: fit-content;
+  line-height: 3;
+}
+
+.select-box {
+  font-size: max(14px, 1.5vmin);
+  width: 100%;
+  box-shadow: 0 1px 3px -2px #9098A9;
+  padding: 7px 12px 7px 12px;
+  -webkit-appearance: none;
+  text-align: center;
+  text-align: -moz-center;
+  text-align: -webkit-center;
+  text-align-last: center;
+}
+
+/* Result */
+
+form span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bussect {
+  width: 80%;
+  margin: 50px auto;
+  padding: 1px;
+  border-radius: 10px;
+  box-shadow: 0 3px 5px rgba(154, 160, 185, .05), 0 15px 40px rgba(166, 173, 201, .2);
+  background-color: #fff;
+}
+
+.busname {
+  text-align: left;
+  margin: 5px 15px;
+  border-left: 3px solid #62529c;
+  padding: 5px 5px 5px 15px;
+  border-radius: 2px;
+}
+
+.bustype {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}
+
+.businfo {
+  display: inline-block;
+}
+
+.arrtime {
+  float: right;
+}
