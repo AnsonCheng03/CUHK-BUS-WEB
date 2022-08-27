@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <title>CUHK BUS</title>
+  <title>中大巴士資訊站 CUHK BUS INFOPAGE</title>
   <meta name="title" content="中大巴士資訊站 CUHK BUS INFOPAGE">
   <meta name="description" content="中大巴士資訊站提供點對點路線搜尋、實時校巴查詢服務，讓你輕鬆在中大校園穿梭。 CUHK Bus Infopage provides point-to-point route search and real-time school bus query services, allowing you to travel around the CUHK campus easily.">
   <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
@@ -12,28 +12,14 @@
   <link rel="icon" href="Images/bus.ico" type="image/x-icon">
   <link rel="shortcut icon" href="Images/bus.ico" type="image/x-icon">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ecf0f1">
+  <link rel="manifest" href="manifest/manifest.webmanifest">
   <meta name="application-name" content="CU BUS">
-  <meta name="msapplication-TileColor" content="#2196f3">
+  <meta name="msapplication-TileColor" content="#62529c">
   <meta name="msapplication-TileImage" content="Images/bus.jpg">
   <meta name="msapplication-config" content="/assets/favicons/browserconfig.xml">
-  <meta name="msapplication-navbutton-color" content="#2196f3">
-  <meta name="apple-touch-fullscreen" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="CU BUS" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="msapplication-navbutton-color" content="#62529c">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="Images/bus.ico" />
-  <link href="Images/splashscreens/iphone5.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-  <link href="Images/splashscreens/iphone6.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-  <link href="Images/splashscreens/iphoneplus.jpg" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-  <link href="Images/splashscreens/iphonex.jpg" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-  <link href="Images/splashscreens/iphonexr.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-  <link href="Images/splashscreens/iphonexsmax.jpg" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-  <link href="Images/splashscreens/ipad.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-  <link href="Images/splashscreens/ipadpro1.jpg" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-  <link href="Images/splashscreens/ipadpro3.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-  <link href="Images/splashscreens/ipadpro2.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
   <meta name="MobileOptimized" content="320" />
   <link rel="stylesheet" href="Essential/mainpage.css">
   <script src="Essential/mainpage.js"></script>
@@ -98,7 +84,7 @@ if (isset($currentbusservices['ERROR'])) {
 //Alert Delay Bus
 foreach ($bus as $busnum => $busline) {
 
-  if ($busline["stats"]["status"] == "no" && $busline["stats"]["prevstatus"] == "normal") 
+  if ($busline["stats"]["status"] == "no" && $busline["stats"]["prevstatus"] == "normal")
     $buserrstat["justeos"][] = $busnum;
 
   if ($busline["stats"]["status"] == "delay") $buserrstat["delay"][] = $busnum;
@@ -111,7 +97,7 @@ if (isset($buserrstat["delay"]) && isset($buserrstat["suspended"])) $finalerrbus
 if (isset($buserrstat["suspended"])) $finalerrbus = $finalerrbus . $translation["suspended-alert"][$lang] . implode(", ", $buserrstat["suspended"]);
 if ($finalerrbus !== "") alert("alert", $finalerrbus);
 
-if (isset($buserrstat["justeos"])) 
+if (isset($buserrstat["justeos"]))
   alert("info", $translation["justeos-alert"][$lang] . implode(", ", $buserrstat["justeos"]));
 
 //Concat all bus stops
@@ -379,6 +365,12 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
     if (document.getElementById("Startbd") && document.getElementById("Destbd")) {
       autocomplete(document.getElementById("Startbd"), choices);
       autocomplete(document.getElementById("Destbd"), choices);
+    }
+  </script>
+
+  <script>
+    if ( 'serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js').then(function(reg) { }).catch(function(err) { })
     }
   </script>
 

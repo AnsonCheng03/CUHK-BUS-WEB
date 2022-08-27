@@ -75,10 +75,6 @@ a:active {
   vertical-align: middle;
 }
 
-.nav button:hover {
-  background-color: #2c974b;
-}
-
 /* Title & Alert */
 .alert-box {
   margin: 40px auto;
