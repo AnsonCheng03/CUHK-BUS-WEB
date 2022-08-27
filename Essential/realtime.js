@@ -111,6 +111,7 @@ function refreshform(form, replacecontent, target = "/") {
 }
 
 function submitform(form, replacecontent, target = "/") {
+  sessionStorage.setItem("realtime-submit", "submitted");
   refreshform(form, replacecontent, target)
   if (submitted != 0) clearInterval(submitted);
   submitted = setInterval(() => {
@@ -140,23 +141,80 @@ function realtimesubmit(objbtn) {
     }, () => {
       window.alert('無法獲取地址，不能確認你是否在校巴站附近。\n We cannot verity that you are close to the bus stop.');
       return;
-    }, { timeout: 500 })};
-
-
-
+    }, { timeout: 500 })
+  };
   return false;
 }
 
+
+function refreshinput() {
+  document.querySelectorAll('input[type="text"], select').forEach(elm => {
+    const v = "realtime-" + elm.name;
+
+    if (sessionStorage.getItem(v)) {
+      elm.value = sessionStorage.getItem(v);
+    }
+
+    elm.addEventListener('change', () => {
+      sessionStorage.setItem(v, elm.value);
+    })
+  })
+
+  document.querySelectorAll('input[type="checkbox"], checkbox').forEach(elm => {
+    const v = "realtime-" + elm.name;
+    if (sessionStorage.getItem(v)) {
+      if (sessionStorage.getItem(v) == 'true')
+        elm.checked = true;
+      else if (sessionStorage.getItem(v) == 'false')
+        elm.checked = false;
+      elm.dispatchEvent(new Event('change'));
+    }
+    elm.addEventListener('change', () => {
+      sessionStorage.setItem(v, elm.checked);
+    })
+  })
+
+  document.querySelectorAll('input[type="radio"]').forEach(elm => {
+    const v = "realtime-" + elm.name;
+    if (sessionStorage.getItem(v)) {
+      document.querySelectorAll('input[name="' + elm.name + '"]').forEach(elem => {
+        if (elem.value == sessionStorage.getItem(v))
+          elem.checked = true;
+        else
+          elem.checked = false;
+      })
+      elm.dispatchEvent(new Event('change'));
+    }
+
+    elm.addEventListener('change', () => {
+      sessionStorage.setItem(v, document.querySelector('input[name="' + elm.name + '"]:checked').value);
+    })
+  })
+
+  if (sessionStorage.getItem('realtime-submit'))
+    if (sessionStorage.getItem('realtime-submit') == "submitted")
+      submitform(document.querySelector('form'), '.realtimeresult', 'realtime/index.php');
+}
+
+
 window.addEventListener('load', () => {
-  try {
+  if(localStorage.getItem('startingpt')) {
     const startingpt = localStorage.getItem('startingpt').split(" (")[0]
     document.querySelectorAll('.select-box option').forEach(ele => {
       if (startingpt == ele.textContent)
         document.querySelector('.select-box').value = ele.value;
     })
+    sessionStorage.setItem('realtime-Dest', document.querySelector('.select-box').value);
     submitform(document.querySelector('.stopselector'), '.realtimeresult', 'realtime/index.php');
     localStorage.removeItem('startingpt');
-  } catch (e) {
-    
+  } else {
+    refreshinput();
   }
+  sessionStorage.setItem('loadstate', 'load');
 })
+
+window.addEventListener('pageshow', () => {
+  if (!sessionStorage.getItem('loadstate'))
+    location.reload();
+  sessionStorage.removeItem('loadstate');
+});

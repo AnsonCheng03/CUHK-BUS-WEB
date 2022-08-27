@@ -155,7 +155,7 @@ function comparetime() {
   return (dissmisstime - currenttime) > 0
 }
 
-function zoom (e, mode) {
+function zoom(e, mode) {
   if (mode == "move") {
     document.getElementById('busmapimg').style.opacity = 0;
     var zoomer = e.currentTarget;
@@ -194,6 +194,7 @@ function autocomplete(inp, arr) {
         b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
         b.addEventListener("click", function (e) {
           inp.value = this.getElementsByTagName("input")[0].value;
+          sessionStorage.setItem("routesearch-" + inp.name, inp.value);
           closeAllLists();
         });
         a.appendChild(b);
@@ -255,7 +256,7 @@ function submitform(form, replacecontent, target = "/") {
   xhr.open("POST", target);
   xhr.onreadystatechange = function () {
     if (document.querySelector(replacecontent) && this.response !== "" && this.readyState == 4) {
-      
+
       elm.innerHTML = this.response;
       Array.from(elm.querySelectorAll("script")).forEach(oldScript => {
         const newScript = document.createElement("script");
@@ -267,37 +268,69 @@ function submitform(form, replacecontent, target = "/") {
     }
   }
   xhr.send(formData);
+  sessionStorage.setItem("routesearch-submit", "submitted");
   return false;
 }
 
 
-/*
-function saveValue(e){
-  var val = e.value; 
-  localStorage.setItem("inputfield-" + e.name, val);
-}
+function refreshinput() {
+  document.querySelectorAll('input[type="text"], select').forEach(elm => {
+    const v = "routesearch-" + elm.name;
 
-function getSavedValue (v, output = ""){
-  if (!localStorage.getItem(v)) {
-      return output;
-  }
-  return localStorage.getItem(v);
-}
+    if (sessionStorage.getItem(v)) {
+      elm.value = sessionStorage.getItem(v);
+    }
 
-window.addEventListener('load', ()=> {
-
-  document.querySelectorAll('input select').forEach(elm => {
-    console.log(elm)
-    elm.value = getSavedValue("inputfield-" + elm.name);
-  })
-
-  document.querySelectorAll('input select').forEach(elm => {
-    console.log("a");
     elm.addEventListener('change', () => {
-      console.log("a")
-      saveValue(this);
+      sessionStorage.setItem(v, elm.value);
     })
   })
-})
 
-*/
+  document.querySelectorAll('input[type="checkbox"], checkbox').forEach(elm => {
+    const v = "routesearch-" + elm.name;
+    if (sessionStorage.getItem(v)) {
+      if (sessionStorage.getItem(v) == 'true')
+        elm.checked = true;
+      else if (sessionStorage.getItem(v) == 'false')
+        elm.checked = false;
+      elm.dispatchEvent(new Event('change'));
+    }
+    elm.addEventListener('change', () => {
+      sessionStorage.setItem(v, elm.checked);
+    })
+  })
+
+  document.querySelectorAll('input[type="radio"]').forEach(elm => {
+
+    const v = "routesearch-" + elm.name;
+
+    if (sessionStorage.getItem(v)) {
+      document.querySelectorAll('input[name="' + elm.name + '"]').forEach(elem => {
+        if (elem.value == sessionStorage.getItem(v))
+          elem.checked = true;
+        else
+          elem.checked = false;
+      })
+      elm.dispatchEvent(new Event('change'));
+    }
+
+    elm.addEventListener('change', () => {
+      sessionStorage.setItem(v, document.querySelector('input[name="' + elm.name + '"]:checked').value);
+    })
+  })
+
+  if (sessionStorage.getItem('routesearch-submit'))
+    if (sessionStorage.getItem('routesearch-submit') == "submitted")
+      submitform(document.querySelector('form'), '.routeresult', 'routesearch/index.php')
+}
+
+window.addEventListener('load', () => {
+  sessionStorage.setItem('loadstate', 'load');
+  refreshinput();
+});
+
+window.addEventListener('pageshow', () => {
+  if (!sessionStorage.getItem('loadstate'))
+    location.reload();
+  sessionStorage.removeItem('loadstate');
+});

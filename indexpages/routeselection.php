@@ -147,7 +147,7 @@
 
   <!--Input form!-->
   <form name="bussearch" method="post" onsubmit="return submitform(this,'.routeresult','routesearch/index.php')" autocomplete="off">
-    <input hidden type="text" name="language" value="<?php echo $lang ?>"></input>
+    <input hidden type="hidden" name="language" value="<?php echo $lang ?>"></input>
 
     <div class="switch-toggle">
       <input id="building" name="mode" type="radio" value="building" checked />
@@ -156,8 +156,8 @@
       <input id="station" name="mode" type="radio" value="station" />
       <label for="station"><?php echo $translation["mode-station"][$lang] ?></label>
 
-      <input disable id="realtime" name="mode0" type="radio" value="realtime" onclick="append_query('mode', 'realtime');"/>
-      <label for="realtime"><?php echo $translation["mode-realtime"][$lang] ?></label>
+      <input disabled id="realtime" name="mode0" type="radio" value="realtime" onclick="append_query('mode', 'realtime');"/>
+      <label for="realtime" onclick="append_query('mode', 'realtime');"><?php echo $translation["mode-realtime"][$lang] ?></label>
     </div>
 
     <div class="search-boxes">
@@ -374,8 +374,9 @@
       autocomplete(document.getElementById("Destbd"), choices);
     }
   </script>
+  
   <script type="text/javascript" src="Essential/component.js?v=<?php echo bin2hex(openssl_random_pseudo_bytes(32)) ?>"></script>
 
   </body>
 
-</html>
+</html> 

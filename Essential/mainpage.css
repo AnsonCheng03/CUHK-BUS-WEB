@@ -1,19 +1,6 @@
-@keyframes fade {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
 body {
   background-color: #ecf0f1;
   font-family: Noto Sans TC, 微軟正黑體, 新細明體, sans-serif;
-  animation-name: fade;
-  animation-duration: 1.5s;
-  animation-fill-mode: forwards;
 }
 
 select::-ms-expand {
