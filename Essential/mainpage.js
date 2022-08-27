@@ -287,32 +287,6 @@ window.addEventListener('load', () => {
 
   sessionStorage.setItem('loadstate', 'load');
 
-  if (document.getElementById("deptnow").checked) {
-    if (document.getElementById("time-now")) document.getElementById("time-now").style.display = "block";
-  } else {
-    if (document.getElementById("time-now")) document.getElementById("time-schedule").style.display = "block";
-  }
-
-  if (StandaloneCheck()) {
-    if (platformCheck() && !comparetime()) {
-      document.getElementById("HomeScreenPrompt").style.display = "block";
-    }
-  }
-  else {
-    document.getElementById("refresh-btn").style.display = "";
-  }
-
-  if (document.getElementById("routeresult") && document.getElementById("routesubmitbtn")) {
-    document.getElementById("routesubmitbtn").scrollIntoView();
-  }
-
-  date_change();
-  modechange();
-
-  document.querySelectorAll('input[name="mode"]').forEach(element => {
-    element.addEventListener('change', modechange);
-  });
-
   document.querySelectorAll('input[type="text"], select').forEach(elm => {
     const v = "routesearch-" + elm.name;
 

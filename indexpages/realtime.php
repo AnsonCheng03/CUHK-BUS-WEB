@@ -97,6 +97,16 @@
         }
     </script>
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-KCD7N2ZG3H');
+    </script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
 </footer>
 

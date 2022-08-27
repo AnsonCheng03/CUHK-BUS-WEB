@@ -1,5 +1,5 @@
 <?php
-$version = "6.5.0";
+$version = "7.0.0";
 
 include_once('Essential/functions/functions.php');
 
