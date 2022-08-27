@@ -13,7 +13,7 @@ foreach (array_slice(csv_to_array("../Data/Translate"), 1) as $row) {
 }
 
 
-if(!isset($_POST['CSRF']) || $_POST['CSRF'] != $_SESSION['_token'] ) die('Token Error!');
+if(!isset($_POST['CSRF']) || $_POST['CSRF'] != $_SESSION['_token'] ) die('驗證錯誤！ 請再試一次～ \nToken Error! Please try again~');
 
 
 if(isset($_SESSION['Lastpost'])) 

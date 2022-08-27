@@ -138,6 +138,7 @@ function realtimesubmit(objbtn) {
           window.alert(this.response);
       }
       xhr.send(formData);
+      submitform(document.querySelector('form'), '.realtimeresult', 'realtime/index.php');
     }, () => {
       window.alert('無法獲取地址，不能確認你是否在校巴站附近。\n We cannot verity that you are close to the bus stop.');
       return;

@@ -1,6 +1,7 @@
 body {
   background-color: #ecf0f1;
   font-family: Noto Sans TC, 微軟正黑體, 新細明體, sans-serif;
+  margin: 0;
 }
 
 select::-ms-expand {
