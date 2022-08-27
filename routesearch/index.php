@@ -50,7 +50,6 @@ if (isset($currentbusservices['ERROR'])) {
     }
 }
 
-
 $noroute = 0;
 $lang = $_POST['language'];
 $poststart = $_POST['Start'];
@@ -61,11 +60,25 @@ $posttravdt = $_POST['Trav-dt'];
 $posttravhr = $_POST['Trav-hr'];
 $posttravmin = $_POST['Trav-min'];
 $forceshowexchange = isset($_POST['showallroute']);
+$departnowbtn = isset($_POST['deptnow']);
+
+
+$conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");
+if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+$stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Start`, `Dest`, `Mode`, `Showallroute`, `Departnow`, `Lang`) 
+VALUES (?, 'routesearch', ?, ?, ?, ?, ?, ?);");
+$stmt->bind_param("sssssss", $Time, $Startsql, $Destsql, $postmode, $forceshowexchange, $departnowbtn, $lang);
+$Time = (new DateTime())->format('Y-m-d H:i:s');
+$Startsql = $postmode == "building" ? $_POST['Startbd'] : $_POST['Start'];
+$Destsql = $postmode == "building" ? $_POST['Destbd'] : $_POST['Dest'];
+$stmt->execute();
+$stmt->close();
+$conn->close();
 
 
 
 // Get Available Buses
-if (!isset($_POST['deptnow'])) {
+if (!$departnowbtn) {
     foreach ($bus as $index => $busarr) {
         //Base on time
         $currenttime = (DateTime::createFromFormat("H:i", $posttravhr . ":" . $posttravmin))->getTimestamp();
@@ -458,7 +471,7 @@ do {
 
 if (empty($routeresult)) {
     $routeresult["busno"] = array("N/A");
-    $routeresult["route"] = array($translation["No-BUS"][$lang] . (isset($_POST['deptnow']) ? "<br><br>" . ($bus ? $translation["warning-showbus"][$lang] . implode(", ", array_keys($bus)) : $translation['stop-running'][$lang]) : ""));
+    $routeresult["route"] = array($translation["No-BUS"][$lang] . ($departnowbtn ? "<br><br>" . ($bus ? $translation["warning-showbus"][$lang] . implode(", ", array_keys($bus)) : $translation['stop-running'][$lang]) : ""));
     $noroute = 1;
 }
 
@@ -513,7 +526,7 @@ foreach ($routegroupresult as $start => $temp) {
                         '</td>
                             <td>' .
                         $busroutes["route"][$index] . "<br>";
-                    if (isset($_POST['deptnow']))
+                    if ($departnowbtn)
                         if (($bus[$busnostr[0]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[0]]["stats"]["status"] == "no") || ($bus[$busnostr[1]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[1]]["stats"]["status"] == "no"))
                             echo '<br><span class="eoswarning">' . $translation["justeos-warning"][$lang] . '</span>';
                     echo  '</td>

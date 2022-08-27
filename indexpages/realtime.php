@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>中大巴士資訊站 CUHK BUS INFOPAGE</title>
+    <title>中大巴士資訊站 CUHK BUS INFOPAGE | Realtime</title>
     <meta name="title" content="中大巴士資訊站 CUHK BUS INFOPAGE">
     <meta name="description" content="中大巴士資訊站提供點對點路線搜尋、實時校巴查詢服務，讓你輕鬆在中大校園穿梭。 CUHK Bus Infopage provides point-to-point route search and real-time school bus query services, allowing you to travel around the CUHK campus easily.">
     <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
@@ -24,8 +24,15 @@
     <link rel="stylesheet" href="Essential/realtime.css">
     <script src="Essential/realtime.js"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
-  <script>window.dataLayer = window.dataLayer || [];function gtag() {dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-KCD7N2ZG3H');</script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-KCD7N2ZG3H');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
 </head>
 
 <body>
