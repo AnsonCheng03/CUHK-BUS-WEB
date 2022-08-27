@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+<url>
+  <loc>https://cu-bus.online/</loc>
+  <lastmod>2022-08-27T08:57:48+00:00</lastmod>
+  <loc>https://cu-bus.online?&amp;lang=tc&amp;mode=route/</loc>
+  <lastmod>2022-08-27T08:57:48+00:00</lastmod>
+  <loc>https://cu-bus.online?&amp;lang=tc&amp;mode=realtime/</loc>
+  <lastmod>2022-08-27T08:57:48+00:00</lastmod>
+  <loc>https://cu-bus.online?&amp;lang=en&amp;mode=route/</loc>
+  <lastmod>2022-08-27T08:57:48+00:00</lastmod>
+  <loc>https://cu-bus.online?&amp;lang=en&amp;mode=realtime/</loc>
+  <lastmod>2022-08-27T08:57:48+00:00</lastmod>
+</url>
+
+
+</urlset>

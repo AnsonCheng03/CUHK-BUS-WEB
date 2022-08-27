@@ -13,9 +13,8 @@
     <link rel="icon" href="Images/bus.ico" type="image/x-icon">
     <link rel="shortcut icon" href="Images/bus.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="Images/bus.ico" />
-    <link rel="stylesheet" href="Essential/realtime.css?v=<?php echo bin2hex(openssl_random_pseudo_bytes(32)) ?>">
-    <script src="Essential/realtime.js?v=<?php echo bin2hex(openssl_random_pseudo_bytes(32)) ?>"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="Essential/realtime.css">
+    <script src="Essential/realtime.js"></script>
 </head>
 
 <body>
@@ -28,7 +27,7 @@
 
     <div class="navbar">
         <div class="back nav">
-            <button onclick="append_query('mode','route');" /><?php echo $translation["back_btn"][$lang]?></button>
+            <button onclick="append_query('mode','route');" /><?php echo $translation["back_btn"][$lang] ?></button>
         </div>
         <div class="lang-selector nav">
             <button onclick="append_query('lang','tc');" />中文</button>
@@ -62,9 +61,7 @@
 
     ?>
 
-    <form class="stopselector" method="POST"
-        onchange="submitform(this, '.realtimeresult', 'realtime/index.php');"
-    >
+    <form class="stopselector" method="POST" onchange="submitform(this, '.realtimeresult', 'realtime/index.php');">
         <span><?php echo $translation['DescTxt-yrloc'][$lang] ?>
             <img class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
         </span>
@@ -84,5 +81,9 @@
 
 
 </body>
+
+<footer>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
+</footer>
 
 </html>

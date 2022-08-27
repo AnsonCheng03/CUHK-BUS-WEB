@@ -355,7 +355,6 @@ input:checked+.slider:before {
 }
 
 .image-wrapper {
-  width: 23px;
   padding: 5px;
   margin-left: 2px;
   border: 1px solid black;

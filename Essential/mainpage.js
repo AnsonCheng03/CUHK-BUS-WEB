@@ -1,5 +1,15 @@
 //Functions
 
+function modechange() {
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  document.querySelectorAll('*[mode]:not([mode="' + mode + '"])').forEach(element => {
+    element.style.display = 'none';
+  });
+  document.querySelectorAll('*[mode="' + mode + '"]').forEach(element => {
+    element.style.display = 'unset';
+  });
+}
+
 function getLocation(item) {
   globalThis.item = item;
   document.getElementById("details-box").style.display = 'flex';
@@ -32,10 +42,10 @@ function changevaluebyGPS(item, locname, loccode) {
   item = item.split('-')[0];
   if (document.querySelector('input[name="mode"]:checked').value == 'station') {
     document.getElementById(item).value = loccode;
-    sessionStorage.setItem("routesearch-"+item, loccode);
+    sessionStorage.setItem("routesearch-" + item, loccode);
   } else {
-    document.getElementById(item+ "bd").value = locname + " (" + loccode + ")";
-    sessionStorage.setItem("routesearch-"+item+ "bd", locname + " (" + loccode + ")");
+    document.getElementById(item + "bd").value = locname + " (" + loccode + ")";
+    sessionStorage.setItem("routesearch-" + item + "bd", locname + " (" + loccode + ")");
   }
   document.getElementById('details-box').style.display = 'none';
 }
@@ -256,7 +266,6 @@ function submitform(form, replacecontent, target = "/") {
   xhr.open("POST", target);
   xhr.onreadystatechange = function () {
     if (document.querySelector(replacecontent) && this.response !== "" && this.readyState == 4) {
-
       elm.innerHTML = this.response;
       Array.from(elm.querySelectorAll("script")).forEach(oldScript => {
         const newScript = document.createElement("script");
@@ -265,6 +274,7 @@ function submitform(form, replacecontent, target = "/") {
         newScript.appendChild(document.createTextNode(oldScript.innerHTML));
         oldScript.parentNode.replaceChild(newScript, oldScript);
       });
+      elm.scrollIntoView({behavior: 'smooth'});
     }
   }
   xhr.send(formData);
@@ -273,7 +283,36 @@ function submitform(form, replacecontent, target = "/") {
 }
 
 
-function refreshinput() {
+window.addEventListener('load', () => {
+
+  sessionStorage.setItem('loadstate', 'load');
+
+  if (document.getElementById("deptnow").checked) {
+    if (document.getElementById("time-now")) document.getElementById("time-now").style.display = "block";
+  } else {
+    if (document.getElementById("time-now")) document.getElementById("time-schedule").style.display = "block";
+  }
+
+  if (StandaloneCheck()) {
+    if (platformCheck() && !comparetime()) {
+      document.getElementById("HomeScreenPrompt").style.display = "block";
+    }
+  }
+  else {
+    document.getElementById("refresh-btn").style.display = "";
+  }
+
+  if (document.getElementById("routeresult") && document.getElementById("routesubmitbtn")) {
+    document.getElementById("routesubmitbtn").scrollIntoView();
+  }
+
+  date_change();
+  modechange();
+
+  document.querySelectorAll('input[name="mode"]').forEach(element => {
+    element.addEventListener('change', modechange);
+  });
+
   document.querySelectorAll('input[type="text"], select').forEach(elm => {
     const v = "routesearch-" + elm.name;
 
@@ -322,11 +361,6 @@ function refreshinput() {
   if (sessionStorage.getItem('routesearch-submit'))
     if (sessionStorage.getItem('routesearch-submit') == "submitted")
       submitform(document.querySelector('form'), '.routeresult', 'routesearch/index.php')
-}
-
-window.addEventListener('load', () => {
-  sessionStorage.setItem('loadstate', 'load');
-  refreshinput();
 });
 
 window.addEventListener('pageshow', () => {

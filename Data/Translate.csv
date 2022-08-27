@@ -60,11 +60,11 @@ warning-noinput,,請輸入出發地/目的地,Please enter your origin and desti
 justeos-alert,,【試下趕尾班車】<br>以下巴士在30分鐘前從總站開出：,[Try to board the final bus] <br>The following buses just departed from the terminal 30 minutes ago: 
 justeos-warning,,注意：巴士已在30分鐘前從總站開出,Remark: The bus departs the terminal 30 minutes prior.
 DescTxt-yrloc,,你身處的巴士站,Bus Stop
-bus-arrive-btn,,有巴士到,A bus is nearby.
+bus-arrive-btn,,有巴士到,A bus is nearby
 back_btn,,上一頁,BACK
 schoolbus_arrival,,位用戶報告校巴到站,users in total reported seeing a school bus arrive.
 submit_success,,已成功提交,Submitted
-repeat_submit,,你在五分鐘內已提交過，請稍後再試。,You sent your submission within five minutes; try again later.
+repeat_submit,,你在一分鐘內已提交過，請稍後再試。,You sent your submission within one minutes; try again later.
 ,,,
 //Attribute,,,
 HD,,假日,Holiday

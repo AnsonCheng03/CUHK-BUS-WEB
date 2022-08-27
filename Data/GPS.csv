@@ -9,7 +9,8 @@ CCTEA,22.415872,114.208292,崇基教學樓,"Latitude (LAT): 22.415872 N 22°24'5
 CWCC|DOWNST,22.42564,114.206662,敬文書院,
 CWCC|UPPERST,22.425613,114.206182,敬文書院,
 FKHB,22.4198801398,114.203074398,馮景禧樓,WGS 1984
-JCPH,22.420465,114.212188,賽馬會研究生宿舍,
+JCPH|DOWNST,22.420465,114.212188,賽馬會研究生宿舍,
+JCPH|UPPERST,22.420465,114.212188,賽馬會研究生宿舍,
 MTR,22.414523,114.210223,地鐵大學站,"Latitude (LAT): 22.414523 N 22°24'52.28215""  Longitude (LONG): 114.210223 E 114°12'36.80155""  ----------  Check out this great app - GPS Coordinates  You can download it from https://itunes.apple.com/us/app/gps-coordinates-free/id1335952038?ls=1&mt=8"
 MTRP,22.413901,114.209770,地鐵大學站廣場,"Latitude (LAT): 22.413901 N 22°24'50.04408""  Longitude (LONG): 114.209770 E 114°12'35.17030""  ----------  Check out this great app - GPS Coordinates  You can download it from https://itunes.apple.com/us/app/gps-coordinates-free/id1335952038?ls=1&mt=8"
 NAC,22.4214149615,114.20748402,新亞書院,WGS 1984

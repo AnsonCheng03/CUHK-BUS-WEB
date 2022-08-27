@@ -35,276 +35,309 @@
   <link href="Images/splashscreens/ipadpro3.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
   <link href="Images/splashscreens/ipadpro2.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
   <meta name="MobileOptimized" content="320" />
-  <link rel="stylesheet" href="Essential/mainpage.css?v=<?php echo bin2hex(openssl_random_pseudo_bytes(32)) ?>">
-  <link rel="stylesheet" href="Essential/component.css?v=<?php echo bin2hex(openssl_random_pseudo_bytes(32)) ?>">
-  <script src="Essential/mainpage.js?v=<?php echo bin2hex(openssl_random_pseudo_bytes(32)) ?>"></script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="Essential/mainpage.css">
+  <script src="Essential/mainpage.js"></script>
 </head>
 
 <!--Functions, Init, Data-->
- <?php
-  //Init Program
-  include_once('Essential/functions/functions.php');
-  date_default_timezone_set("Asia/Hong_Kong");
-  $fetcherror = false;
-  $lang = urlquery("lang") == "en" ? 1 : 0;
-  include('Essential/functions/initdatas.php'); //Download datas from server
-  ?>
+<?php
 
-  <!--Select Language && Function Buttons-->
-  <div class="lang-selector nav">
-    <button onclick="append_query('lang','tc');" />中文</button>
-    <button onclick="append_query('lang','en');" />ENG</button>
+//Init Program
+include_once('Essential/functions/functions.php');
+date_default_timezone_set("Asia/Hong_Kong");
+$fetcherror = false;
+$lang = urlquery("lang") == "en" ? 1 : 0;
+include('Essential/functions/initdatas.php'); //Download datas from server
+?>
+
+<!--Select Language && Function Buttons-->
+<div class="lang-selector nav">
+  <button onclick="append_query('lang','tc');" />中文</button>
+  <button onclick="append_query('lang','en');" />ENG</button>
+</div>
+
+<div class="refreshbtn nav">
+  <button id="refresh-btn" style="display: none;" onclick="window.location.reload();" /><?php echo $translation["refresh-btn"][$lang] ?></button>
+</div>
+
+
+<!--Title & Alert-->
+<h1><?php echo $translation["WEB-Title"][$lang] ?></h1>
+<h2>v. <?php echo $version . "<br> ( " . $translation["last-update"][$lang] . date("d/m/Y H:i", filemtime("Data/Station.csv")) . " )" ?></h2>
+
+<?php
+foreach ($notice as $noti) {
+  alert($noti["pref"]["type"], $noti["content"][$lang]);
+}
+?>
+
+<!--Fetch Busstop && Buildings to Array!-->
+<!--Need Fix!-->
+<?php
+
+$busservices = json_decode(file_get_contents('Data/Status.json'), true);
+$currentbusservices = end($busservices);
+$thirtyminbusservice = array_pop(array_slice($busservices, -30, 1));
+
+if (isset($currentbusservices['ERROR'])) {
+  $fetcherror = true;
+  alert("alert", $translation["fetch-error"][$lang]);
+} else {
+  foreach ($currentbusservices as $busnumber => $busstatus) {
+    $bus[$busnumber]["stats"]["status"] = $busstatus;
+    $bus[$busnumber]["stats"]["prevstatus"] = $thirtyminbusservice[$busnumber];
+    if (isset($bus[$busnumber . "#"])) {
+      $bus[$busnumber . "#"]["stats"]["status"] = $busstatus;
+      $bus[$busnumber . "#"]["stats"]["prevstatus"] = $thirtyminbusservice[$busnumber];
+    }
+  }
+}
+
+
+
+//Alert Delay Bus
+foreach ($bus as $busnum => $busline) {
+
+  if ($busline["stats"]["status"] == "no" && $busline["stats"]["prevstatus"] == "normal") 
+    $buserrstat["justeos"][] = $busnum;
+
+  if ($busline["stats"]["status"] == "delay") $buserrstat["delay"][] = $busnum;
+  if ($busline["stats"]["status"] == "suspended") $buserrstat["suspended"][] = $busnum;
+}
+
+$finalerrbus = "";
+if (isset($buserrstat["delay"])) $finalerrbus = $finalerrbus . $translation["delay-alert"][$lang] . implode(", ", $buserrstat["delay"]);
+if (isset($buserrstat["delay"]) && isset($buserrstat["suspended"])) $finalerrbus = $finalerrbus . "<br>";
+if (isset($buserrstat["suspended"])) $finalerrbus = $finalerrbus . $translation["suspended-alert"][$lang] . implode(", ", $buserrstat["suspended"]);
+if ($finalerrbus !== "") alert("alert", $finalerrbus);
+
+if (isset($buserrstat["justeos"])) 
+  alert("info", $translation["justeos-alert"][$lang] . implode(", ", $buserrstat["justeos"]));
+
+//Concat all bus stops
+foreach ($bus as $busnum) {
+  foreach ($busnum["stations"]["name"] as $busstops) {
+    if (isset($busstops)) {
+      $allbusstop[] = $busstops;
+    }
+  }
+}
+$allbusstop =  array_filter(array_unique($allbusstop));
+
+//Concat all Buildings
+foreach ($station as $stoparr) {
+  foreach ($stoparr as $buildings) {
+    if (isset($busstops)) {
+      $allbuildings[] = $buildings;
+    }
+  }
+}
+$allbuildings =  array_filter(array_unique($allbuildings));
+
+
+//Translate building names
+foreach ($translation as $buildingcode => $buildingnamearr) {
+  foreach ($allbuildings as $allbuildingcode) {
+    if ($buildingcode == $allbuildingcode) {
+      if ($buildingnamearr[$lang] == "" || $buildingcode == "") {
+        $transbuilding[] = $buildingnamearr[$lang];
+      } else {
+        $transbuilding[] = $buildingnamearr[$lang] . " (" . strtoupper($buildingcode) . ")";
+      }
+    }
+  }
+}
+?>
+
+<!--Input form!-->
+<form name="bussearch" method="post" onsubmit="return submitform(this,'.routeresult','routesearch/index.php')" autocomplete="off">
+  <input hidden type="hidden" name="language" value="<?php echo $lang ?>"></input>
+
+  <div class="switch-toggle">
+    <input id="building" name="mode" type="radio" value="building" checked />
+    <label for="building"><?php echo $translation["mode-building"][$lang] ?></label>
+
+    <input id="station" name="mode" type="radio" value="station" />
+    <label for="station"><?php echo $translation["mode-station"][$lang] ?></label>
+
+    <input disabled id="realtime" name="mode0" type="radio" value="realtime" onclick="append_query('mode', 'realtime');" />
+    <label for="realtime" onclick="append_query('mode', 'realtime');"><?php echo $translation["mode-realtime"][$lang] ?></label>
   </div>
 
-  <div class="refreshbtn nav">
-    <button id="refresh-btn" style="display: none;" onclick="window.location.reload();" /><?php echo $translation["refresh-btn"][$lang] ?></button>
-  </div>
+  <div class="search-boxes">
+    <div class="info-box optionssel">
 
+      <div class="bus-options">
+        <span class="slider-wrapper">
+          <label for="showallroute"><?php echo $translation["showallroute-info"][$lang] ?></label>
+          <label class="switch"><input type="checkbox" id="showallroute" name="showallroute">
+            <span class="slider"></span>
+          </label>
+        </span>
+      </div>
 
-  <!--Title & Alert-->
-  <h1><?php echo $translation["WEB-Title"][$lang] ?></h1>
-  <h2>v. <?php echo $version . "<br> ( " . $translation["last-update"][$lang] . date("d/m/Y H:i", filemtime("Data/Station.csv")) . " )" ?></h2>
-
-  <?php
-  foreach ($notice as $noti) {
-    alert($noti["pref"]["type"], $noti["content"][$lang]);
-  }
-  ?>
-
-  <!--Fetch Busstop && Buildings to Array!-->
-  <!--Need Fix!-->
-  <?php
-
-  $busservices = json_decode(file_get_contents('Data/Status.json'), true);
-  $currentbusservices = end($busservices);
-  $thirtyminbusservice = array_pop(array_slice($busservices, -30, 1));
-
-  if (isset($currentbusservices['ERROR'])) {
-    $fetcherror = true;
-    alert("alert", $translation["fetch-error"][$lang]);
-  } else {
-    foreach ($currentbusservices as $busnumber => $busstatus) {
-      $bus[$busnumber]["stats"]["status"] = $busstatus;
-      $bus[$busnumber]["stats"]["prevstatus"] = $thirtyminbusservice[$busnumber];
-      if (isset($bus[$busnumber . "#"])) {
-        $bus[$busnumber . "#"]["stats"]["status"] = $busstatus;
-        $bus[$busnumber . "#"]["stats"]["prevstatus"] = $thirtyminbusservice[$busnumber];
-      }
-    }
-  }
-
-
-  //Alert Delay Bus
-  foreach ($bus as $busnum => $busline) {
-    if ($busline["stats"]["prevstatus"] == "normal" && $busline["stats"]["status"] == "no") $buserrstat["justeos"][] = $busnum;
-    if ($busline["stats"]["status"] == "delay") $buserrstat["delay"][] = $busnum;
-    if ($busline["stats"]["status"] == "suspended") $buserrstat["suspended"][] = $busnum;
-  }
-
-  $finalerrbus = "";
-  if (isset($buserrstat["delay"])) $finalerrbus = $finalerrbus . $translation["delay-alert"][$lang] . implode(", ", $buserrstat["delay"]);
-  if (isset($buserrstat["delay"]) && isset($buserrstat["suspended"])) $finalerrbus = $finalerrbus . "<br>";
-  if (isset($buserrstat["suspended"])) $finalerrbus = $finalerrbus . $translation["suspended-alert"][$lang] . implode(", ", $buserrstat["suspended"]);
-  if ($finalerrbus !== "") alert("alert", $finalerrbus);
-
-  if (isset($buserrstat["justeos"])) alert("info", $translation["justeos-alert"][$lang] . implode(", ", $buserrstat["justeos"]));
-
-  //Concat all bus stops
-  foreach ($bus as $busnum) {
-    foreach ($busnum["stations"]["name"] as $busstops) {
-      if (isset($busstops)) {
-        $allbusstop[] = $busstops;
-      }
-    }
-  }
-  $allbusstop =  array_filter(array_unique($allbusstop));
-
-  //Concat all Buildings
-  foreach ($station as $stoparr) {
-    foreach ($stoparr as $buildings) {
-      if (isset($busstops)) {
-        $allbuildings[] = $buildings;
-      }
-    }
-  }
-  $allbuildings =  array_filter(array_unique($allbuildings));
-
-
-  //Translate building names
-  foreach ($translation as $buildingcode => $buildingnamearr) {
-    foreach ($allbuildings as $allbuildingcode) {
-      if ($buildingcode == $allbuildingcode) {
-        if ($buildingnamearr[$lang] == "" || $buildingcode == "") {
-          $transbuilding[] = $buildingnamearr[$lang];
-        } else {
-          $transbuilding[] = $buildingnamearr[$lang] . " (" . strtoupper($buildingcode) . ")";
-        }
-      }
-    }
-  }
-  ?>
-
-  <!--Input form!-->
-  <form name="bussearch" method="post" onsubmit="return submitform(this,'.routeresult','routesearch/index.php')" autocomplete="off">
-    <input hidden type="hidden" name="language" value="<?php echo $lang ?>"></input>
-
-    <div class="switch-toggle">
-      <input id="building" name="mode" type="radio" value="building" checked />
-      <label for="building"><?php echo $translation["mode-building"][$lang] ?></label>
-
-      <input id="station" name="mode" type="radio" value="station" />
-      <label for="station"><?php echo $translation["mode-station"][$lang] ?></label>
-
-      <input disabled id="realtime" name="mode0" type="radio" value="realtime" onclick="append_query('mode', 'realtime');"/>
-      <label for="realtime" onclick="append_query('mode', 'realtime');"><?php echo $translation["mode-realtime"][$lang] ?></label>
-    </div>
-
-    <div class="search-boxes">
-      <div class="info-box optionssel">
-
-        <div class="bus-options">
-          <span class="slider-wrapper">
-            <label for="showallroute"><?php echo $translation["showallroute-info"][$lang] ?></label>
-            <label class="switch"><input type="checkbox" id="showallroute" name="showallroute">
-              <span class="slider"></span>
-            </label>
-          </span>
-        </div>
-
-        <div class="bus-options">
-          <span class="slider-wrapper">
-            <label for="deptnow"><?php echo $translation["info-deptnow"][$lang] ?></label>
-            <label class="switch"><input type="checkbox" id="deptnow" name="deptnow" checked onchange="time_change();">
-              <span class="slider"></span>
-            </label>
-          </span>
-        </div>
+      <div class="bus-options">
+        <span class="slider-wrapper">
+          <label for="deptnow"><?php echo $translation["info-deptnow"][$lang] ?></label>
+          <label class="switch"><input type="checkbox" id="deptnow" name="deptnow" checked onchange="time_change();">
+            <span class="slider"></span>
+          </label>
+        </span>
+      </div>
 
 
 
-        <!--手動時間!-->
-        <div id="time-schedule" style="display: none;">'
-          <select class="select-date" name="Trav-wk" id="Trav-wk" onchange="date_change();">
-            <?php
-            $weekday = ["WK-Sun", "WK-Mon", "WK-Tue", "WK-Wed", "WK-Thu", "WK-Fri", "WK-Sat"];
-            foreach ($weekday as $weekdays => $value)
-              echo '<option ' . (date('N') == $weekdays ? 'selected ' : '') . 'value="' . $value . '" >' . $translation[$value][$lang] . "</option>";
-            ?>
-          </select>
-
-          <select class="select-date" name="Trav-dt" id="Trav-dt">
-            <?php
-            $busdate = array_filter(array_unique(array_column(array_column($bus, 'schedule'), 3)));
-            foreach ($busdate as $value)
-              if (strpos($value, ",") == false)
-                echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
-            ?>
-          </select>
-
-          <select class="select-time" name="Trav-hr" id="Trav-hr">
-            <?php
-            $hour = array("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
-            foreach ($hour as $value) {
-              echo "<option " . (date('H') == $value ? 'selected ' : '') . 'value="' . $value . '">' . $value . "</option>";
-            }
-            ?>
-          </select>
-          :
-          <select class="select-time" name="Trav-min" id="Trav-min">
-            <?php
-            $minute = array("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55");
-            foreach ($minute as $value) {
-              echo "<option " . ($value >= date('i') && $value < date('i') + 5 ? ' selected ' : '') . 'value="' . $value . '">' . $value . "</option>";
-            }
-            ?>
-          </select>
-        </div>
-
-        <!--自動時間!-->
-        <div id="time-now" class="show-time" style="display: none;">
+      <!--手動時間!-->
+      <div id="time-schedule" style="display: none;">'
+        <select class="select-date" name="Trav-wk" id="Trav-wk" onchange="date_change();">
           <?php
-          if ($fetcherror)
-            echo $translation["fetch-error"][$lang];
-          else {
-            $operating = array_keys(array_filter($bus, function ($busarr) {
-              return $busarr["stats"]["status"] == "normal" || $busarr["stats"]["status"] == "delay";
-            }));
+          $weekday = ["WK-Sun", "WK-Mon", "WK-Tue", "WK-Wed", "WK-Thu", "WK-Fri", "WK-Sat"];
+          foreach ($weekday as $weekdays => $value)
+            echo '<option ' . (date('N') == $weekdays ? 'selected ' : '') . 'value="' . $value . '" >' . $translation[$value][$lang] . "</option>";
+          ?>
+        </select>
 
-            if ($operating)
-              echo $translation["info-running"][$lang] . implode(", ", $operating);
-            else
-              echo $translation["stop-running"][$lang];
+        <select class="select-date" name="Trav-dt" id="Trav-dt">
+          <?php
+          $busdate = array_filter(array_unique(array_column(array_column($bus, 'schedule'), 3)));
+          foreach ($busdate as $value)
+            if (strpos($value, ",") == false)
+              echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
+          ?>
+        </select>
+
+        <select class="select-time" name="Trav-hr" id="Trav-hr">
+          <?php
+          $hour = array("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
+          foreach ($hour as $value) {
+            echo "<option " . (date('H') == $value ? 'selected ' : '') . 'value="' . $value . '">' . $value . "</option>";
           }
           ?>
-        </div>
+        </select>
+        :
+        <select class="select-time" name="Trav-min" id="Trav-min">
+          <?php
+          $minute = array("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55");
+          foreach ($minute as $value) {
+            echo "<option " . ($value >= date('i') && $value < date('i') + 5 ? ' selected ' : '') . 'value="' . $value . '">' . $value . "</option>";
+          }
+          ?>
+        </select>
       </div>
 
+      <!--自動時間!-->
+      <div id="time-now" class="show-time" style="display: none;">
+        <?php
+        if ($fetcherror)
+          echo $translation["fetch-error"][$lang];
+        else {
+          $operating = array_keys(array_filter($bus, function ($busarr) {
+            return $busarr["stats"]["status"] == "normal" || $busarr["stats"]["status"] == "delay";
+          }));
 
-      <div class="info-box routesel">
-        <h3><?php echo $translation["DescTxt1"][$lang] ?> </h3>
-
-
-        <div class="locationchooser">
-          <label for="Start" id="Start-label"><?php echo $translation["Form-Start"][$lang] ?></label>
-          <div class="locationinput">
-            <div mode="building" class="autocomplete">
-              <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Startbd" name="Startbd" autocomplete="off">
-            </div>
-            <select mode="station" class="select-box" name="Start" id="Start">
-              <?php
-              foreach ($allbusstop as $value)
-                echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
-              ?>
-            </select>
-          </div>
-          <div class="functionbuttons">
-            <img class='image-wrapper' src='Images/map.jpg' id='Start-select-box' onclick='map_show_test(0,this.id);'></img>
-            <img class='image-wrapper' src='Images/GPS.jpg' id='Start-GPS-box' onclick='getLocation(this.id);'></img>
-          </div>
-        </div>
-
-        <div class="locationchooser">
-          <label for="Dest" id="Dest-label"> <?php echo $translation["Form-Dest"][$lang] ?></label>
-          <div class="locationinput">
-            <div mode="building" class="autocomplete">
-              <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Destbd" name="Destbd" autocomplete="off">
-            </div>
-            <select mode="station" class="select-box" name="Dest" id="Dest">
-              <?php
-              foreach ($allbusstop as $value)
-                echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
-              ?>
-            </select>
-          </div>
-          <div class="functionbuttons">
-            <img class='image-wrapper' src='Images/map.jpg' id='Dest-select-box' onclick='map_show_test(0,this.id);'></img>
-            <img class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
-          </div>
-        </div>
-
-        <input id="routesubmitbtn" class="submit-btn" type="submit" name="submit" value=" <?php echo $translation["route-submit"][$lang] ?> " />
+          if ($operating)
+            echo $translation["info-running"][$lang] . implode(", ", $operating);
+          else
+            echo $translation["stop-running"][$lang];
+        }
+        ?>
       </div>
     </div>
-  </form>
 
-  <!--GPS Details Box!-->
-  <div id="details-box">
-    <div class="details-box">
-      <div class="showdetails">
-        <h4 id="details-box-heading">
-          <?php echo $translation["nearst_txt"][$lang] ?>
-        </h4>
+
+    <div class="info-box routesel">
+      <h3><?php echo $translation["DescTxt1"][$lang] ?> </h3>
+
+
+      <div class="locationchooser">
+        <label for="Start" id="Start-label"><?php echo $translation["Form-Start"][$lang] ?></label>
+        <div class="locationinput">
+          <div mode="building" class="autocomplete">
+            <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Startbd" name="Startbd" autocomplete="off">
+          </div>
+          <select mode="station" class="select-box" name="Start" id="Start">
+            <?php
+            foreach ($allbusstop as $value)
+              echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
+            ?>
+          </select>
+        </div>
+        <div class="functionbuttons">
+          <img width='23px' height='23px' class='image-wrapper' src='Images/map.jpg' id='Start-select-box' onclick='map_show_test(0,this.id);'></img>
+          <img width='23px' height='23px' class='image-wrapper' src='Images/GPS.jpg' id='Start-GPS-box' onclick='getLocation(this.id);'></img>
+        </div>
       </div>
-      <div id="GPSresult"></div>
+
+      <div class="locationchooser">
+        <label for="Dest" id="Dest-label"> <?php echo $translation["Form-Dest"][$lang] ?></label>
+        <div class="locationinput">
+          <div mode="building" class="autocomplete">
+            <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Destbd" name="Destbd" autocomplete="off">
+          </div>
+          <select mode="station" class="select-box" name="Dest" id="Dest">
+            <?php
+            foreach ($allbusstop as $value)
+              echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
+            ?>
+          </select>
+        </div>
+        <div class="functionbuttons">
+          <img width='23px' height='23px' class='image-wrapper' src='Images/map.jpg' id='Dest-select-box' onclick='map_show_test(0,this.id);'></img>
+          <img width='23px' height='23px' class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
+        </div>
+      </div>
+
+      <input id="routesubmitbtn" class="submit-btn" type="submit" name="submit" value=" <?php echo $translation["route-submit"][$lang] ?> " />
     </div>
   </div>
-  <!--Output result!-->
-  <div class="routeresult"></div>
+</form>
+
+<!--GPS Details Box!-->
+<div id="details-box">
+  <div class="details-box">
+    <div class="showdetails">
+      <h4 id="details-box-heading">
+        <?php echo $translation["nearst_txt"][$lang] ?>
+      </h4>
+    </div>
+    <div id="GPSresult"></div>
+  </div>
+</div>
+<!--Output result!-->
+<div class="routeresult"></div>
+
+
+<!--Add to Homescreen Prompt!-->
+<div id="HomeScreenPrompt">
+  <div class="desc">
+    <p><b><?php echo $translation["addhomeios-heading"][$lang] ?></b></p>
+    <button onclick=' document.getElementById("HomeScreenPrompt").style.display="none" ; localStorage.setItem("dismisshomescreen", new Date());'><b><?php echo $translation["cancel_btntxt"][$lang] ?></b></button>
+  </div>
+  <div class="dsecimg">
+    <div>
+      <svg viewBox="0 0 120 169">
+        <g fill="currentColor">
+          <path d="M60 0l28 28-2 2a586 586 0 0 0-4 4L64 15v90h-8V15L38 34l-4-4-2-2L60 0z"></path>
+          <path d="M0 49h44v8H8v104h104V57H76v-8h44v120H0V49z"></path>
+        </g>
+      </svg>
+      <p><?php echo $translation["addhomeios-text1"][$lang] ?></p>
+    </div>
+    <div class="dsecimg2">
+      <svg viewBox="55.99425507 31.98999977 157.76574707 157.76371765">
+        <path fill="#62529c" d="M90.49 32.83a54.6 54.6 0 019.55-.84c23.98.03 47.96 0 71.94.01 8.5.07 17.3 1.74 24.4 6.65 10.94 7.28 16.52 20.54 17.35 33.3.06 26.03 0 52.06.03 78.08 0 10.16-3.59 20.56-10.95 27.73-7.93 7.61-18.94 11.43-29.79 11.98-25.71.03-51.42 0-77.12.01-10.37-.11-21.01-3.77-28.17-11.48-8.22-8.9-11.72-21.29-11.73-33.21.01-23.03-.03-46.05.02-69.07-.01-9.14 1.33-18.71 6.65-26.4 6.21-9.4 16.97-14.79 27.82-16.76m38.18 41.09c-.05 10.25.01 20.5 0 30.75-9.58-.03-19.16.02-28.75-.04-2.27.08-4.98-.25-6.68 1.61-2.84 2.34-2.75 7.12.01 9.48 1.8 1.69 4.46 1.57 6.75 1.64 9.56-.04 19.12-.01 28.67-.03.02 10.24-.06 20.48.01 30.72-.14 2.66 1.36 5.4 3.95 6.3 3.66 1.66 8.52-1.13 8.61-5.23.26-10.59.02-21.2.09-31.79 9.88 0 19.76.02 29.64.01 2.74.12 5.85-.67 7.14-3.34 2.23-3.75-.61-9.34-5.08-9.29-10.57-.14-21.14-.01-31.7-.04-.01-10.25.04-20.49 0-30.74.3-3.5-2.66-7.09-6.3-6.79-3.65-.33-6.66 3.26-6.36 6.78z"></path>
+        <path fill="transparent" d="M128.67 73.92c-.3-3.52 2.71-7.11 6.36-6.78 3.64-.3 6.6 3.29 6.3 6.79.04 10.25-.01 20.49 0 30.74 10.56.03 21.13-.1 31.7.04 4.47-.05 7.31 5.54 5.08 9.29-1.29 2.67-4.4 3.46-7.14 3.34-9.88.01-19.76-.01-29.64-.01-.07 10.59.17 21.2-.09 31.79-.09 4.1-4.95 6.89-8.61 5.23-2.59-.9-4.09-3.64-3.95-6.3-.07-10.24.01-20.48-.01-30.72-9.55.02-19.11-.01-28.67.03-2.29-.07-4.95.05-6.75-1.64-2.76-2.36-2.85-7.14-.01-9.48 1.7-1.86 4.41-1.53 6.68-1.61 9.59.06 19.17.01 28.75.04.01-10.25-.05-20.5 0-30.75z"></path>
+      </svg>
+      <p><?php echo $translation["addhomeios-text2"][$lang] ?></p>
+    </div>
+  </div>
+</div>
 
 
 
+</body>
 
+<footer>
   <!--Notes!-->
   <br>
   <h2><a style="color: #685206; text-decoration: none;" href="https://forms.gle/g4xDpa5oEVqzHjFt7"><?php echo $translation["Update-Request"][$lang] ?></a></h2>
@@ -338,32 +371,6 @@
     </span>
   </a>
 
-  <!--Add to Homescreen Prompt!-->
-  <div id="HomeScreenPrompt">
-    <div class="desc">
-      <p><b><?php echo $translation["addhomeios-heading"][$lang] ?></b></p>
-      <button onclick=' document.getElementById("HomeScreenPrompt").style.display="none" ; localStorage.setItem("dismisshomescreen", new Date());'><b><?php echo $translation["cancel_btntxt"][$lang] ?></b></button>
-    </div>
-    <div class="dsecimg">
-      <div>
-        <svg viewBox="0 0 120 169">
-          <g fill="currentColor">
-            <path d="M60 0l28 28-2 2a586 586 0 0 0-4 4L64 15v90h-8V15L38 34l-4-4-2-2L60 0z"></path>
-            <path d="M0 49h44v8H8v104h104V57H76v-8h44v120H0V49z"></path>
-          </g>
-        </svg>
-        <p><?php echo $translation["addhomeios-text1"][$lang] ?></p>
-      </div>
-      <div class="dsecimg2">
-        <svg viewBox="55.99425507 31.98999977 157.76574707 157.76371765">
-          <path fill="#62529c" d="M90.49 32.83a54.6 54.6 0 019.55-.84c23.98.03 47.96 0 71.94.01 8.5.07 17.3 1.74 24.4 6.65 10.94 7.28 16.52 20.54 17.35 33.3.06 26.03 0 52.06.03 78.08 0 10.16-3.59 20.56-10.95 27.73-7.93 7.61-18.94 11.43-29.79 11.98-25.71.03-51.42 0-77.12.01-10.37-.11-21.01-3.77-28.17-11.48-8.22-8.9-11.72-21.29-11.73-33.21.01-23.03-.03-46.05.02-69.07-.01-9.14 1.33-18.71 6.65-26.4 6.21-9.4 16.97-14.79 27.82-16.76m38.18 41.09c-.05 10.25.01 20.5 0 30.75-9.58-.03-19.16.02-28.75-.04-2.27.08-4.98-.25-6.68 1.61-2.84 2.34-2.75 7.12.01 9.48 1.8 1.69 4.46 1.57 6.75 1.64 9.56-.04 19.12-.01 28.67-.03.02 10.24-.06 20.48.01 30.72-.14 2.66 1.36 5.4 3.95 6.3 3.66 1.66 8.52-1.13 8.61-5.23.26-10.59.02-21.2.09-31.79 9.88 0 19.76.02 29.64.01 2.74.12 5.85-.67 7.14-3.34 2.23-3.75-.61-9.34-5.08-9.29-10.57-.14-21.14-.01-31.7-.04-.01-10.25.04-20.49 0-30.74.3-3.5-2.66-7.09-6.3-6.79-3.65-.33-6.66 3.26-6.36 6.78z"></path>
-          <path fill="transparent" d="M128.67 73.92c-.3-3.52 2.71-7.11 6.36-6.78 3.64-.3 6.6 3.29 6.3 6.79.04 10.25-.01 20.49 0 30.74 10.56.03 21.13-.1 31.7.04 4.47-.05 7.31 5.54 5.08 9.29-1.29 2.67-4.4 3.46-7.14 3.34-9.88.01-19.76-.01-29.64-.01-.07 10.59.17 21.2-.09 31.79-.09 4.1-4.95 6.89-8.61 5.23-2.59-.9-4.09-3.64-3.95-6.3-.07-10.24.01-20.48-.01-30.72-9.55.02-19.11-.01-28.67.03-2.29-.07-4.95.05-6.75-1.64-2.76-2.36-2.85-7.14-.01-9.48 1.7-1.86 4.41-1.53 6.68-1.61 9.59.06 19.17.01 28.75.04.01-10.25-.05-20.5 0-30.75z"></path>
-        </svg>
-        <p><?php echo $translation["addhomeios-text2"][$lang] ?></p>
-      </div>
-    </div>
-  </div>
-
 
   <!--Script!-->
   <script>
@@ -374,9 +381,8 @@
       autocomplete(document.getElementById("Destbd"), choices);
     }
   </script>
-  
-  <script type="text/javascript" src="Essential/component.js?v=<?php echo bin2hex(openssl_random_pseudo_bytes(32)) ?>"></script>
 
-  </body>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
+</footer>
 
-</html> 
+</html>

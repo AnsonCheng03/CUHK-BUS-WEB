@@ -530,15 +530,6 @@ foreach ($routegroupresult as $start => $temp) {
 }
 echo '</table>';
 
-echo "
-    <script>
-        document.querySelector('#routeresult').scrollIntoView({
-            behavior: 'smooth'
-        });
-        document.currentScript.remove();
-    </script>
-"
-
 
 
 ?>
