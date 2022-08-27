@@ -23,6 +23,9 @@
     <meta name="MobileOptimized" content="320" />
     <link rel="stylesheet" href="Essential/realtime.css">
     <script src="Essential/realtime.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
+  <script>window.dataLayer = window.dataLayer || [];function gtag() {dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-KCD7N2ZG3H');</script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -96,18 +99,6 @@
             navigator.serviceWorker.register('service-worker.js').then(function(reg) {}).catch(function(err) {})
         }
     </script>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-KCD7N2ZG3H');
-    </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
 </footer>
 
 </html>
