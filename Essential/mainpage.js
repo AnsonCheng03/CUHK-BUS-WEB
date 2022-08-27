@@ -32,11 +32,11 @@ function changevaluebyGPS(item, locname, loccode) {
   item = item.split('-')[0];
   if (document.querySelector('input[name="mode"]:checked').value == 'station') {
     document.getElementById(item).value = loccode;
+    sessionStorage.setItem("routesearch-"+item, loccode);
   } else {
-    item = item + "bd";
-    document.getElementById(item).value = locname + " (" + loccode + ")";
+    document.getElementById(item+ "bd").value = locname + " (" + loccode + ")";
+    sessionStorage.setItem("routesearch-"+item+ "bd", locname + " (" + loccode + ")");
   }
-
   document.getElementById('details-box').style.display = 'none';
 }
 

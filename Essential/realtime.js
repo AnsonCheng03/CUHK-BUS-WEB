@@ -54,6 +54,7 @@ function showPosition(position) {
 
 function changevaluebyGPS(loccode) {
   document.querySelector('.select-box').value = loccode;
+  sessionStorage.setItem("realtime-Dest", loccode);
   document.getElementById('details-box').style.display = 'none';
 }
 

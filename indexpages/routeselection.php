@@ -249,7 +249,7 @@
           <label for="Start" id="Start-label"><?php echo $translation["Form-Start"][$lang] ?></label>
           <div class="locationinput">
             <div mode="building" class="autocomplete">
-              <input style="text-align: center;" class="text-box" type="text" id="Startbd" name="Startbd" autocomplete="off">
+              <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Startbd" name="Startbd" autocomplete="off">
             </div>
             <select mode="station" class="select-box" name="Start" id="Start">
               <?php
@@ -268,7 +268,7 @@
           <label for="Dest" id="Dest-label"> <?php echo $translation["Form-Dest"][$lang] ?></label>
           <div class="locationinput">
             <div mode="building" class="autocomplete">
-              <input style="text-align: center;" class="text-box" type="text" id="Destbd" name="Destbd" autocomplete="off">
+              <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Destbd" name="Destbd" autocomplete="off">
             </div>
             <select mode="station" class="select-box" name="Dest" id="Dest">
               <?php
