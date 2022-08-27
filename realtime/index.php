@@ -28,15 +28,17 @@ foreach (array_slice(csv_to_array("../Data/Translate"), 1) as $row) {
 
 $busschedule = json_decode(file_get_contents('../Data/timetable.json'), true);
 
-$conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");
-if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
-$stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) 
-VALUES (?, 'realtime', ?, ?);");
-$stmt->bind_param("sss", $Time, $_POST['Dest'], $lang);
-$Time = (new DateTime())->format('Y-m-d H:i:s');
-$stmt->execute();
-$stmt->close();
-$conn->close();
+if($_POST['loop'] != 'loop') {
+    $conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");
+    if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+    $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) 
+    VALUES (?, 'realtime', ?, ?);");
+    $stmt->bind_param("sss", $Time, $_POST['Dest'], $lang);
+    $Time = (new DateTime())->format('Y-m-d H:i:s');
+    $stmt->execute();
+    $stmt->close();
+    $conn->close();
+}
 
 //Bus Status
 

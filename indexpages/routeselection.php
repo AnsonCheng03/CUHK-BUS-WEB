@@ -21,8 +21,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="Images/bus.ico" />
   <meta name="MobileOptimized" content="320" />
-  <link rel="stylesheet" href="Essential/mainpage.css">
-  <script src="Essential/mainpage.js"></script>
+  <link rel="stylesheet" href="Essential/mainpage.css?v=<?php echo $version?>">
+  <script src="Essential/mainpage.js?v=<?php echo $version?>"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
     <script>
         window.dataLayer = window.dataLayer || [];

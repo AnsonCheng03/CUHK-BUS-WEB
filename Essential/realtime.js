@@ -113,7 +113,9 @@ function refreshform(form, replacecontent, target = "/") {
 
 function submitform(form, replacecontent, target = "/") {
   sessionStorage.setItem("realtime-submit", "submitted");
+  document.querySelector('input[name="loop"]').value="0";
   refreshform(form, replacecontent, target)
+  document.querySelector('input[name="loop"]').value="loop";
   if (submitted != 0) clearInterval(submitted);
   submitted = setInterval(() => {
     refreshform(form, replacecontent, target)
