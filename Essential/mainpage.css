@@ -570,7 +570,7 @@ area {
 
 .bmc-btn {
   display: block;
-  margin: 0 auto;
+  margin: 30px auto;
   width: 125px;
   color: #000;
   background-color: #FFDD00 !important;
