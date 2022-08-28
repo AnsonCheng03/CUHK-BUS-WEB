@@ -4,6 +4,7 @@ if (!isset($_POST))
     die();
 
 /* Init Program */
+date_default_timezone_set("Asia/Hong_Kong");
 include('../Essential/functions/functions.php');
 
 foreach (csv_to_array(__DIR__ . "/../Data/Route") as $busno) {
