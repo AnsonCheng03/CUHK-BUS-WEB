@@ -2,6 +2,7 @@
 
 <head>
     <title>中大巴士資訊站 CUHK BUS INFOPAGE | Realtime</title>
+    <meta charset="utf-8">
     <meta name="title" content="中大巴士資訊站 CUHK BUS INFOPAGE">
     <meta name="description" content="中大巴士資訊站提供點對點路線搜尋、實時校巴查詢服務，讓你輕鬆在中大校園穿梭。 CUHK Bus Infopage provides point-to-point route search and real-time school bus query services, allowing you to travel around the CUHK campus easily.">
     <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
@@ -21,18 +22,27 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="Images/bus.ico" />
     <meta name="MobileOptimized" content="320" />
-    <link rel="stylesheet" href="Essential/realtime.css?v=<?php echo $version?>">
-    <script src="Essential/realtime.js?v=<?php echo $version?>"></script>
+    <link rel="stylesheet" href="Essential/realtime.css?v=<?php echo $version ?>">
+    <script src="Essential/realtime.js?v=<?php echo $version ?>"></script>
+
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
+    <script type="text/javascript"> var infolinks_pid = 3373201; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
+
         function gtag() {
             dataLayer.push(arguments);
         }
         gtag('js', new Date());
         gtag('config', 'G-KCD7N2ZG3H');
     </script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3579541618707661" crossorigin="anonymous"></script>
+
+    <script>
+        (function(s, u, z, p) {
+            s.src = u, s.setAttribute('data-zone', z), p.appendChild(s);
+        })(document.createElement('script'), 'https://inklinkor.com/tag.min.js', 5342872, document.body || document.documentElement)
+    </script>
 </head>
 
 <body>
@@ -97,7 +107,17 @@
 
     <div class="realtimeresult"></div>
 
-
+    <!-- Website Suggestions-->
+    <?
+    echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
+    foreach (array_slice(csv_to_array("Data/Websites"), 1) as $row) {
+        if ($row[0] !== "" && substr($row[0], 0, 2) !== "//") {
+            if ($row[$lang])
+                echo "<a target='_blank' class='websites'  href='" . $row[2] . "'>" . $row[$lang] . "</a>";
+        }
+    }
+    echo "</div>";
+    ?>
 
 </body>
 

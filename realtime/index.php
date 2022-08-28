@@ -5,9 +5,9 @@ date_default_timezone_set("Asia/Hong_Kong");
 include('../Essential/functions/functions.php');
 $lang = $_POST['lang'];
 
-foreach (csv_to_array("../Data/Route") as $busno) {
-    $bus[$busno[0]]["schedule"] = array($busno[1], $busno[2], $busno[3], $busno[4], $busno[5]);
-    foreach (array_filter(array_slice($busno, 6)) as $key => $value) {
+foreach (csv_to_array("Data/Route") as $busno) {
+    $bus[$busno[0]]["schedule"] = array($busno[1], $busno[2], $busno[3], $busno[4], $busno[5], $busno[6]);
+    foreach (array_filter(array_slice($busno, 7)) as $key => $value) {
         $statnm = strstr($value, '|', true) ?: $value;
         $attr = substr(strstr($value, '|', false), 1) ?: "NULL";
         $time = substr(strstr($attr, '|', false), 1) ?: "0";
@@ -28,7 +28,7 @@ foreach (array_slice(csv_to_array("../Data/Translate"), 1) as $row) {
 
 $busschedule = json_decode(file_get_contents('../Data/timetable.json'), true);
 
-if($_POST['loop'] != 'loop') {
+if ($_POST['loop'] != 'loop') {
     $conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");
     if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
     $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) 
@@ -98,7 +98,7 @@ GROUP BY CONCAT( DATE_FORMAT(`Time`,'%m-%d-%Y %H:'), FLOOR(DATE_FORMAT(`Time`,'%
 
 $stmt->bind_param("ss", $busnum, $Stop);
 
- 
+
 
 
 
@@ -127,21 +127,26 @@ foreach ($outputschedule as $stationname => $schedule) {
                 ";
             }
 
-            $outputcountcount = 0;
+            $outputtimecount = 0;
             $nowtime = (new DateTime())->format('H:i:s');
             $currtime = (new DateTime())->modify("-30 minutes")->format('H:i:s');
             sort($timetable);
             foreach ($timetable as $time) {
                 if ($time >= $currtime) {
-                    echo "<div class='bustype" . ($time <= $nowtime ? ' arrived' : "") . "'>";
+                    if ($time <= $nowtime){
+                        echo "<div class='bustype arrived'>";
+                    }
+                    else{
+                        if ($outputtimecount > 4) break;
+                        $outputtimecount++;
+                        echo "<div class='bustype'>";
+                    }
                     echo "<div class='businfo'>" .
                         (explode("|", $stationname)[1] ? $translation[explode("|", $stationname)[1]][$lang] : $translation["mode-realtime"][$lang]) .
                         "</div>";
                     echo "<div class='arrtime'> ~ " . substr($time, 0, -3) . "</div>";
                     echo "</div>";
-                    $outputcountcount++;
                 }
-                if ($outputcountcount >= 5) break;
             }
             $countoutput++;
             echo "

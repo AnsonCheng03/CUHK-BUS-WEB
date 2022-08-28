@@ -1,8 +1,8 @@
 <?php
 
 foreach (csv_to_array("Data/Route") as $busno) {
-    $bus[$busno[0]]["schedule"] = array($busno[1], $busno[2], $busno[3], $busno[4], $busno[5]);
-    foreach (array_filter(array_slice($busno, 6)) as $key => $value) {
+    $bus[$busno[0]]["schedule"] = array($busno[1], $busno[2], $busno[3], $busno[4], $busno[5], $busno[6]);
+    foreach (array_filter(array_slice($busno, 7)) as $key => $value) {
         $statnm = strstr($value, '|', true) ?: $value;
         $attr = substr(strstr($value, '|', false), 1) ?: "NULL";
         $time = substr(strstr($attr, '|', false), 1) ?: "0";

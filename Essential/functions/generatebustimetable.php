@@ -1,14 +1,11 @@
 <?php
 
-if (isset($_SERVER['REMOTE_ADDR'])) {
-    header('HTTP/1.0 403 Forbidden');
-    die('No Permission');
-}
+date_default_timezone_set("Asia/Hong_Kong");
 
 include(__DIR__ . '/functions.php');
 foreach (csv_to_array(__DIR__ . "/../../Data/Route") as $busno) {
-    $bus[$busno[0]]["schedule"] = array($busno[1], $busno[2], $busno[3], $busno[4], $busno[5]);
-    foreach (array_filter(array_slice($busno, 6)) as $key => $value) {
+    $bus[$busno[0]]["schedule"] = array($busno[1], $busno[2], $busno[3], $busno[4], $busno[5], $busno[6]);
+    foreach (array_filter(array_slice($busno, 7)) as $key => $value) {
         $statnm = strstr($value, '|', true) ?: $value;
         $attr = substr(strstr($value, '|', false), 1) ?: "NULL";
         $time = substr(strstr($attr, '|', false), 1) ?: "0";
@@ -36,6 +33,11 @@ foreach ($bus as $busnum => $busno) {
             }
         }
     }
+    if ($busno["schedule"][5]) {
+        foreach (explode("|", $busno["schedule"][5]) as $addtime) {
+            $timetable[] = strtotime(DateTime::createFromFormat('H:i', $addtime)->format('Y-m-d H:i:s'));
+        }
+    }
     sort($timetable);
     foreach ($timetable as $timeindex => $timevalue) {
         foreach ($busno["stations"]["name"] as $index => $stationname) {
@@ -48,16 +50,39 @@ foreach ($bus as $busnum => $busno) {
 
 $bustime = [];
 
-foreach ($bus as $busno => $busline) {
-    foreach ($busline["stations"]["arrivaltime"] as $index => $stationn) {
-        foreach ($stationn as $indx => $times) {
-            $stopname = $busline["stations"]["name"][$index] . "|" . ($busline["stations"]["attr"][$index] == "NULL" ? "" : $busline["stations"]["attr"][$index]);
-            $bustime[$stopname][$busno][] = date("H:i:s", $times);
+
+
+if (isset($_SERVER['REMOTE_ADDR'])) {
+
+    if (isset($_REQUEST['bystation'])) {
+        foreach ($bus as $busno => $busline) {
+            foreach ($busline["stations"]["arrivaltime"] as $index => $stationn) {
+                foreach ($stationn as $indx => $times) {
+                    $stopname = $busline["stations"]["name"][$index] . "|" . ($busline["stations"]["attr"][$index] == "NULL" ? "" : $busline["stations"]["attr"][$index]);
+                    $bustime[$stopname][$busno][] = date("H:i:s", $times);
+                }
+            }
+        }
+        print_r("<pre>" . json_encode($bustime, JSON_PRETTY_PRINT) . "</pre>");
+    } else {
+        foreach ($bus as $busno => $busline) {
+            foreach ($busline["stations"]["arrivaltime"] as $index => $stationn) {
+                foreach ($stationn as $indx => $times) {
+                    $stopname = $busline["stations"]["name"][$index] . "|" . ($busline["stations"]["attr"][$index] == "NULL" ? "" : $busline["stations"]["attr"][$index]);
+                    $bustime[$busno][$stopname][] = date("H:i:s", $times);
+                }
+            }
+        }
+        print_r("<pre>" . json_encode($bustime, JSON_PRETTY_PRINT) . "</pre>");
+    }
+} else {
+    foreach ($bus as $busno => $busline) {
+        foreach ($busline["stations"]["arrivaltime"] as $index => $stationn) {
+            foreach ($stationn as $indx => $times) {
+                $stopname = $busline["stations"]["name"][$index] . "|" . ($busline["stations"]["attr"][$index] == "NULL" ? "" : $busline["stations"]["attr"][$index]);
+                $bustime[$stopname][$busno][] = date("H:i:s", $times);
+            }
         }
     }
+    file_put_contents(__DIR__ . '/../../Data/timetable.json', json_encode($bustime, JSON_PRETTY_PRINT));
 }
-
-echo "a";
-print_r($bustime);
-
-file_put_contents(__DIR__ . '/../../Data/timetable.json', json_encode($bustime, JSON_PRETTY_PRINT));

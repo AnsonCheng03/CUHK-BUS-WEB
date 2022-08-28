@@ -78,7 +78,6 @@ if (pingAddress(gethostbyname($host))) {
 } else {
     $savestatus["ERROR"] = "ping";
 }
-
 $tempArray = json_decode(file_get_contents(__DIR__ . '/../../Data/Status.json'), true);
 $tempArray[(new DateTime())->format('Y-m-d H:i:s')] = $savestatus;
 file_put_contents(__DIR__ . '/../../Data/Status.json', json_encode(array_slice($tempArray, -11000), JSON_PRETTY_PRINT));
@@ -88,3 +87,4 @@ download_files(__DIR__ ."/../../Data/Translate.csv", 'https://docs.google.com/sp
 download_files(__DIR__ ."/../../Data/Station.csv", "https://docs.google.com/spreadsheets/d/e/2PACX-1vRn-9WBygVxJTJQkmie8LDxC-R2Oedma14PWVT0LW6v85smPOd9AhqhkZ9LfYzire2iaGb0pIGVpdmr/pub?gid=1424772552&single=true&output=csv");
 download_files(__DIR__ ."/../../Data/Notice.csv", "https://docs.google.com/spreadsheets/d/e/2PACX-1vRn-9WBygVxJTJQkmie8LDxC-R2Oedma14PWVT0LW6v85smPOd9AhqhkZ9LfYzire2iaGb0pIGVpdmr/pub?gid=1434460943&single=true&output=csv", true);
 download_files(__DIR__ ."/../../Data/GPS.csv", "https://docs.google.com/spreadsheets/d/e/2PACX-1vRn-9WBygVxJTJQkmie8LDxC-R2Oedma14PWVT0LW6v85smPOd9AhqhkZ9LfYzire2iaGb0pIGVpdmr/pub?gid=1636019387&single=true&output=csv", true);
+download_files(__DIR__ ."/../../Data/Websites.csv", "https://docs.google.com/spreadsheets/d/e/2PACX-1vRn-9WBygVxJTJQkmie8LDxC-R2Oedma14PWVT0LW6v85smPOd9AhqhkZ9LfYzire2iaGb0pIGVpdmr/pub?gid=336913037&single=true&output=csv", true);
