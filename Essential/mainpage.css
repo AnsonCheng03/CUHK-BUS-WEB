@@ -54,6 +54,10 @@ a:active {
   right: 15px;
 }
 
+#refresh-btn {
+  display: none;
+}
+
 .refreshbtn {
   position: absolute;
   top: 15px;
@@ -69,6 +73,7 @@ a:active {
   color: #fff;
   cursor: pointer;
   font-size: 14px;
+  line-height: 20px;
   font-weight: 600;
   padding: 10px 20px;
   text-align: center;
@@ -505,6 +510,51 @@ input:checked+.slider:before {
   flex-flow: row nowrap;
 }
 
+#AndroidHomeScreenPrompt {
+  z-index: 9999;
+  background-color: #ffeaa7;
+  color: #62529c;
+  bottom: 0;
+  left: 0;
+  margin: 0 8px 10px;
+  padding: 20px 0;
+  overflow: hidden;
+  position: fixed;
+  width: calc(100% - 16px);
+  display: none;
+  border-radius: 15px
+}
+
+#AndroidHomeScreenPrompt .desc {
+  margin-top: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#AndroidHomeScreenPrompt .desc p {
+  display: inline-block;
+  margin: 0 20px;
+  text-align: center;
+}
+
+#AndroidHomeScreenPrompt .Addtohomebtn {
+  color: #fff;
+  border: none;
+  padding: 10px 10px;
+  width: 70%;
+  margin: 15px 5% 10px 5%;
+  background: #62529c;
+  cursor: pointer;
+}
+
+#AndroidHomeScreenPrompt .Canceltohomebtn {
+  color: #62529c;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 /* Website Suggestions */
 .websitesugg {
   width: 80%;
@@ -570,4 +620,8 @@ input:checked+.slider:before {
 
 .logo-coffee {
   fill: #ffffff;
+}
+
+footer h2 {
+  margin-bottom: 30px;
 }

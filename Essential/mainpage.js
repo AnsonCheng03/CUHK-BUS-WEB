@@ -138,24 +138,7 @@ function date_change() {
   }
 }
 
-function platformCheck() {
-  const isiOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
-  const isiPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
-  return (isiOS || isiPadOS);
-  //is iOS = true
-};
 
-function StandaloneCheck() {
-  const isStandalone = "standalone" in window.navigator && window.navigator.standalone;
-  return !isStandalone;
-}
-
-function comparetime() {
-  if (localStorage.getItem("dismisshomescreen") == null) return false; else savedtime = localStorage.getItem("dismisshomescreen")
-  var dissmisstime = Date.parse(savedtime), currenttime = new Date();
-  currenttime.setHours(currenttime.getHours() - 24);
-  return (dissmisstime - currenttime) > 0
-}
 
 function autocomplete(inp, arr) {
   var currentFocus;
@@ -249,7 +232,7 @@ function submitform(form, replacecontent, target = "/") {
         newScript.appendChild(document.createTextNode(oldScript.innerHTML));
         oldScript.parentNode.replaceChild(newScript, oldScript);
       });
-      elm.scrollIntoView({behavior: 'smooth'});
+      elm.scrollIntoView({ behavior: 'smooth' });
     }
   }
   xhr.send(formData);
@@ -258,9 +241,13 @@ function submitform(form, replacecontent, target = "/") {
 }
 
 
+
 window.addEventListener('load', () => {
 
   sessionStorage.setItem('loadstate', 'load');
+
+
+  //Save input
 
   document.querySelectorAll('input[type="text"], select').forEach(elm => {
     const v = "routesearch-" + elm.name;

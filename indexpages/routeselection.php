@@ -21,16 +21,14 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="Images/bus.ico" />
   <meta name="MobileOptimized" content="320" />
+  <meta name="google" content="notranslate">
+  <meta name="google" value="notranslate">
   <link rel="stylesheet" href="Essential/mainpage.css?v=<?php echo $version ?>">
   <script src="Essential/mainpage.js?v=<?php echo $version ?>"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
 
   <script type="text/javascript" src="https://s.skimresources.com/js/221050X1702490.skimlinks.js"></script>
-  <script type="text/javascript">
-    var infolinks_pid = 3373201;
-    var infolinks_wsid = 0;
-  </script>
-  <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+
   <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -70,7 +68,7 @@ include('Essential/functions/initdatas.php'); //Download datas from server
 </div>
 
 <div class="refreshbtn nav">
-  <button id="refresh-btn" style="display: none;" onclick="window.location.reload();" /><?php echo $translation["refresh-btn"][$lang] ?></button>
+  <button id="refresh-btn" onclick="window.location.reload();" /><?php echo $translation["refresh-btn"][$lang] ?></button>
 </div>
 
 
@@ -345,6 +343,18 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
   </div>
 </div>
 
+<div id="AndroidHomeScreenPrompt">
+  <div class="desc">
+    <img src="Images/bus.ico" width="50px">
+    <p><b>CU BUS WEB</b></p>
+  </div>
+  <div class="btns">
+    <button class="Addtohomebtn"><?php echo $translation["addhomeapp-heading"][$lang] ?></button>
+    <button class="Canceltohomebtn" onclick='document.getElementById("AndroidHomeScreenPrompt").style.display="none" ; localStorage.setItem("dismisshomescreen", new Date());'><b><?php echo $translation["cancel_btntxt"][$lang] ?></b></button>
+  </div>
+
+</div>
+
 
 
 </body>
@@ -363,12 +373,6 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
   echo "</div>";
   ?>
 
-
-  <!--Notes!-->
-  <hr>
-  <h2><a style="color: #685206; text-decoration: none;" href="https://github.com/AnsonCheng03"><?php echo $translation["author-notes"][$lang] ?>@AnsonCheng03</a></h2>
-  <h2 style="color: #685206; text-decoration: none;"><?php echo $translation["credit-notes"][$lang] ?></h2>
-  <hr>
 
   <!--Ads!-->
   <a class="bmc-btn" target="_blank" href="https://payme.hsbc/anson03">
@@ -393,6 +397,8 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
     </span>
   </a>
 
+  <h2><a style="color: #685206; text-decoration: none;" href="https://github.com/AnsonCheng03"><?php echo $translation["author-notes"][$lang] ?>@AnsonCheng03</a></h2>
+
 
   <!--Script!-->
   <script>
@@ -401,6 +407,44 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
     if (document.getElementById("Startbd") && document.getElementById("Destbd")) {
       autocomplete(document.getElementById("Startbd"), choices);
       autocomplete(document.getElementById("Destbd"), choices);
+    }
+
+    // Home Screen Prompt
+    function platformCheck() {
+      const isiOS = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+      const isiPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+      return (isiOS || isiPadOS);
+    };
+
+    function comparetime() {
+      if (localStorage.getItem("dismisshomescreen") == null) return false;
+      const savedtime = localStorage.getItem("dismisshomescreen")
+      var dissmisstime = Date.parse(savedtime),
+        currenttime = new Date();
+      currenttime.setHours(currenttime.getHours() - 24);
+      return (dissmisstime - currenttime) > 0
+    }
+
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      document.getElementById("refresh-btn").style.display = "inline-block";
+    } else {
+      if (!comparetime())
+        if (platformCheck()) {
+          document.getElementById("HomeScreenPrompt").style.display = "block";
+        } else {
+          window.addEventListener("beforeinstallprompt", ev => {
+            ev.preventDefault();
+            document.querySelector('#AndroidHomeScreenPrompt').style.display = "unset";
+            document.querySelector('#AndroidHomeScreenPrompt .Addtohomebtn').addEventListener('click', () => {
+              ev.prompt();
+              document.querySelector('#AndroidHomeScreenPrompt').remove();
+            });
+          });
+        }
+    }
+
+    if (document.getElementById("routeresult") && document.getElementById("routesubmitbtn")) {
+      document.getElementById("routesubmitbtn").scrollIntoView();
     }
   </script>
 
@@ -413,18 +457,6 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
       if (document.getElementById("time-now")) document.getElementById("time-now").style.display = "block";
     } else {
       if (document.getElementById("time-now")) document.getElementById("time-schedule").style.display = "block";
-    }
-
-    if (StandaloneCheck()) {
-      if (platformCheck() && !comparetime()) {
-        document.getElementById("HomeScreenPrompt").style.display = "block";
-      }
-    } else {
-      document.getElementById("refresh-btn").style.display = "";
-    }
-
-    if (document.getElementById("routeresult") && document.getElementById("routesubmitbtn")) {
-      document.getElementById("routesubmitbtn").scrollIntoView();
     }
 
     date_change();

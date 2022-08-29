@@ -21,16 +21,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="Images/bus.ico" />
     <meta name="MobileOptimized" content="320" />
+    <meta name="google" content="notranslate">
+    <meta name="google" value="notranslate">
     <link rel="stylesheet" href="Essential/realtime.css?v=<?php echo $version ?>">
     <script src="Essential/realtime.js?v=<?php echo $version ?>"></script>
 
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
-    <script type="text/javascript">
-        var infolinks_pid = 3373201;
-        var infolinks_wsid = 0;
-    </script>
-    <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+
     <script>
         window.dataLayer = window.dataLayer || [];
 
