@@ -17,7 +17,6 @@
   <meta name="application-name" content="CU BUS">
   <meta name="msapplication-TileColor" content="#62529c">
   <meta name="msapplication-TileImage" content="Images/bus.jpg">
-  <meta name="msapplication-config" content="/assets/favicons/browserconfig.xml">
   <meta name="msapplication-navbutton-color" content="#62529c">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="Images/bus.ico" />
@@ -43,9 +42,13 @@
   </script>
 
   <script>
-    (function(s, u, z, p) {
-      s.src = u, s.setAttribute('data-zone', z), p.appendChild(s);
-    })(document.createElement('script'), 'https://inklinkor.com/tag.min.js', 5342872, document.body || document.documentElement)
+    if (!sessionStorage.getItem('routesearch-submit') || sessionStorage.getItem('routesearch-submit') !== "submitted") {
+      const d = document.createElement('script')
+      d.src = 'https://oaphoace.net/401/5344479';
+      try {
+        (document.body || document.documentElement).appendChild(d);
+      } catch (e) {}
+    }
   </script>
 </head>
 
