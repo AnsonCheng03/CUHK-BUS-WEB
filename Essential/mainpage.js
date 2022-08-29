@@ -102,14 +102,6 @@ function append_query(query, value) {
   }
 }
 
-function map_show_test(mode, text) {
-  window.alert("不日推出 Coming Soon");
-}
-
-function map_area(elemid) {
-  document.getElementById('map-search-txt').innerText = elemid.toString();
-}
-
 function map_show(mode, text) {
   switch (mode) {
     case 0:
@@ -163,23 +155,6 @@ function comparetime() {
   var dissmisstime = Date.parse(savedtime), currenttime = new Date();
   currenttime.setHours(currenttime.getHours() - 24);
   return (dissmisstime - currenttime) > 0
-}
-
-function zoom(e, mode) {
-  if (mode == "move") {
-    document.getElementById('busmapimg').style.opacity = 0;
-    var zoomer = e.currentTarget;
-    e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
-    e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
-    x = offsetX / zoomer.offsetWidth * 100
-    if (x < 0) x = 100 + x;
-    y = offsetY / zoomer.offsetHeight * 100
-    if (y < 0) y = 100 + y;
-    zoomer.style.backgroundPosition = x + '% ' + y + '%';
-  }
-  if (mode == "leave") {
-    document.getElementById('busmapimg').style.opacity = 1;
-  }
 }
 
 function autocomplete(inp, arr) {

@@ -352,7 +352,7 @@ input:checked+.slider:before {
 
 .image-wrapper {
   padding: 5px;
-  margin-left: 2px;
+  margin-left: 15px;
   border: 1px solid black;
   border-radius: 30%;
   cursor: pointer;
@@ -441,26 +441,6 @@ input:checked+.slider:before {
 }
 
 /* Others */
-
-.map-search {
-  overflow-x: scroll;
-  position: fixed;
-  top: 5%;
-  left: 5%;
-  border-radius: 20px;
-  display: none;
-  align-items: center;
-  box-shadow: 0 5px 10px rgba(154, 160, 185, .05), 0 15px 40px rgba(166, 173, 201, .2);
-  background-color: #fff;
-  width: 90%;
-  height: 90%;
-  margin: auto;
-}
-
-
-
-
-
 .map-submit-btn {
   font-size: max(16px, 1.9vmin);
   background-color: #62529c;
@@ -470,23 +450,6 @@ input:checked+.slider:before {
   text-decoration: none;
   cursor: pointer;
   width: max(120px, 3vw);
-}
-
-.map-search-img {
-  transition: opacity .5s;
-  display: block;
-  width: 100%;
-  max-height: 70vh;
-}
-
-figure.zoom {
-  position: relative;
-  overflow: hidden;
-}
-
-area {
-  display: block;
-  cursor: pointer;
 }
 
 /* Home Screen Prompt*/

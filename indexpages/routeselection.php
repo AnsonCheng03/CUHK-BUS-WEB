@@ -276,7 +276,6 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
           </select>
         </div>
         <div class="functionbuttons">
-          <img width='23px' height='23px' class='image-wrapper' src='Images/map.jpg' id='Start-select-box' onclick='map_show_test(0,this.id);'></img>
           <img width='23px' height='23px' class='image-wrapper' src='Images/GPS.jpg' id='Start-GPS-box' onclick='getLocation(this.id);'></img>
         </div>
       </div>
@@ -295,7 +294,6 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
           </select>
         </div>
         <div class="functionbuttons">
-          <img width='23px' height='23px' class='image-wrapper' src='Images/map.jpg' id='Dest-select-box' onclick='map_show_test(0,this.id);'></img>
           <img width='23px' height='23px' class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
         </div>
       </div>
@@ -316,6 +314,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
     <div id="GPSresult"></div>
   </div>
 </div>
+
 <!--Output result!-->
 <div class="routeresult"></div>
 
