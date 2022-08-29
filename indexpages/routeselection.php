@@ -26,9 +26,6 @@
   <link rel="stylesheet" href="Essential/mainpage.css?v=<?php echo $version ?>">
   <script src="Essential/mainpage.js?v=<?php echo $version ?>"></script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
-
-  <script type="text/javascript" src="https://s.skimresources.com/js/221050X1702490.skimlinks.js"></script>
-
   <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -356,7 +353,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
 </div>
 
 
-
+<script type="text/javascript" src="https://s.skimresources.com/js/221050X1702490.skimlinks.js"></script>
 </body>
 
 <footer>

@@ -92,6 +92,10 @@ body {
   width: max(120px, 3vw);
 }
 
+#GPSresult a {
+  text-decoration: none;
+}
+
 /* Title & Alert */
 .alert-box {
   margin: 40px auto;

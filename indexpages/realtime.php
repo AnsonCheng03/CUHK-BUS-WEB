@@ -124,6 +124,8 @@
     echo "</div>";
     ?>
 
+    <script type="text/javascript" src="https://s.skimresources.com/js/221050X1702490.skimlinks.js"></script>
+
 </body>
 
 <footer>

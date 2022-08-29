@@ -55,6 +55,7 @@ function showPosition(position) {
 function changevaluebyGPS(loccode) {
   document.querySelector('.select-box').value = loccode;
   sessionStorage.setItem("realtime-Dest", loccode);
+  submitform(document.querySelector('form'), '.realtimeresult', 'realtime/index.php');
   document.getElementById('details-box').style.display = 'none';
 }
 
@@ -132,7 +133,8 @@ function realtimesubmit(objbtn) {
       if (!window.navigator.onLine) window.location.reload();
       const xhr = new XMLHttpRequest();
       const formData = new FormData();
-      formData.append('position', position.toString());
+      formData.append('positionlat', position.coords.latitude);
+      formData.append('positionlng', position.coords.longitude);
       formData.append('linename', objbtn.getAttribute('data'));
       formData.append('CSRF', objbtn.getAttribute('tk'));
       formData.append('stop', objbtn.getAttribute('stop'));

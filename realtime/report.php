@@ -12,12 +12,34 @@ foreach (array_slice(csv_to_array("../Data/Translate"), 1) as $row) {
     }
 }
 
+foreach (array_slice(csv_to_array("../Data/GPS"), 1) as $row) {
+    $GPS[$row[0]]["Lat"] = $row[1];
+    $GPS[$row[0]]["Lng"] = $row[2];
+}
 
-if(!isset($_POST['CSRF']) || $_POST['CSRF'] != $_SESSION['_token'] ) die('驗證錯誤！ 請再試一次～ \nToken Error! Please try again~');
+function vincentyGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
+{
+    $latFrom = deg2rad($latitudeFrom);
+    $lonFrom = deg2rad($longitudeFrom);
+    $latTo = deg2rad($latitudeTo);
+    $lonTo = deg2rad($longitudeTo);
+    $lonDelta = $lonTo - $lonFrom;
+    $a = pow(cos($latTo) * sin($lonDelta), 2) +
+        pow(cos($latFrom) * sin($latTo) - sin($latFrom) * cos($latTo) * cos($lonDelta), 2);
+    $b = sin($latFrom) * sin($latTo) + cos($latFrom) * cos($latTo) * cos($lonDelta);
+    $angle = atan2(sqrt($a), $b);
+    return $angle * $earthRadius;
+}
+
+if(vincentyGreatCircleDistance($GPS[$_POST['stop']]["Lat"],$GPS[$_POST['stop']]["Lng"] ,$_POST['positionlat'] ,$_POST['positionlng'] ) > 300)
+    die($translation['distancetoolong_warning'][$lang]);
+
+if (!isset($_POST['CSRF']) || $_POST['CSRF'] != $_SESSION['_token']) 
+    die($translation['token_error'][$lang]);
 
 
-if(isset($_SESSION['Lastpost'])) 
-    if($_SESSION['Lastpost'] >= (new DateTime())->modify("-1 minutes")->format('YmdHis'))
+if (isset($_SESSION['Lastpost']))
+    if ($_SESSION['Lastpost'] >= (new DateTime())->modify("-1 minutes")->format('YmdHis'))
         die($translation['repeat_submit'][$lang]);
 
 // Create connection
