@@ -39,11 +39,12 @@ beta_version_notice,Y,目前此功能仍處於測試階段 數據可能不準確
 GPS-error,Y,沒有權限獲取GPS / 地址錯誤,No permission / Address Error
 GPS-notsupp,Y,此瀏覽器不支持GPS,GPS is not supported by this browser
 addhomeios-heading,,添加到主屏幕 (Safari 適用),Add to Home Screen (For Safari)
+addhomeapp-heading,,下載為應用程式,Download as application
+addhomeapp-text,,下載,Download
 addhomeios-text1,,1) 點擊下方菜單欄上的「共享」按鈕。,1) Press the 'Share' button on the menu bar below.
 addhomeios-text2,,2) 點擊「添加到主屏幕」。,2) Press 'Add to Home Screen'.
 delay-alert,,服務受阻：,Delay: 
 suspended-alert,,服務暫停：,Suspension: 
-credit-notes,,"合作夥伴：<a style=""color: #685206"" href=""https://instagram.com/rational_cartographic?utm_medium=copy_link"">@rational_cartographic</a><br>特別鳴謝：<a style=""color: #685206"" href=""https://instagram.com/cuhk_infopage?utm_medium=copy_link"">@cuhk_infopage </a> | <a style=""color: #685206"" href=""https://instagram.com/cuhkminecraft?utm_medium=copy_link"">@Project CUHK@Minecraft </a> | <a style=""color: #685206"" href=""https://instagram.com/go_to_cuhk_by_bus?utm_medium=copy_link""> @go_to_cuhk_by_bus</a> | <a style=""color: #685206"" href=""https://instagram.com/cuhkinfo?utm_medium=copy_link""> @cuhkinfo </a>","Partner: <a style=""color: #685206"" href=""https://instagram.com/rational_cartographic?utm_medium=copy_link"" >@rational_cartographic</a><br>Special thanks to: <a style=""color: #685206"" href=""https://instagram.com/cuhk_infopage?utm_medium=copy_link"">@cuhk_infopage </a> | <a style=""color: #685206"" href=""https://instagram.com/cuhkminecraft?utm_medium=copy_link"">@Project CUHK@Minecraft </a> | <a style=""color: #685206"" href=""https://instagram.com/go_to_cuhk_by_bus?utm_medium=copy_link""> @go_to_cuhk_by_bus </a> | <a style=""color: #685206"" href=""https://instagram.com/cuhkinfo?utm_medium=copy_link""> @cuhkinfo </a>"
 author-notes,,開發者： ,Author: 
 mode-realtime,,到站時間,Schedule
 time-missed,,你或已錯過本班車,You may have missed the bus
@@ -65,7 +66,9 @@ back_btn,,上一頁,BACK
 schoolbus_arrival,,位用戶報告校巴到站,users in total reported seeing a school bus arrive.
 submit_success,,已成功提交,Submitted
 repeat_submit,,你在一分鐘內已提交過，請稍後再試。,You sent your submission within one minutes; try again later.
-website_suggest,,網站推薦,Website Recommendation
+website_suggest,,其他網頁,Other Webpage
+token_error,,驗證錯誤！ 請再試一次～,Token Error! Please try again~
+distancetoolong_warning,,車站至少距離你300m,At least 300 meters separate you from the station.
 ,,,
 //Attribute,,,
 HD,,假日,Holiday
