@@ -94,7 +94,7 @@ function refreshform(form, replacecontent, target = "/") {
   const xhr = new XMLHttpRequest();
   const formData = new FormData(form);
   xhr.withCredentials = true;
-  xhr.open("POST", target);
+  xhr.open("POST", target); 
   xhr.onreadystatechange = function () {
     if (document.querySelector(replacecontent) && this.response !== "" && this.readyState == 4) {
       elm.innerHTML = this.response;
@@ -112,10 +112,11 @@ function refreshform(form, replacecontent, target = "/") {
 }
 
 function submitform(form, replacecontent, target = "/") {
+  if (!window.navigator.onLine) window.location.reload();
   sessionStorage.setItem("realtime-submit", "submitted");
-  document.querySelector('input[name="loop"]').value="0";
+  document.querySelector('input[name="loop"]').value = "0";
   refreshform(form, replacecontent, target)
-  document.querySelector('input[name="loop"]').value="loop";
+  document.querySelector('input[name="loop"]').value = "loop";
   if (submitted != 0) clearInterval(submitted);
   submitted = setInterval(() => {
     refreshform(form, replacecontent, target)
@@ -127,9 +128,11 @@ function realtimesubmit(objbtn) {
     return;
 
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      if (!window.navigator.onLine) window.location.reload();
       const xhr = new XMLHttpRequest();
       const formData = new FormData();
+      formData.append('position', position.toString());
       formData.append('linename', objbtn.getAttribute('data'));
       formData.append('CSRF', objbtn.getAttribute('tk'));
       formData.append('stop', objbtn.getAttribute('stop'));
@@ -202,7 +205,7 @@ function refreshinput() {
 
 
 window.addEventListener('load', () => {
-  if(localStorage.getItem('startingpt')) {
+  if (localStorage.getItem('startingpt')) {
     const startingpt = localStorage.getItem('startingpt').split(" (")[0]
     document.querySelectorAll('.select-box option').forEach(ele => {
       if (startingpt == ele.textContent)

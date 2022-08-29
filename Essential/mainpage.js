@@ -216,6 +216,7 @@ function autocomplete(inp, arr) {
 }
 
 function submitform(form, replacecontent, target = "/") {
+  if(!window.navigator.onLine) window.location.reload();
   const elm = document.querySelector(replacecontent);
   elm.innerHTML = "";
   const xhr = new XMLHttpRequest();

@@ -68,7 +68,6 @@
             height: 500vh;
         }
     </style>
-    <script src="Essential/offline.js"></script>
 </head>
 
 <body>
@@ -6059,9 +6058,15 @@
             scale: 0.25,
         });
 
+        setTimeout(() => {
+            window.location.reload();
+        }, 300000);
+
         window.addEventListener('online', (event) => {
             window.location.href = "/";
         });
+
+
     </script>
 </body>
 
