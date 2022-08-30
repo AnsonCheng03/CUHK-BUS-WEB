@@ -11,27 +11,22 @@
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://cu-bus.online/</loc>
+  <loc>https://cu-bus.online/?&amp;lang=tc&amp;mode=route</loc>
   <lastmod>2022-08-28T09:25:14+00:00</lastmod>
   <priority>0.90</priority>
 </url>
 <url>
-  <loc>https://cu-bus.online?&amp;lang=tc&amp;mode=route/</loc>
+  <loc>https://cu-bus.online/?&amp;lang=tc&amp;mode=realtime</loc>
   <lastmod>2022-08-28T09:25:14+00:00</lastmod>
   <priority>0.90</priority>
 </url>
 <url>
-  <loc>https://cu-bus.online?&amp;lang=tc&amp;mode= realtime/</loc>
+  <loc>https://cu-bus.online/?&amp;lang=en&amp;mode=route</loc>
   <lastmod>2022-08-28T09:25:14+00:00</lastmod>
   <priority>0.90</priority>
 </url>
 <url>
-  <loc>https://cu-bus.online?&amp;lang=en&amp;mode=route/</loc>
-  <lastmod>2022-08-28T09:25:14+00:00</lastmod>
-  <priority>0.90</priority>
-</url>
-<url>
-  <loc>https://cu-bus.online?&amp;lang=en&amp;mode=realtime/</loc>
+  <loc>https://cu-bus.online/?&amp;lang=en&amp;mode=realtime</loc>
   <lastmod>2022-08-28T09:24:05+00:00</lastmod>
   <priority>0.80</priority>
 </url>
@@ -59,6 +54,96 @@
   <loc>https://cu-bus.online/pages/SpecialThanks/</loc>
   <lastmod>2022-08-29T10:56:59+00:00</lastmod>
   <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/1A/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/1B/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/2/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/2|ext|/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/3/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/4/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/8/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/8|ext|/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/N/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/N|ext|/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/H/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/H|ext|/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/5/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/5|ext|/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/6A/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/6B/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://cu-bus.online/pages/blogs/routes/7/</loc>
+  <lastmod>2022-08-30T13:02:39+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 
 

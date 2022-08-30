@@ -1,10 +1,16 @@
+<?php
+    include_once('Essential/functions/functions.php');
+    $lang = urlquery("lang") == "en" ? 1 : 0;
+    include('Essential/functions/initdatas.php');
+    ?>
+
 <html>
 
 <head>
-    <title>中大巴士資訊站 CUHK BUS INFOPAGE | Realtime</title>
+    <title><?php echo $translation['title_realtime'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE</title>
     <meta charset="utf-8">
-    <meta name="title" content="中大巴士資訊站 CUHK BUS INFOPAGE">
-    <meta name="description" content="中大巴士資訊站提供點對點路線搜尋、實時校巴查詢服務，讓你輕鬆在中大校園穿梭。 CUHK Bus Infopage provides point-to-point route search and real-time school bus query services, allowing you to travel around the CUHK campus easily.">
+    <meta name="title" content="<?php echo $translation['title_realtime'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE">
+    <meta name="description" content="<?php echo $translation['meta_desc_realtime'][$lang];?> ">
     <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
     <meta name="robots" content="index, follow">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -51,12 +57,6 @@
 </head>
 
 <body>
-
-    <?php
-    include_once('Essential/functions/functions.php');
-    $lang = urlquery("lang") == "en" ? 1 : 0;
-    include('Essential/functions/initdatas.php');
-    ?>
 
     <div class="navbar">
         <div class="back nav">

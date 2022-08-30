@@ -1,10 +1,20 @@
+<?php
+
+//Init Program
+include_once('Essential/functions/functions.php');
+date_default_timezone_set("Asia/Hong_Kong");
+$fetcherror = false;
+$lang = urlquery("lang") == "en" ? 1 : 0;
+include('Essential/functions/initdatas.php'); //Download datas from server
+?>
+
 <html>
 
 <head>
-  <title>中大巴士資訊站 CUHK BUS INFOPAGE</title>
+  <title><?php echo $translation['title_routesearch'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE</title>
   <meta charset="utf-8">
-  <meta name="title" content="中大巴士資訊站 CUHK BUS INFOPAGE">
-  <meta name="description" content="中大巴士資訊站提供點對點路線搜尋、實時校巴查詢服務，讓你輕鬆在中大校園穿梭。 CUHK Bus Infopage provides point-to-point route search and real-time school bus query services, allowing you to travel around the CUHK campus easily.">
+  <meta name="title" content="<?php echo $translation['title_routesearch'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE">
+  <meta name="description" content="<?php echo $translation['meta_desc_routesearch'][$lang];?> ">
   <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
   <meta name="robots" content="index, follow">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -47,16 +57,7 @@
   </script>
 </head>
 
-<!--Functions, Init, Data-->
-<?php
 
-//Init Program
-include_once('Essential/functions/functions.php');
-date_default_timezone_set("Asia/Hong_Kong");
-$fetcherror = false;
-$lang = urlquery("lang") == "en" ? 1 : 0;
-include('Essential/functions/initdatas.php'); //Download datas from server
-?>
 
 <!--Select Language && Function Buttons-->
 <div class="lang-selector nav">
@@ -358,18 +359,42 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
 
 <footer>
 
-  <!-- Website Suggestions-->
-  <?
-  echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
-  foreach (array_slice(csv_to_array("Data/Websites"), 1) as $row) {
-    if ($row[0] !== "" && substr($row[0], 0, 2) !== "//") {
-      if ($row[$lang])
-        echo "<a target='_blank' class='websites'  href='" . $row[2] . "'>" . $row[$lang] . "</a>";
+  <div class="abouts">
+    <!-- Website Suggestions-->
+    <?
+    echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
+    foreach (array_slice(csv_to_array("Data/Websites"), 1) as $row) {
+      if ($row[0] !== "" && substr($row[0], 0, 2) !== "//") {
+        if ($row[$lang])
+          echo "<h2><a target='_blank' class='websites'  href='" . $row[2] . "'>" . $row[$lang] . "</a></h2>";
+      }
     }
-  }
-  echo "</div>";
-  ?>
+    echo "</div>";
+    ?>
 
+    <!-- About !-->
+
+    <?
+    if ($lang == 0) {
+      echo "<div class='websitesugg aboutdiv'><div class='headingt'>" . $translation['about_page'][$lang] . "</div>
+      <p><a target='_blank' class='abouttxt' >
+        中大校巴資訊站是由中大本校學生建立。由於中文大學校方並無提供過多校巴資訊，學生難以得知校巴何時到站。
+        同時，校巴路線繁多，新入學同學難以迅速找到自己需要乘搭什麼校巴。
+        為此，本人建立了中大校巴資訊站，本站提供點對點路線搜尋、實時校巴查詢服務，亦讓學生實時報告校巴位置，讓中大學生輕鬆在校園穿梭。
+        <br><br>本站具有以下功能：<br>
+        - 可選擇中大建築物作起點/終點<br>
+        - 尋找校巴路線時可同時搜尋上下行車站<br>
+        - 提供校巴轉車方案<br>
+        - 自動篩選服務時間外之校巴<br>
+        - 可預先查看某日之路線<br>
+        - 不用下載即可使用<br>
+        - 離線時亦可查看地圖<br>
+        - 可加入主畫面使用<br>
+      </a></p>";
+      echo "</div>";
+    }
+    ?>
+  </div>
 
   <!--Ads!-->
   <a class="bmc-btn" target="_blank" href="https://payme.hsbc/anson03">

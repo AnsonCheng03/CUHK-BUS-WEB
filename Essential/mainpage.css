@@ -556,8 +556,17 @@ input:checked+.slider:before {
 }
 
 /* Website Suggestions */
+.abouts {
+  display: flex;
+  padding: 0 5%;
+  justify-content: center;
+  align-items: center;
+}
+
+
 .websitesugg {
-  width: 80%;
+  width: 45%;
+  height: min-content;
   margin: 50px auto;
   padding: 1px;
   border-radius: 10px;
@@ -577,6 +586,32 @@ input:checked+.slider:before {
   display: block;
   border-top: 1px solid #ddd;
   padding: 10px;
+}
+
+.abouttxt {
+  display: block;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  line-height: 30px;
+  max-height: 250px;
+  overflow: scroll;
+}
+
+.websitesugg h2 {
+  margin: 0;
+  text-align: left;
+  font-size: 1em;
+}
+
+@media (min-width: 768px) and (max-width: 1024px),
+(max-width:850px) {
+  .websitesugg {
+    width: 80%;
+  }
+
+  .aboutdiv {
+    display: none;
+  }
 }
 
 /* Ads */
