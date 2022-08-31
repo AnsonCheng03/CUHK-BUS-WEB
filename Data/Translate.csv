@@ -1,6 +1,6 @@
 Code,Append to js?,中文,ENG
 //WEBSITE,,,
-WEB-Title,,中大巴士資訊站,CU BUS INFOPAGE
+WEB-Title,,中大校巴資訊站,CU BUS INFOPAGE
 DescTxt1,,請選擇路綫,Select Route
 DescTxt2,,---請選擇---,Select Here
 Btn-Map,,地圖查詢,Map Search
@@ -69,6 +69,9 @@ repeat_submit,,你在一分鐘內已提交過，請稍後再試。,You sent your
 website_suggest,,其他網頁,Other Webpage
 token_error,,驗證錯誤！ 請再試一次～,Token Error! Please try again~
 distancetoolong_warning,,車站至少距離你300m,At least 300 meters separate you from the station.
+about_page,,關於本站,N/A (SEO-abp)
+about_text,,中大校巴資訊站是由中大本校學生建立。由於中文大學校方並無提供過多校巴資訊，學生難以得知校巴何時到站。同時，校巴路線繁多，新入學同學難以迅速找到自己需要乘搭什麼校巴。為此，本人建立了中大校巴資訊站，本站提供點對點路線搜尋、實時校巴查詢服務，亦讓學生實時報告校巴位置，讓中大學生輕鬆在校園穿梭。,N/A (SEO-abt)
+
 ,,,
 //Attribute,,,
 HD,,假日,Holiday

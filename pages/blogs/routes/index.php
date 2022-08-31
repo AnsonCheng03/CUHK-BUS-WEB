@@ -26,7 +26,11 @@ foreach (array_slice(csv_to_array(__DIR__ . "/../../../Data/Translate"), 1) as $
 
 $lang = 0;
 $busno = str_replace("|ext|", "#", explode("/", $_GET['route'])[0]);
-if (!isset($bus[$busno])) $busno = array_keys($bus)[0];
+if (!isset($bus[$busno])) 
+{
+    http_response_code(404);
+    die('<script>window.location.replace("../");</script>');
+}
 
 
 switch ($busno) {
@@ -97,7 +101,7 @@ switch ($busno) {
 ?>
 
 
-<html amp lang="en">
+<html amp lang="zh">
 
 <head>
 
@@ -212,9 +216,10 @@ switch ($busno) {
                 }]
             }
         </script>
-        <meta name="title" content="中大校巴資訊站 CU BUS INFOPAGE">
-        <meta name="description" content="進行校巴點對點路線、建築物對建築物搜尋。 Carry out building-to-building searches and point-to-point school bus routing.">
-        <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
+        <meta http-equiv="Content-Language" content="zh">
+        <meta name="title" content="校巴資訊 - <?php echo $busno ?> | 中大校巴資訊站 CU BUS INFOPAGE">
+        <meta name="description" content="你可在本頁搜尋到 <?php echo $busno ?> 校巴之資訊，包括開出時間、是否允許行李、路線等。">
+        <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop, <?php echo $busno ?>">
         <meta name="robots" content="index, follow">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="author" content="Anson Cheng">
@@ -456,7 +461,7 @@ switch ($busno) {
     <div class="navbtns">
         <a href="/">校巴路線查詢</a>
         <a href="/?mode=realtime">校巴實時報站</a>
-        <a href="../">查看其他路線</a>
+        <a href="../../">查看其他路線</a>
     </div>
 
     <h1>校巴 - <?php echo $busno ?></h1>

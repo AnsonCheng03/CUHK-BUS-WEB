@@ -10,6 +10,7 @@
     <title><?php echo $translation['title_realtime'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE</title>
     <meta charset="utf-8">
     <meta name="title" content="<?php echo $translation['title_realtime'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE">
+    <meta http-equiv="Content-Language" content="<?php echo $lang == 1 ? "en" : "zh"?>">
     <meta name="description" content="<?php echo $translation['meta_desc_realtime'][$lang];?> ">
     <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
     <meta name="robots" content="index, follow">
@@ -68,6 +69,8 @@
         </div>
     </div>
 
+    <h1><?php echo $translation['title_realtime'][$lang];?></h1>
+
     <!--GPS Details Box!-->
     <div id="details-box">
         <div class="details-box">
@@ -96,7 +99,7 @@
 
     <form class="stopselector" method="POST" onchange="submitform(this, '.realtimeresult', 'realtime/index.php');">
         <span><?php echo $translation['DescTxt-yrloc'][$lang] ?>
-            <img class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
+            <img alt="Get Current Location" class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
         </span>
         <select mode="station" class="select-box" name="Dest" id="Dest">
             <option disabled selected><?php echo $translation['DescTxt2'][$lang] ?></option>

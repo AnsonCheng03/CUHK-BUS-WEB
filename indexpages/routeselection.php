@@ -14,6 +14,7 @@ include('Essential/functions/initdatas.php'); //Download datas from server
   <title><?php echo $translation['title_routesearch'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE</title>
   <meta charset="utf-8">
   <meta name="title" content="<?php echo $translation['title_routesearch'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE">
+  <meta http-equiv="Content-Language" content="<?php echo $lang == 1 ? "en" : "zh"?>">
   <meta name="description" content="<?php echo $translation['meta_desc_routesearch'][$lang];?> ">
   <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
   <meta name="robots" content="index, follow">
@@ -272,7 +273,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
           </select>
         </div>
         <div class="functionbuttons">
-          <img width='23px' height='23px' class='image-wrapper' src='Images/GPS.jpg' id='Start-GPS-box' onclick='getLocation(this.id);'></img>
+          <img alt="Get Current Location" width='23px' height='23px' class='image-wrapper' src='Images/GPS.jpg' id='Start-GPS-box' onclick='getLocation(this.id);'></img>
         </div>
       </div>
 
@@ -290,7 +291,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
           </select>
         </div>
         <div class="functionbuttons">
-          <img width='23px' height='23px' class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
+          <img alt="Get Current Location" width='23px' height='23px' class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
         </div>
       </div>
 
@@ -343,7 +344,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
 
 <div id="AndroidHomeScreenPrompt">
   <div class="desc">
-    <img src="Images/bus.ico" width="50px">
+    <img alt="App Icon" src="Images/bus.ico" width="50px">
     <p><b>CU BUS WEB</b></p>
   </div>
   <div class="btns">

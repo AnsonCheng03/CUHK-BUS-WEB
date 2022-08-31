@@ -20,7 +20,7 @@ foreach (csv_to_array(__DIR__ . "/../../Data/Route") as $busno) {
 
 ?>
 
-<html amp lang="en">
+<html amp lang="zh">
 
 <head>
 
@@ -121,8 +121,9 @@ foreach (csv_to_array(__DIR__ . "/../../Data/Route") as $busno) {
                 ]
             }
         </script>
-        <meta name="title" content="中大校巴資訊站 CU BUS INFOPAGE">
-        <meta name="description" content="進行校巴點對點路線、建築物對建築物搜尋。 Carry out building-to-building searches and point-to-point school bus routing.">
+        <meta http-equiv="Content-Language" content="zh">
+        <meta name="title" content="校巴資訊 | 中大校巴資訊站 CU BUS INFOPAGE">
+        <meta name="description" content="你可在本頁搜尋到校巴之資訊，包括開出時間、是否允許行李等。">
         <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
         <meta name="robots" content="index, follow">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
