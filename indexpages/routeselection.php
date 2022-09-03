@@ -47,15 +47,7 @@ include('Essential/functions/initdatas.php'); //Download datas from server
     gtag('config', 'G-KCD7N2ZG3H');
   </script>
 
-  <script>
-    if (!sessionStorage.getItem('routesearch-submit') || sessionStorage.getItem('routesearch-submit') !== "submitted") {
-      const d = document.createElement('script')
-      d.src = 'https://oaphoace.net/401/5344479';
-      try {
-        (document.body || document.documentElement).appendChild(d);
-      } catch (e) {}
-    }
-  </script>
+
 </head>
 
 

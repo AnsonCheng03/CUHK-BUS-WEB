@@ -46,15 +46,6 @@
         gtag('config', 'G-KCD7N2ZG3H');
     </script>
 
-
-
-    <script>
-        const s = document.createElement('script');
-        s.src = 'https://waitheja.net/400/5344478';
-        try {
-            (document.body || document.documentElement).appendChild(s);
-        } catch (e) {}
-    </script>
 </head>
 
 <body>

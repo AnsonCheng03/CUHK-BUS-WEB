@@ -64,7 +64,7 @@ $forceshowexchange = isset($_POST['showallroute']);
 $departnowbtn = isset($_POST['deptnow']);
 
 
-$conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");
+$conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Start`, `Dest`, `Mode`, `Showallroute`, `Departnow`, `Lang`) 
 VALUES (?, 'routesearch', ?, ?, ?, ?, ?, ?);");

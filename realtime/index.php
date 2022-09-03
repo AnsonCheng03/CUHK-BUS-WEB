@@ -29,7 +29,7 @@ foreach (array_slice(csv_to_array("../Data/Translate"), 1) as $row) {
 $busschedule = json_decode(file_get_contents('../Data/timetable.json'), true);
 
 if ($_POST['loop'] != 'loop') {
-    $conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");
+    $conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
     if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
     $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) 
     VALUES (?, 'realtime', ?, ?);");
@@ -85,7 +85,7 @@ $outputschedule = array_filter($busschedule, function ($key) {
 }, ARRAY_FILTER_USE_KEY);
 
 session_start();
-$conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");
+$conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 $_SESSION['_token'] = bin2hex(openssl_random_pseudo_bytes(32));
 

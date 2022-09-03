@@ -43,7 +43,7 @@ if (isset($_SESSION['Lastpost']))
         die($translation['repeat_submit'][$lang]);
 
 // Create connection
-$conn = new mysqli("localhost", "u344988661_cubus", "*rV0J2J5", "u344988661_cubus");
+$conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 
 // prepare and bind
