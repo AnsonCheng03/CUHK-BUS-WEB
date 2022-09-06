@@ -84,7 +84,7 @@ if (pingAddress(gethostbyname($host))) {
 $tempArray = json_decode(file_get_contents(__DIR__ . '/../../Data/Status.json'), true);
 $tempArray[(new DateTime())->format('Y-m-d H:i:s')] = $savestatus;
 file_put_contents(__DIR__ . '/../../Data/Status.json', json_encode(array_slice($tempArray, -1500), JSON_PRETTY_PRINT));
-file_put_contents(__DIR__ . '/../../Data/Status-' . (new DateTime())->format('Y-m-d') . '.json', json_encode(array_slice($tempArray, -1500), JSON_PRETTY_PRINT));
+file_put_contents(__DIR__ . '/../../Data/prev-status/' . (new DateTime())->format('Y-m-d') . '.json', json_encode(array_slice($tempArray, -1500), JSON_PRETTY_PRINT));
 
 download_files(__DIR__ . "/../../Data/Route.csv", 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRn-9WBygVxJTJQkmie8LDxC-R2Oedma14PWVT0LW6v85smPOd9AhqhkZ9LfYzire2iaGb0pIGVpdmr/pub?gid=1092784054&single=true&output=csv');
 download_files(__DIR__ . "/../../Data/Translate.csv", 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRn-9WBygVxJTJQkmie8LDxC-R2Oedma14PWVT0LW6v85smPOd9AhqhkZ9LfYzire2iaGb0pIGVpdmr/pub?gid=13523980&single=true&output=csv');

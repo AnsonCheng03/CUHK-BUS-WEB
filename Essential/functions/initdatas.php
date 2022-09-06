@@ -53,37 +53,34 @@ if ($initdataitems["GPS"] === true)
 if ($initdataitems["Websites"] === true)
     foreach (array_slice(csv_to_array("Data/Websites"), 1) as $row) {
         if ($row[2] !== "" && substr($row[2], 0, 2) !== "//") {
-            $WebsiteLinks[] = [[$row[0],$row[1]],$row[2]];
+            $WebsiteLinks[] = [[$row[0], $row[1]], $row[2]];
         }
     }
 
-?>
 
-<script>
-    <?php
-    //Load building name to js
-    if ($initdataitems["JSTranslate"] === true) {
-        echo "const Translation = [];";
+//Load building name to js
+if ($initdataitems["JSTranslate"] === true) {
+    echo "<script>const Translation = [];";
 
-        foreach ($translation as $name => $value)
-            if (end($value))
-                echo 'Translation["' . $name . '"] = "' . $value[$lang] . '";';
-    }
+    foreach ($translation as $name => $value)
+        if (end($value))
+            echo 'Translation["' . $name . '"] = "' . $value[$lang] . '";';
 
-    if ($initdataitems["JSGPS"] === true) {
-        echo "const GPSdata = [";
+    echo "</script>";
+}
 
-        foreach ($GPS as $name => $location) {
-            $nameattr = substr(strstr($name, '|', false), 1) ?: "";
-            $name = strstr($name, '|', true) ?: $name;
-            try {
-                if ($location["Lat"] . $location["Lng"])
-                    echo "{ \"location\": \"" . $translation[$name][$lang] . "\",  \"lat\": \"" . $location["Lat"] . "\",  \"lng\": \"" . $location["Lng"] . "\", \"attr\" : \"" . $translation[$nameattr][$lang] . "\" , \"code\" : \"" . $name . "\"  }, ";
-            } catch (Exception $e) {
-            }
+if ($initdataitems["JSGPS"] === true) {
+    echo "<script>const GPSdata = [";
+
+    foreach ($GPS as $name => $location) {
+        $nameattr = substr(strstr($name, '|', false), 1) ?: "";
+        $name = strstr($name, '|', true) ?: $name;
+        try {
+            if ($location["Lat"] . $location["Lng"])
+                echo "{ \"location\": \"" . $translation[$name][$lang] . "\",  \"lat\": \"" . $location["Lat"] . "\",  \"lng\": \"" . $location["Lng"] . "\", \"attr\" : \"" . $translation[$nameattr][$lang] . "\" , \"code\" : \"" . $name . "\"  }, ";
+        } catch (Exception $e) {
         }
-
-        echo "];";
     }
-    ?>
-</script>
+
+    echo "];</script>";
+}

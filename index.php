@@ -1,5 +1,5 @@
 <?php
-$version = "1.2.1";
+$version = "1.2.2";
 $placeads = false;
 
 include_once('Essential/functions/functions.php');
