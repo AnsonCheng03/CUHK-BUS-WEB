@@ -56,6 +56,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) {
 
     if (isset($_REQUEST['bystation'])) {
         foreach ($bus as $busno => $busline) {
+            array_pop($busline["stations"]["arrivaltime"]);
             foreach ($busline["stations"]["arrivaltime"] as $index => $stationn) {
                 foreach ($stationn as $indx => $times) {
                     $stopname = $busline["stations"]["name"][$index] . "|" . ($busline["stations"]["attr"][$index] == "NULL" ? "" : $busline["stations"]["attr"][$index]);
@@ -77,6 +78,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) {
     }
 } else {
     foreach ($bus as $busno => $busline) {
+        array_pop($busline["stations"]["arrivaltime"]);
         foreach ($busline["stations"]["arrivaltime"] as $index => $stationn) {
             foreach ($stationn as $indx => $times) {
                 $stopname = $busline["stations"]["name"][$index] . "|" . ($busline["stations"]["attr"][$index] == "NULL" ? "" : $busline["stations"]["attr"][$index]);

@@ -241,3 +241,28 @@ form span {
   text-decoration: none;
   color: #000;
 }
+
+.networkerror {
+  position: fixed;
+  top: 7.5vh;
+  left: 10vw;
+  right: 10vw;
+  padding: 1vh 0;
+  max-width: 80vw;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  z-index: 9999;
+  opacity: 1;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transition: all 1s ease-in-out;
+}
+
+.networkerror p {
+  padding: 0;
+}
+
+.networkerror .heading {
+  font-size: 1.2rem;
+  font-weight: bold;
+}

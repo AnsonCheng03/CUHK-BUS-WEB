@@ -1,17 +1,17 @@
 <?php
-    include_once('Essential/functions/functions.php');
-    $lang = urlquery("lang") == "en" ? 1 : 0;
-    include('Essential/functions/initdatas.php');
-    ?>
+include_once('Essential/functions/functions.php');
+$lang = urlquery("lang") == "en" ? 1 : 0;
+include('Essential/functions/initdatas.php');
+?>
 
 <html>
 
 <head>
-    <title><?php echo $translation['title_realtime'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE</title>
+    <title><?php echo $translation['title_realtime'][$lang]; ?> | 中大校巴資訊站 CU BUS INFOPAGE</title>
     <meta charset="utf-8">
-    <meta name="title" content="<?php echo $translation['title_realtime'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE">
-    <meta http-equiv="Content-Language" content="<?php echo $lang == 1 ? "en" : "zh"?>">
-    <meta name="description" content="<?php echo $translation['meta_desc_realtime'][$lang];?> ">
+    <meta name="title" content="<?php echo $translation['title_realtime'][$lang]; ?> | 中大校巴資訊站 CU BUS INFOPAGE">
+    <meta http-equiv="Content-Language" content="<?php echo $lang == 1 ? "en" : "zh" ?>">
+    <meta name="description" content="<?php echo $translation['meta_desc_realtime'][$lang]; ?> ">
     <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
     <meta name="robots" content="index, follow">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -32,8 +32,6 @@
     <meta name="google" value="notranslate">
     <link rel="stylesheet" href="Essential/realtime.css?v=<?php echo $version ?>">
     <script src="Essential/realtime.js?v=<?php echo $version ?>"></script>
-
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
 
     <script>
@@ -46,6 +44,19 @@
         gtag('config', 'G-KCD7N2ZG3H');
     </script>
 
+
+    <?php
+    if ($placeads === true)
+        echo "
+            <script>
+                const s = document.createElement('script');
+                s.src = 'https://waitheja.net/400/5344478';
+                try {
+                    (document.body || document.documentElement).appendChild(s);
+                } catch (e) {}
+            </script>
+        ";
+    ?>
 </head>
 
 <body>
@@ -60,7 +71,7 @@
         </div>
     </div>
 
-    <h1><?php echo $translation['title_realtime'][$lang];?></h1>
+    <h1><?php echo $translation['title_realtime'][$lang]; ?></h1>
 
     <!--GPS Details Box!-->
     <div id="details-box">
@@ -109,11 +120,9 @@
     <!-- Website Suggestions-->
     <?
     echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
-    foreach (array_slice(csv_to_array("Data/Websites"), 1) as $row) {
-        if ($row[0] !== "" && substr($row[0], 0, 2) !== "//") {
-            if ($row[$lang])
-                echo "<a target='_blank' class='websites'  href='" . $row[2] . "'>" . $row[$lang] . "</a>";
-        }
+    foreach ($WebsiteLinks as $row) {
+        if ($row[0][$lang])
+            echo "<a target='_blank' class='websites'  href='" . $row[1] . "'>" . $row[0][$lang] . "</a>";
     }
     echo "</div>";
     ?>
@@ -123,6 +132,30 @@
 </body>
 
 <footer>
+
+    <script>
+        function onlineofflineswitch(innertext, color) {
+            const element = document.createElement('div');
+            element.classList.add('networkerror');
+            element.style.backgroundColor = color;
+            element.innerHTML = "<?php echo "<p class='heading'>" . $translation["internet_unstable"][$lang] . "</p><p> \" + innertext + \" </p>"; ?>"
+            document.body.appendChild(element);
+            setTimeout(() => {
+                element.style.opacity = 0;
+            }, 2000);
+            setTimeout(() => {
+                element.remove();
+            }, 3000);
+        }
+
+        window.addEventListener('online', () => {
+            onlineofflineswitch("<?php echo $translation["internet_online"][$lang]; ?>", "#23C552")
+        });
+        window.addEventListener('offline', () => {
+            onlineofflineswitch("<?php echo $translation["internet_offline"][$lang]; ?>", "#F84F31")
+        });
+    </script>
+
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('service-worker.js').then(function(reg) {}).catch(function(err) {})

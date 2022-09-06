@@ -5,3 +5,9 @@ Draft,v. 3.0.0 更新<br>新增路線上下行顯示功能,
 Info/,"v. 5.0.0 更新<br>新增行車時間估算<br>數據仍在測試中 僅供參考 <br><a href=""https://bus.cuhk-page.info/?mode=realtime"" style=""color: blue;"">「做白老鼠」</a>","The realtime data is still under test. For reference only.<br> <a href=""https://bus.cuhk-page.info/?mode=realtime&lang=en"" style=""color: blue"">""Click here to test""</a>"
 Alert/," 如八號颱風警告信號於上課時始告發出，各班須立即停課。<br> <br>轉堂校巴（5, 6A, 6B, 7）將停止服務。  <br> <br> 穿梭校巴（1A, 1B, 2, 3, 4, 8, N）將繼續行走一小時。","If Typhoon Warning Signal No. 8 is issued during class, classes must be suspended immediately.  <br> <br>The transfer school bus (5, 6A, 6B, 7) will stop service.  <br> <br> The shuttle bus (1A, 1B, 2, 3, 4, 8, N) will be maintained for one hour."
 Info/,"<a style="" text-decoration: none;"" href=""https://docs.google.com/forms/d/e/1FAIpQLSch34Fbjehd0It8T_m3uJT9Fz0rr8WI1pm2q7HqaIzUaFShZg/viewform?usp=sf_link"">因為要維持返伺服器成本，所以依家打算放小小廣告～<br>如果覺得太煩或者太多，可以撳<p style=""color: #0000EE; display: inline;"">呢度</p>話俾我知，感激不盡！<br>唔好Click啲廣告～ Click左唔會有多啲錢</a>","<a style="" text-decoration: none;"" href=""https://docs.google.com/forms/d/e/1FAIpQLSch34Fbjehd0It8T_m3uJT9Fz0rr8WI1pm2q7HqaIzUaFShZg/viewform?usp=sf_link"">I want to add a little advertisement now in order to cover the expense of the server. If you find it intrusive or excessive, kindly click <p style=""color: #0000EE; display: inline;""> here </p> to let me know.</a>"
+Info/,"<b>網站事故報告</b><br>
+
+今晨二時左右，本站進行域名轉移，使Cloudflare伺服器與本站加密證書不對稱，以致間歇性發生錯誤。有關問題<b>已經</b>修復，造成不便敬請見諒。","<b>Site Incident Report</b><br> 
+
+This site underwent a domain name transfer at 2:00 this morning, which made the Cloudflare server and the site's encryption certificate asymmetrical and resulted in sporadic failures. Sorry for any inconvenience; the issue is resolved."
+Info,打完地點之後要<b>喺list入面揀</b>～ <br>如果唔係會識別唔到你去邊㗎！,

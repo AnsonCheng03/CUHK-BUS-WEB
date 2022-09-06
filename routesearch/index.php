@@ -6,32 +6,13 @@ if (!isset($_POST))
 /* Init Program */
 date_default_timezone_set("Asia/Hong_Kong");
 include('../Essential/functions/functions.php');
+$initdataitems = array(
+    "Route" => true,
+    "Translate" => true,
+    "Station" => true,
+);
+include('../Essential/functions/initdatas.php');
 
-foreach (csv_to_array(__DIR__ . "/../Data/Route") as $busno) {
-    $bus[$busno[0]]["schedule"] = array($busno[1], $busno[2], $busno[3], $busno[4], $busno[5], $busno[6]);
-    foreach (array_filter(array_slice($busno, 7)) as $key => $value) {
-        $statnm = strstr($value, '|', true) ?: $value;
-        $attr = substr(strstr($value, '|', false), 1) ?: "NULL";
-        $time = substr(strstr($attr, '|', false), 1) ?: "0";
-        $attr = strstr($attr, '|', true) ?: "NULL";
-        $bus[$busno[0]]["stations"]["name"][] = $statnm;
-        $bus[$busno[0]]["stations"]["attr"][] = $attr;
-        $bus[$busno[0]]["stations"]["time"][] = floatval($time);
-    }
-}
-
-//Website Translation
-foreach (array_slice(csv_to_array(__DIR__ . "/../Data/Translate"), 1) as $row) {
-    if ($row[0] !== "" && substr($row[0], 0, 2) !== "//") {
-        $translation[$row[0]] = array($row[2], $row[3]);
-        $translation[$row[0]][] = $row[1];
-    }
-}
-
-//Buildings
-foreach (array_slice(csv_to_array(__DIR__ . "/../Data/Station"), 1) as $row) {
-    $station[$row[1]][] = $row[0];
-}
 
 //Bus Status
 $busservices = json_decode(file_get_contents(__DIR__ . '/../Data/Status.json'), true);
@@ -63,20 +44,21 @@ $posttravmin = $_POST['Trav-min'];
 $forceshowexchange = isset($_POST['showallroute']);
 $departnowbtn = isset($_POST['deptnow']);
 
-
-$conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
-if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
-$stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Start`, `Dest`, `Mode`, `Showallroute`, `Departnow`, `Lang`) 
-VALUES (?, 'routesearch', ?, ?, ?, ?, ?, ?);");
-$stmt->bind_param("sssssss", $Time, $Startsql, $Destsql, $postmode, $forceshowexchange, $departnowbtn, $lang);
-$Time = (new DateTime())->format('Y-m-d H:i:s');
-$Startsql = $postmode == "building" ? $_POST['Startbd'] : $_POST['Start'];
-$Destsql = $postmode == "building" ? $_POST['Destbd'] : $_POST['Dest'];
-$stmt->execute();
-$stmt->close();
-$conn->close();
-
-
+try {
+    if(strpos(__DIR__, "beta") === false) {
+        $conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
+        if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+        $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Start`, `Dest`, `Mode`, `Showallroute`, `Departnow`, `Lang`) 
+        VALUES (?, 'routesearch', ?, ?, ?, ?, ?, ?);");
+        $stmt->bind_param("sssssss", $Time, $Startsql, $Destsql, $postmode, $forceshowexchange, $departnowbtn, $lang);
+        $Time = (new DateTime())->format('Y-m-d H:i:s');
+        $Startsql = $postmode == "building" ? $_POST['Startbd'] : $_POST['Start'];
+        $Destsql = $postmode == "building" ? $_POST['Destbd'] : $_POST['Dest'];
+        $stmt->execute();
+        $stmt->close();
+        $conn->close();
+    }
+} catch (Exception $e) { }
 
 // Get Available Buses
 if (!$departnowbtn) {

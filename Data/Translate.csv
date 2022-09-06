@@ -120,9 +120,9 @@ ARC,,李兆基建築學大樓,Lee Shau Kee Architecture Building
 BMS,,基本醫學大樓,Basic Medical Sciences Building 
 CCCC,,崇基禮拜堂,Chung Chi College Chapel 
 CCT,,崇基神學樓,Chung Chi College Theology Building 
-CK,,崇基圖書館,C.C. Library 
+CCLIB,,崇基圖書館,C.C. Library 
 CKB,,陳國本樓,Chen Kou Bun Building 
-CML,,錢穆圖書館,Ch'ien Mu Library 
+NALIB,,錢穆圖書館,Ch'ien Mu Library 
 CYT,,鄭裕彤樓,Cheng Yu Tung Building 
 ELB,,利黃瑤璧樓,Esther Lee Building 
 ERB,,蒙民偉工程學大樓,William M.W. Mong Engineering Building 
@@ -286,3 +286,19 @@ CCEXP,,小橋流水,
 AIT,,綜合教學大樓,
 THRB,,三兄弟,
 UCMIR,,聯合鏡房,
+CUMTR,,中大火車站,
+UNIMTR,,大學港鐵站,
+UGYM,,大學體育館,
+WSCAN,,和聲can,
+WSC,,和聲書院,
+JOYFULINN,,開心軒,Joyful Inn
+GS,,民女,
+TKPB,,田家炳樓,Tin Ka Ping Building
+CCSAB,,張祝珊師生康樂大樓,Cheung Chuk Shan Amenities Building
+CCHC,,何草,
+UCTCC,,湯草,
+NAHCC,,孔草,
+ENGB,,展標,
+ENGGB,,賤標,
+HMG,,熊貓館,
+TWML,,禤永明樓,

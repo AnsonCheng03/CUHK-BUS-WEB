@@ -11,11 +11,11 @@ include('Essential/functions/initdatas.php'); //Download datas from server
 <html>
 
 <head>
-  <title><?php echo $translation['title_routesearch'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE</title>
+  <title><?php echo $translation['title_routesearch'][$lang]; ?> | 中大校巴資訊站 CU BUS INFOPAGE</title>
   <meta charset="utf-8">
-  <meta name="title" content="<?php echo $translation['title_routesearch'][$lang];?> | 中大校巴資訊站 CU BUS INFOPAGE">
-  <meta http-equiv="Content-Language" content="<?php echo $lang == 1 ? "en" : "zh"?>">
-  <meta name="description" content="<?php echo $translation['meta_desc_routesearch'][$lang];?> ">
+  <meta name="title" content="<?php echo $translation['title_routesearch'][$lang]; ?> | 中大校巴資訊站 CU BUS INFOPAGE">
+  <meta http-equiv="Content-Language" content="<?php echo $lang == 1 ? "en" : "zh" ?>">
+  <meta name="description" content="<?php echo $translation['meta_desc_routesearch'][$lang]; ?> ">
   <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
   <meta name="robots" content="index, follow">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -46,11 +46,21 @@ include('Essential/functions/initdatas.php'); //Download datas from server
     gtag('js', new Date());
     gtag('config', 'G-KCD7N2ZG3H');
   </script>
-
-
+  <?php
+  if ($placeads === true)
+    echo "
+      <script>
+        if (!sessionStorage.getItem('routesearch-submit') || sessionStorage.getItem('routesearch-submit') !== 'submitted') {
+          const d = document.createElement('script')
+          d.src = 'https://oaphoace.net/401/5344479';
+          try {
+            (document.body || document.documentElement).appendChild(d);
+          } catch (e) {}
+        }
+      </script>
+      ";
+  ?>
 </head>
-
-
 
 <!--Select Language && Function Buttons-->
 <div class="lang-selector nav">
@@ -61,6 +71,12 @@ include('Essential/functions/initdatas.php'); //Download datas from server
 <div class="refreshbtn nav">
   <button id="refresh-btn" onclick="window.location.reload();" /><?php echo $translation["refresh-btn"][$lang] ?></button>
 </div>
+
+
+
+
+
+
 
 
 <!--Title & Alert-->
@@ -114,7 +130,7 @@ if (isset($buserrstat["suspended"])) $finalerrbus = $finalerrbus . $translation[
 if ($finalerrbus !== "") alert("alert", $finalerrbus);
 
 if (isset($buserrstat["justeos"]))
-  alert("info", $translation["justeos-alert"][$lang] . implode(", ", $buserrstat["justeos"]));
+  alert("Binfo", $translation["justeos-alert"][$lang] . implode(", ", $buserrstat["justeos"]));
 
 //Concat all bus stops
 foreach ($bus as $busnum) {
@@ -356,11 +372,9 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
     <!-- Website Suggestions-->
     <?
     echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
-    foreach (array_slice(csv_to_array("Data/Websites"), 1) as $row) {
-      if ($row[0] !== "" && substr($row[0], 0, 2) !== "//") {
-        if ($row[$lang])
-          echo "<h2><a target='_blank' class='websites'  href='" . $row[2] . "'>" . $row[$lang] . "</a></h2>";
-      }
+    foreach ($WebsiteLinks as $row) {
+      if ($row[0][$lang])
+        echo "<a target='_blank' class='websites'  href='" . $row[1] . "'>" . $row[0][$lang] . "</a>";
     }
     echo "</div>";
     ?>
@@ -416,6 +430,26 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
 
 
   <!--Script!-->
+  <script>
+    function onlineofflineswitch(innertext, color) {
+      const element = document.createElement('div');
+      element.classList.add('networkerror');
+      element.style.backgroundColor = color;
+      element.innerHTML = "<?php echo "<p class='heading'>" . $translation["internet_unstable"][$lang] . "</p><p> \" + innertext + \" </p>"; ?>"
+      document.body.appendChild(element);
+      setTimeout(() => {
+        element.style.opacity = 0;
+      }, 2000);
+      setTimeout(() => {
+        element.remove();
+      }, 3000);
+    }
+
+    window.addEventListener('online', ()=> {onlineofflineswitch("<?php echo $translation["internet_online"][$lang]; ?>", "#23C552")});
+    window.addEventListener('offline', ()=> {onlineofflineswitch("<?php echo $translation["internet_offline"][$lang]; ?>", "#F84F31")});
+  </script>
+
+
   <script>
     //Auto Suggestion
     const choices = ["<?php echo implode('","', $transbuilding); ?>"];

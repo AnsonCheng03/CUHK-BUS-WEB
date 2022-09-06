@@ -4,41 +4,29 @@
 date_default_timezone_set("Asia/Hong_Kong");
 include('../Essential/functions/functions.php');
 $lang = $_POST['lang'];
-
-foreach (csv_to_array("Data/Route") as $busno) {
-    $bus[$busno[0]]["schedule"] = array($busno[1], $busno[2], $busno[3], $busno[4], $busno[5], $busno[6]);
-    foreach (array_filter(array_slice($busno, 7)) as $key => $value) {
-        $statnm = strstr($value, '|', true) ?: $value;
-        $attr = substr(strstr($value, '|', false), 1) ?: "NULL";
-        $time = substr(strstr($attr, '|', false), 1) ?: "0";
-        $attr = strstr($attr, '|', true) ?: "NULL";
-        $bus[$busno[0]]["stations"]["name"][] = $statnm;
-        $bus[$busno[0]]["stations"]["attr"][] = $attr;
-        $bus[$busno[0]]["stations"]["time"][] = floatval($time);
-    }
-}
-
-//Website Translation
-foreach (array_slice(csv_to_array("../Data/Translate"), 1) as $row) {
-    if ($row[0] !== "" && substr($row[0], 0, 2) !== "//") {
-        $translation[$row[0]] = array($row[2], $row[3]);
-        $translation[$row[0]][] = $row[1];
-    }
-}
+$initdataitems = array(
+    "Route" => true,
+    "Translate" => true,
+);
+include('../Essential/functions/initdatas.php');
 
 $busschedule = json_decode(file_get_contents('../Data/timetable.json'), true);
 
-if ($_POST['loop'] != 'loop') {
-    $conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
-    if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
-    $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) 
-    VALUES (?, 'realtime', ?, ?);");
-    $stmt->bind_param("sss", $Time, $_POST['Dest'], $lang);
-    $Time = (new DateTime())->format('Y-m-d H:i:s');
-    $stmt->execute();
-    $stmt->close();
-    $conn->close();
-}
+try {
+    if(strpos(__DIR__, "beta") === false)
+        if ($_POST['loop'] != 'loop') {
+            $conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
+            if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+            $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) 
+            VALUES (?, 'realtime', ?, ?);");
+            $stmt->bind_param("sss", $Time, $_POST['Dest'], $lang);
+            $Time = (new DateTime())->format('Y-m-d H:i:s');
+            $stmt->execute();
+            $stmt->close();
+            $conn->close();
+        }
+} catch (Exception $e) { }
+
 
 //Bus Status
 
@@ -84,11 +72,12 @@ $outputschedule = array_filter($busschedule, function ($key) {
     return explode("|", $key)[0] == $_POST['Dest'];
 }, ARRAY_FILTER_USE_KEY);
 
+
+$_SESSION['_token'] = bin2hex(openssl_random_pseudo_bytes(32));
+
 session_start();
 $conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
-$_SESSION['_token'] = bin2hex(openssl_random_pseudo_bytes(32));
-
 $conn->query("SET SESSION time_zone = '+8:00'");
 $stmt = $conn->prepare("SELECT
 DATE_FORMAT(`Time`,'%H'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2 , COUNT(*) 
@@ -97,9 +86,6 @@ WHERE (`Time` >= (now() - interval 30 minute)) AND `BusNum` = ? AND `StopAttr` =
 GROUP BY CONCAT( DATE_FORMAT(`Time`,'%m-%d-%Y %H:'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2)");
 
 $stmt->bind_param("ss", $busnum, $Stop);
-
-
-
 
 
 $countoutput = 0;
@@ -133,10 +119,9 @@ foreach ($outputschedule as $stationname => $schedule) {
             sort($timetable);
             foreach ($timetable as $time) {
                 if ($time >= $currtime) {
-                    if ($time <= $nowtime){
+                    if ($time <= $nowtime) {
                         echo "<div class='bustype arrived'>";
-                    }
-                    else{
+                    } else {
                         if ($outputtimecount > 4) break;
                         $outputtimecount++;
                         echo "<div class='bustype'>";

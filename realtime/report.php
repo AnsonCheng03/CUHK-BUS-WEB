@@ -3,19 +3,16 @@
 date_default_timezone_set("Asia/Hong_Kong");
 session_start();
 
+$_POST["stop"] = explode("|",$_POST["stop"])[1] == "" ? explode("|",$_POST["stop"])[0] : $_POST["stop"] ;
+
 include_once('../Essential/functions/functions.php');
 $lang = $_POST["lang"];
-foreach (array_slice(csv_to_array("../Data/Translate"), 1) as $row) {
-    if ($row[0] !== "" && substr($row[0], 0, 2) !== "//") {
-        $translation[$row[0]] = array($row[2], $row[3]);
-        $translation[$row[0]][] = $row[1];
-    }
-}
+$initdataitems = array(
+    "GPS" => true,
+    "Translate" => true,
+);
+include('../Essential/functions/initdatas.php');
 
-foreach (array_slice(csv_to_array("../Data/GPS"), 1) as $row) {
-    $GPS[$row[0]]["Lat"] = $row[1];
-    $GPS[$row[0]]["Lng"] = $row[2];
-}
 
 function vincentyGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
 {
@@ -31,6 +28,9 @@ function vincentyGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo,
     return $angle * $earthRadius;
 }
 
+if(!isset($GPS[$_POST['stop']]))
+    die("Err: Station not found");
+
 if(vincentyGreatCircleDistance($GPS[$_POST['stop']]["Lat"],$GPS[$_POST['stop']]["Lng"] ,$_POST['positionlat'] ,$_POST['positionlng'] ) > 300)
     die($translation['distancetoolong_warning'][$lang]);
 
@@ -39,7 +39,7 @@ if (!isset($_POST['CSRF']) || $_POST['CSRF'] != $_SESSION['_token'])
 
 
 if (isset($_SESSION['Lastpost']))
-    if ($_SESSION['Lastpost'] >= (new DateTime())->modify("-1 minutes")->format('YmdHis'))
+    if ($_SESSION['Lastpost'] >= (new DateTime())->modify("-15 seconds")->format('YmdHis'))
         die($translation['repeat_submit'][$lang]);
 
 // Create connection
