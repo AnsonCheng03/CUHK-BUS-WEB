@@ -1,0 +1,149 @@
+.bus-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #fff;
+    color: #333;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.toggles {
+    width: 90%;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5%;
+    row-gap: 10%;
+}
+
+.toggle-all-routes, .toggle-depart-now {
+    position: relative;
+    width: 100%;
+    height: 100px;
+}
+
+.toggle-all-routes input[type="checkbox"], .toggle-depart-now input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.toggle-all-routes label, .toggle-depart-now label {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: #eee;
+    border: 1.5px solid #eee;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+    transition: border 0.25s ease-in-out, font-weight 0.25s ease-in-out;
+}
+
+.toggle-all-routes input[type="checkbox"]:checked + label, .toggle-depart-now input[type="checkbox"]:checked + label {
+    border: 1.5px solid #822E6B;
+    font-weight: bold;
+}
+
+.toggle-depart-now label::before {
+    content: "現在";
+}
+
+.toggle-depart-now input[type="checkbox"]:checked + label::before {
+    content: "稍後";
+}
+
+.time-picker-container {
+    display: none;
+    width: 90%;
+    margin: 10px auto 30px auto;
+    grid-template-columns: 3fr 2fr 3fr;
+}
+
+.weekday-picker {
+
+}
+
+.available-routes {
+    width: 90%;
+    margin: 10px auto 30px auto;
+}
+
+.available-routes-title-container {
+    display: flex;
+    align-items: center;
+}
+
+.available-routes-title {
+    display: inline-block;
+    margin: 0;
+    margin-right: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.available-routes-tag-container {
+    margin-top: 1%;
+}
+
+.available-routes-tag::before {
+    content: "";
+    background-color: #229926;
+    box-shadow: 0 0 10px rgba(20%,20%,40%,0.2);
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin-right: 14px;
+}
+
+.available-routes-tag, .available-routes-tag-example {
+    display: inline-block;
+    width: fit-content;
+    margin: 5px;
+    padding: 5px 18px;
+    line-height: calc(1.2rem);
+    border: 1px solid#229926;
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.available-routes-tag-example {
+    margin: 0 5px;
+    border-color: #229926;
+    padding: 5px 10px;
+}
+
+.available-routes-tag[status="no"]::before {
+    background-color: #666666;
+}
+
+.available-routes-tag-example[status="no"], .available-routes-tag[status="no"] {
+    border-color: #666666;
+}
+
+.available-routes-tag[status="suspended"]::before {
+    background-color: #FF0000;
+}
+
+.available-routes-tag-example[status="suspended"], .available-routes-tag[status="suspended"] {
+    border-color: #FF0000;
+}
+
+.available-routes-tag[status="delay"]::before {
+    background-color: #8B8000;
+}
+
+.available-routes-tag-example[status="delay"], .available-routes-tag[status="delay"] {
+    border-color: #8B8000;
+}
