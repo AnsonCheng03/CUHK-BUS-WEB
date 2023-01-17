@@ -126,7 +126,7 @@
 
 .input-location-input:focus, .input-location-input:focus{
     outline: none;
-    border-bottom: 1px solid #111;
+    border-bottom: 1px solid rgb(0, 113, 227);;
 }
 
 .input-submit {
@@ -138,5 +138,10 @@
     border: 1px solid #007bff;
     border-radius: 0.25rem;
     background-color: transparent;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.input-submit:hover {
+    color: rgb(0, 113, 227);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }

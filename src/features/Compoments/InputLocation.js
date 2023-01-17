@@ -14,6 +14,7 @@ const InputLocation = () => {
               name="mode"
               id="mode"
               value="building"
+              defaultChecked
             />
             <label className="input-location-mode-label" htmlFor="mode">
               <span className="input-location-mode-text">輸入建築</span>

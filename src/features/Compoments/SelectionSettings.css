@@ -116,6 +116,7 @@
     border-radius: 5px;
     user-select: none;
     cursor: pointer;
+    transition: border 0.25s ease-in-out;
 }
 
 .available-routes-tag-example {
@@ -146,4 +147,8 @@
 
 .available-routes-tag-example[status="delay"], .available-routes-tag[status="delay"] {
     border-color: #8B8000;
+}
+
+.available-routes-tag:hover, .available-routes-tag-example:hover {
+    border: 1px solid #007bff;
 }
