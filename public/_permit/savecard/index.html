@@ -1,0 +1,200 @@
+<html>
+
+<head>
+    <title>校巴證儲存 | 中大校巴資訊站 CU BUS INFOPAGE</title>
+    <meta charset="utf-8">
+    <meta name="title" content="校巴證儲存 | 中大校巴資訊站 CU BUS INFOPAGE">
+    <meta http-equiv="Content-Language" content="zh">
+    <meta name="description"
+        content="搭校巴一定唔可以唔提校巴證～ 你可以喺度儲存你嘅電子版校巴證！">
+    <meta name="keywords"
+        content="校巴證, School Bus Permit, CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="author" content="Anson Cheng">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.5, maximum-scale=1">
+    <link href="../getcard/style.css" rel="stylesheet">
+    <script src="script.js" defer></script>
+    <style>
+        body {
+            display: flex;
+            margin: 0;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+
+            min-height: calc(100vw / 560 * 356);
+
+            align-items: center;
+            justify-content: center;
+
+            overscroll-behavior: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .card {
+            min-width: 560px;
+            min-height: 356px;
+        }
+
+
+        .share {
+            position: fixed;
+            bottom: 2vh;
+            left: 0;
+            width: 100%;
+            z-index: 9;
+        }
+
+        button {
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #4285F4;
+            color: #4285F4;
+            border-radius: 5px;
+            cursor: pointer;
+            height: 50px;
+            width: 35%;
+            transition: all 250ms;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            vertical-align: baseline;
+        }
+
+        .hidebtn {
+            width: 20%;
+        }
+
+
+
+        ::selection {
+            background: transparent;
+        }
+
+        ::-moz-selection {
+            background: transparent;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+
+        @media print {
+
+            html,
+            body {
+                display: flex;
+                justify-content: right;
+                align-items: center;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+
+            .share,
+            .share * {
+                display: none !important;
+            }
+
+            .card {
+                transform: scale(1);
+            }
+
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <div class="details">
+            <div class="header">
+                <div class="logo">
+                    <img src="../getcard/images/CUHK.png"></img>
+                </div>
+                <div class="schname">
+                    <span>香港中文大學</span>
+                    <span> The Chinese University of Hong Kong</span>
+                </div>
+                <div class="hinttxt">
+                    <span>落車前請按鐘一次</span>
+                    <span>To Stop Press The Bell Once</span>
+                </div>
+            </div>
+            <div class="cardname">
+                <h1></h1>
+                <h2></h2>
+            </div>
+            <div class="routeavil">
+                <div class="desctxt">
+                    <span>持證者獲交通事務處批准乘搭下列的穿梭校巴路線</span>
+                    <span>The Permit Holder is allowed to ride on the following routes</span>
+                </div>
+                <div class="routes">
+                    <span class="transit" style="background: linear-gradient(90deg, #fff149 0%, #f3b53a 100%)">1</span>
+                    <span class="transit" style="background: linear-gradient(90deg, #fff149 0%, #f3b53a 100%)">2</span>
+                    <span class="transit" style="background: linear-gradient(90deg, #a4cc39 0%, #318761 100%);">3</span>
+                    <span class="transit" style="background: linear-gradient(90deg, #f1a63b 0%, #e75a24 100%);">4</span>
+                    <span class="transit" style="background: linear-gradient(90deg, #ffe3a8 0%, #ffc55A 100%);">8</span>
+                    <span class="transit" style="background: linear-gradient(90deg, #d1b4d5 0%, #7961a8 100%);">N</span>
+                    <span class="transit" style="background: linear-gradient(90deg, #896391 0%, #453087 100%);">H</span>
+                    <span class="lesson" style="background: linear-gradient(90deg, #c2d6ea 0%, #29a1d8 100%);">5</span>
+                    <span class="lesson" style="background: linear-gradient(90deg, #7c8644 0%, #585823 100%);">6A</span>
+                    <span class="lesson" style="background: linear-gradient(90deg, #4f88c1 0%, #3f438f 100%);">6B</span>
+                    <span class="lesson" style="background: linear-gradient(90deg, #c2c2c2 0%, #666666 100%);">7</span>
+                </div>
+            </div>
+            <div class="studatas">
+                <div class="Name">
+                    <div class="desc">
+                        <span>學生姓名</span>
+                        <span>Name</span>
+                    </div>
+                    <div class="value">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="SID">
+                    <div class="desc">
+                        <span>學生編號</span>
+                        <span>Student ID</span>
+                    </div>
+                    <div class="value">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="Major">
+                    <div class="desc">
+                        <span>主修科目</span>
+                        <span>Major</span>
+                    </div>
+                    <div class="value">
+                        <span></span>
+                    </div>
+                </div>
+                <div class="Valid">
+                    <div class="desc">
+                        <span>有效期至</span>
+                        <span>Valid Until</span>
+                    </div>
+                    <div class="value">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="share">
+        <button class="sharebtn">分享</button>
+        <button class="printbtn">列印</button>
+        <button class="hidebtn">隱藏</button>
+    </div>
+
+</body>
+
+</html>

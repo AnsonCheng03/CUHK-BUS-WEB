@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <title>校巴證製作 | 中大校巴資訊站 CU BUS INFOPAGE</title>
+    <meta charset="utf-8">
+    <meta name="title" content="校巴證製作 | 中大校巴資訊站 CU BUS INFOPAGE">
+    <meta http-equiv="Content-Language" content="zh">
+    <meta name="description"
+        content="搭校巴一定唔可以唔提校巴證～ 你可以喺度整一張屬於你嘅電子版校巴證！">
+    <meta name="keywords"
+        content="校巴證, School Bus Permit, CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="author" content="Anson Cheng">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <link href="style.css" rel="stylesheet">
+    <script src="script.js" defer></script>
+    <link rel="preload" as="image" href="getcard/images/schbus_d.png">
+    <link rel="preload" as="image" href="getcard/images/schbus_l.png">
+    <link rel="preload" as="image" href="getcard/images/CUHK.png">
+</head>
+
+<body>
+    <div class="center">
+        <div class="content">
+            <h1>校巴證發證系統</h1>
+            <form onsubmit="return submitform(this, '.card', 'getcard')" method="get">
+                <div class="switch-toggle">
+                    <input id="student" name="Type" type="radio" value="Transit" checked>
+                    <label for="student">穿梭校巴</label>
+                    <input id="admin" name="Type" type="radio" value="Lesson">
+                    <label for="admin">轉堂校巴</label>
+                </div>
+                <br>
+                <input placeholder="姓名 (必填)" name="Name" type="text" maxlength="30" required></input>
+                <input placeholder="SID" name="SID" type="number" min="1000000000" max="1500000000" ></input><br>
+                <input placeholder="Major" name="Major" type="text" maxlength="50" ></input>
+                <input placeholder="有效期" name="Valid" type="text" maxlength="10"></input><br>
+                <button type="submit" name="requestmode">獲取校巴證</button>
+            </form>
+
+            <div class="cardwrapper">
+                <div class="card">
+                    <a style="font-size: 1.5rem;">請先輸入資料</a>
+                </div>
+            </div>
+            <button class="download" type="button">儲存校巴證</button>
+        </div>
+    </div>
+</body>
+
+</html>
