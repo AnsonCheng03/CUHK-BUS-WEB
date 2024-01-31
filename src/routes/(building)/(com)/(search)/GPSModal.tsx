@@ -12,7 +12,10 @@ export const GPSModal = component$(
     mode,
   }: {
     showSig: Signal<
-      | [HTMLInputElement | "Loading" | null, [string, string, number][]]
+      | [
+          HTMLInputElement | Element | "Loading" | null,
+          [string, string, number][],
+        ]
       | [[], []]
     >;
     mode: Signal<"building" | "station">;
@@ -67,7 +70,7 @@ export const GPSModal = component$(
         </div>
       )
     );
-  },
+  }
 );
 
 export function CloseIcon(props: QwikIntrinsicElements["svg"], key: string) {

@@ -23,7 +23,6 @@
   },
   "files": [
     "./.eslintrc.cjs",
-    "./src/routes/(building)/(com)/(settings)/newFile.tsx",
     "./src/routes/(building)/(com)/(settings)/ShowAvailableRoutes.tsx",
     "./src/routes/(building)/(com)/(settings)/Toggles.tsx",
     "./src/routes/(building)/(com)/(settings)/TimePicker.tsx",

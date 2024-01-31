@@ -33,7 +33,7 @@ export default component$(() => {
   return (
     <div class={styles.building}>
       <SelectionSettings searchSettings={searchSettings} />
-      <InputLocation busResult={busResult} />
+      <InputLocation searchSettings={searchSettings} />
       <OutputResult result={busResult} />
     </div>
   );

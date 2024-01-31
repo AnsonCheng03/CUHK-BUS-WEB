@@ -49,7 +49,7 @@ const Header = component$(
         </div>
       </div>
     </div>
-  ),
+  )
 );
 
 const InputLocation = component$(
@@ -67,7 +67,10 @@ const InputLocation = component$(
     options: Signal<[string, string, "building" | "station"][]>;
     inputField: Signal<HTMLInputElement | null>;
     showSig: Signal<
-      | [HTMLInputElement | "Loading" | null, [string, string, number][]]
+      | [
+          HTMLInputElement | Element | "Loading" | null,
+          [string, string, number][],
+        ]
       | [[], []]
     >;
   }) => {
@@ -99,7 +102,7 @@ const InputLocation = component$(
                     redirect: "follow", // manual, *follow, error
                     credentials: "same-origin", // include, *same-origin, omit
                     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
-                  },
+                  }
                 );
 
                 data.then((res) => {
@@ -121,7 +124,7 @@ const InputLocation = component$(
                           Location: string;
                           Name: string;
                           distance: number;
-                        }) => [Location, Name, distance],
+                        }) => [Location, Name, distance]
                       ),
                     ];
                   });
@@ -175,82 +178,105 @@ const InputLocation = component$(
         )}
       </div>
     );
-  },
+  }
 );
 
-export default component$(() => {
-  const mode = useSignal<"building" | "station">("building");
-  const startLocation = useSignal("");
-  const endLocation = useSignal("");
-  const options = useSignal<[string, string, "building" | "station"][]>([]);
-  const startInputField = useSignal<HTMLInputElement | null>(null);
-  const endInputField = useSignal<HTMLInputElement | null>(null);
+export default component$(
+  ({
+    searchSettings,
+  }: {
+    searchSettings: {
+      showAllRoutes: boolean;
+      departNow: boolean;
+      searchRoute: string[][];
+      requiredTime: (string | number)[];
+    };
+  }) => {
+    const mode = useSignal<"building" | "station">("building");
+    const startLocation = useSignal("");
+    const endLocation = useSignal("");
+    const options = useSignal<[string, string, "building" | "station"][]>([]);
+    const startInputField = useSignal<HTMLInputElement | null>(null);
+    const endInputField = useSignal<HTMLInputElement | null>(null);
 
-  const showSig = useSignal<
-    [HTMLInputElement | "Loading" | null, [string, string, number][]] | [[], []]
-  >([[], []]);
+    const showSig = useSignal<
+      | [
+          HTMLInputElement | Element | "Loading" | null,
+          [string, string, number][],
+        ]
+      | [[], []]
+    >([[], []]);
 
-  const fetchBusDetails = $(() => {
-    const formData = new FormData();
-    formData.append("action", "getData");
+    const fetchBusDetails = $(() => {
+      const formData = new FormData();
+      formData.append("action", "getData");
 
-    return fetch("https://cu-bus.online/Essential/functions/api.php", {
-      method: "POST",
-      body: formData,
-      cache: "no-store",
-      mode: "cors", // no-cors, *cors, same-origin
-      redirect: "follow", // manual, *follow, error
-      credentials: "same-origin", // include, *same-origin, omit
-      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
+      return fetch("https://cu-bus.online/Essential/functions/api.php", {
+        method: "POST",
+        body: formData,
+        cache: "no-store",
+        mode: "cors", // no-cors, *cors, same-origin
+        redirect: "follow", // manual, *follow, error
+        credentials: "same-origin", // include, *same-origin, omit
+        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
+      });
     });
-  });
 
-  useVisibleTask$(async () => {
-    const res = await fetchBusDetails();
-    if (!res.ok) {
-      return;
-    }
-    options.value = await res.json();
+    useVisibleTask$(async () => {
+      const res = await fetchBusDetails();
+      if (!res.ok) {
+        return;
+      }
+      options.value = await res.json();
 
-    const autoCompleteField: string[] = options.value.map(([code, name]) => {
-      return `${name} (${code})`;
+      const autoCompleteField: string[] = options.value.map(([code, name]) => {
+        return `${name} (${code})`;
+      });
+
+      setTimeout(() => {
+        startInputField.value &&
+          autoComplete(startInputField.value, autoCompleteField);
+        endInputField.value &&
+          autoComplete(endInputField.value, autoCompleteField);
+      }, 150);
     });
 
-    setTimeout(() => {
-      startInputField.value &&
-        autoComplete(startInputField.value, autoCompleteField);
-      endInputField.value &&
-        autoComplete(endInputField.value, autoCompleteField);
-    }, 700);
-  });
+    return (
+      <>
+        <GPSModal showSig={showSig} mode={mode} />
+        <form class={styles.inputLocation}>
+          <Header mode={mode} />
 
-  return (
-    <>
-      <GPSModal showSig={showSig} mode={mode} />
-      <form class={styles.inputLocation}>
-        <Header mode={mode} />
+          <div class={styles.inputLocationContainer}>
+            <InputLocation
+              mode={mode}
+              type={"start"}
+              inputLocation={startLocation}
+              options={options}
+              inputField={startInputField}
+              showSig={showSig}
+            />
 
-        <div class={styles.inputLocationContainer}>
-          <InputLocation
-            mode={mode}
-            type={"start"}
-            inputLocation={startLocation}
-            options={options}
-            inputField={startInputField}
-            showSig={showSig}
-          />
-
-          <InputLocation
-            mode={mode}
-            type={"end"}
-            inputLocation={endLocation}
-            options={options}
-            inputField={endInputField}
-            showSig={showSig}
-          />
-        </div>
-        <button class={styles.inputSubmit}>提交</button>
-      </form>
-    </>
-  );
-});
+            <InputLocation
+              mode={mode}
+              type={"end"}
+              inputLocation={endLocation}
+              options={options}
+              inputField={endInputField}
+              showSig={showSig}
+            />
+          </div>
+          <button
+            class={styles.inputSubmit}
+            preventdefault:click
+            onClick$={() => {
+              console.log("submit", searchSettings);
+            }}
+          >
+            提交
+          </button>
+        </form>
+      </>
+    );
+  }
+);
