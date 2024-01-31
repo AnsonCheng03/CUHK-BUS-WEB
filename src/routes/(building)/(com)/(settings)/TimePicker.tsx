@@ -66,7 +66,7 @@ export const TimePicker = ({
           {[...Array(24).keys()].map((hour: any) => {
             hour = ("0" + hour).slice(-2);
             return (
-              <option value={`${hour}`} key={`${hour}`}>
+              <option value={`${parseInt(hour)}`} key={`${hour}`}>
                 {`${hour}`}
               </option>
             );
@@ -85,7 +85,7 @@ export const TimePicker = ({
           {[...Array(60 / 5).keys()].map((minute: any) => {
             minute = ("0" + minute * 5).slice(-2);
             return (
-              <option value={`${minute}`} key={`${minute}`}>
+              <option value={`${parseInt(minute)}`} key={`${minute}`}>
                 {`${minute}`}
               </option>
             );
