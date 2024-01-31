@@ -4,7 +4,7 @@ export const TimePicker = ({
   searchSettings,
 }: {
   searchSettings: {
-    requiredTime: [string, string, number, number];
+    requiredTime: (string | number)[];
   };
 }) => {
   return (

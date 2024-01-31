@@ -6,7 +6,7 @@ export const Toggles = ({
   searchSettings: {
     showAllRoutes: boolean;
     departNow: boolean;
-    searchRoute: string[];
+    searchRoute: string[][];
   };
 }) => {
   return (
@@ -28,7 +28,10 @@ export const Toggles = ({
           type="checkbox"
           name="toggle-depart-now"
           id="toggle-depart-now"
-          onChange$={() => {
+          preventdefault:click
+          onClick$={() => {
+            if (searchSettings.searchRoute[0][0] == "ERROR")
+              return (searchSettings.departNow = false);
             searchSettings.departNow = !searchSettings.departNow;
           }}
           checked={searchSettings.departNow}

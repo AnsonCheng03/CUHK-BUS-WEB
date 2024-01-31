@@ -11,7 +11,7 @@ export default component$(
     searchSettings: {
       showAllRoutes: boolean;
       departNow: boolean;
-      searchRoute: string[];
+      searchRoute: string[][];
       requiredTime: (string | number)[];
     };
   }) => {
@@ -28,29 +28,34 @@ export default component$(
 
     const fetchBusStatusTask = $(async () => {
       const res = await fetchBusStatus();
-      if (!res.ok)
-        res.json = async () => {
-          return {
-            "1": {},
-            "2": {
-              網路錯誤: "no",
-            },
-            // "2022-09-06 00:28:22": {
-            //   ERROR: "fetch",
-            // },
-          };
-        };
+      if (!res.ok) {
+        searchSettings.searchRoute[0] = searchSettings.searchRoute[1] = [
+          "ERROR",
+        ];
+        availableRoutes.value = [["網絡錯誤", "no"]];
+        searchSettings.departNow = false;
+        return;
+      }
       const data = await res.json();
       if (!data) return;
-      const allRoutes = Object.entries(data).sort().pop();
-      if (!allRoutes) return;
-      const routes = allRoutes[1];
-      if (!routes) return;
-      availableRoutes.value = Object.entries(routes);
+      const allRoutes = Object.entries(data).sort();
+      const latest30Routes = allRoutes.slice(-30).map(([, routes]) => routes);
+      const [prevRoutes, currentRoutes] = [
+        latest30Routes[0],
+        latest30Routes[29],
+      ];
+
+      if (!currentRoutes) return;
+      availableRoutes.value = Object.entries(currentRoutes);
       // update searchSettings.searchRoute
-      searchSettings.searchRoute = availableRoutes.value
+      searchSettings.searchRoute[0] = availableRoutes.value
         .filter(([, status]) => status !== "suspended" && status !== "no")
         .map(([route]) => route);
+      if (!prevRoutes) return;
+      searchSettings.searchRoute[1] = Object.entries(prevRoutes)
+        .filter(([, status]) => status !== "suspended" && status !== "no")
+        .map(([route]) => route);
+      console.log(allRoutes);
     });
 
     useVisibleTask$(async () => {
@@ -69,5 +74,5 @@ export default component$(
         <ShowAvailableRoutes BusStatus={availableRoutes.value} />
       </div>
     );
-  },
+  }
 );

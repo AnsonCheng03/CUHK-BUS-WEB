@@ -9,7 +9,7 @@ export default component$(() => {
   const searchSettings = useStore({
     showAllRoutes: false,
     departNow: true,
-    searchRoute: [""],
+    searchRoute: [[""], [""]],
     requiredTime: [
       ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"][
         new Date().getDay() - 1
