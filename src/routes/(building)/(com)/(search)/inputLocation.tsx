@@ -222,7 +222,8 @@ export default component$(
       });
     });
 
-    useVisibleTask$(async () => {
+    useVisibleTask$(async ({ track }) => {
+      track(() => mode.value);
       const res = await fetchBusDetails();
       if (!res.ok) {
         return;
