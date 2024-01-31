@@ -110,7 +110,6 @@ const InputLocation = component$(
                     return;
                   }
                   res.json().then((data) => {
-                    console.log(data);
                     showSig.value = [
                       mode.value === "building"
                         ? inputField.value
