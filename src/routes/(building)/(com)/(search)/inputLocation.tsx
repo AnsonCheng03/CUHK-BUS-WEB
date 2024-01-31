@@ -1,4 +1,10 @@
-import { $, component$, useSignal, type Signal } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  useSignal,
+  type Signal,
+  useVisibleTask$,
+} from "@builder.io/qwik";
 import styles from "./inputLocation.module.css";
 import GPSIcon from "../../(assets)/GPS.jpg";
 import { autoComplete } from "./(component)/autoCompleteFunction";
@@ -52,33 +58,70 @@ const InputLocation = component$(
     type,
     inputLocation,
     options,
+    inputField,
+    showSig,
   }: {
     mode: Signal<"building" | "station">;
     type: string;
     inputLocation: Signal<string>;
-    options: Signal<[string]>;
+    options: Signal<[string, string, "building" | "station"][]>;
+    inputField: Signal<HTMLInputElement | null>;
+    showSig: Signal<
+      [HTMLInputElement | "Loading" | null, [string, number][]] | [[], []]
+    >;
   }) => {
     return (
       <div class={styles.inputLocationStart}>
         <div class={styles.inputLocationTitleContainer}>
-          <span class={styles.inputLocationTitle}>起點</span>
+          <span class={styles.inputLocationTitle}>
+            {type === "start" ? "起點" : "終點"}
+          </span>
           <button
             class={styles.inputLocationButton}
             preventdefault:click
             onClick$={() => {
+              const formData = new FormData();
+              formData.append("action", "getGPSNearest");
+
               if (navigator.geolocation) {
+                showSig.value = ["Loading", []];
                 navigator.geolocation.getCurrentPosition((position) => {
-                  const lat = position.coords.latitude;
-                  const lng = position.coords.longitude;
-                  showSig.value = [
-                    type,
-                    [
-                      ["大學體育中心", 1],
-                      ["邵逸夫堂", 2],
-                      ["賽馬會教學樓", 3],
-                      ["賽馬會綜藝館", 4],
-                    ],
-                  ];
+                  formData.append("lat", position.coords.latitude.toString());
+                  formData.append("lng", position.coords.longitude.toString());
+
+                  const data = fetch(
+                    "https://cu-bus.online/Essential/functions/api.php",
+                    {
+                      method: "POST",
+                      body: formData,
+                      cache: "no-store",
+                      mode: "cors", // no-cors, *cors, same-origin
+                      redirect: "follow", // manual, *follow, error
+                      credentials: "same-origin", // include, *same-origin, omit
+                      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
+                    }
+                  );
+
+                  data.then((res) => {
+                    if (!res.ok) {
+                      return;
+                    }
+                    res.json().then((data) => {
+                      console.log(data);
+                      showSig.value = [
+                        inputField.value,
+                        data.map(
+                          ({
+                            Location,
+                            distance,
+                          }: {
+                            Location: string;
+                            distance: number;
+                          }) => [Location, distance]
+                        ),
+                      ];
+                    });
+                  });
                 });
               }
             }}
@@ -96,7 +139,6 @@ const InputLocation = component$(
               name="start-location"
               id="start-location"
               bind:value={inputLocation}
-              placeholder="卡號/電話號碼/中文姓名"
             ></input>
             <img
               src="~/../LoadInputStart"
@@ -107,7 +149,7 @@ const InputLocation = component$(
                 const input = img.previousSibling;
                 img && img.remove();
                 input && input.focus();
-                autoComplete(input, options.value);
+                inputField.value = input;
               }}
             />
           </div>
@@ -118,10 +160,13 @@ const InputLocation = component$(
               name="start-station"
               id="start-station"
             >
-              <option value="1">大學體育中心</option>
-              <option value="2">邵逸夫堂</option>
-              <option value="3">賽馬會教學樓</option>
-              <option value="4">賽馬會綜藝館</option>
+              {options.value
+                .filter(([, , type]) => type === "station")
+                ?.map(([code, name]) => (
+                  <option value={code} key={code}>
+                    {name}
+                  </option>
+                ))}
             </select>
           </div>
         )}
@@ -131,12 +176,50 @@ const InputLocation = component$(
 );
 
 export default component$(() => {
-  const mode = useSignal<"building" | "station">("station");
+  const mode = useSignal<"building" | "station">("building");
   const startLocation = useSignal("");
   const endLocation = useSignal("");
-  const options = useSignal([]);
+  const options = useSignal<[string, string, "building" | "station"][]>([]);
+  const startInputField = useSignal<HTMLInputElement | null>(null);
+  const endInputField = useSignal<HTMLInputElement | null>(null);
 
-  const showSig = useSignal<[string, [string, number][]] | [[], []]>([[], []]);
+  const showSig = useSignal<
+    [HTMLInputElement | "Loading" | null, [string, number][]] | [[], []]
+  >([[], []]);
+
+  const fetchBusDetails = $(() => {
+    const formData = new FormData();
+    formData.append("action", "getData");
+
+    return fetch("https://cu-bus.online/Essential/functions/api.php", {
+      method: "POST",
+      body: formData,
+      cache: "no-store",
+      mode: "cors", // no-cors, *cors, same-origin
+      redirect: "follow", // manual, *follow, error
+      credentials: "same-origin", // include, *same-origin, omit
+      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
+    });
+  });
+
+  useVisibleTask$(async () => {
+    const res = await fetchBusDetails();
+    if (!res.ok) {
+      return;
+    }
+    options.value = await res.json();
+
+    const autoCompleteField: string[] = options.value.map(([code, name]) => {
+      return `${name} (${code})`;
+    });
+
+    setTimeout(() => {
+      startInputField.value &&
+        autoComplete(startInputField.value, autoCompleteField);
+      endInputField.value &&
+        autoComplete(endInputField.value, autoCompleteField);
+    }, 700);
+  });
 
   return (
     <>
@@ -150,6 +233,8 @@ export default component$(() => {
             type={"start"}
             inputLocation={startLocation}
             options={options}
+            inputField={startInputField}
+            showSig={showSig}
           />
 
           <InputLocation
@@ -157,6 +242,8 @@ export default component$(() => {
             type={"end"}
             inputLocation={endLocation}
             options={options}
+            inputField={endInputField}
+            showSig={showSig}
           />
         </div>
         <button class={styles.inputSubmit}>提交</button>

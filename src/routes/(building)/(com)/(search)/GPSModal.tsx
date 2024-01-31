@@ -10,10 +10,12 @@ export const GPSModal = component$(
   ({
     showSig,
   }: {
-    showSig: Signal<[string, [string, number][]] | [[], []]>;
+    showSig: Signal<
+      [HTMLInputElement | "Loading" | null, [string, number][]] | [[], []]
+    >;
   }) => {
     return (
-      showSig.value[1].length > 0 && (
+      (showSig.value[0] === "Loading" || showSig.value[1].length > 0) && (
         <div class={styles.modal}>
           <div class={styles.modalContent}>
             <div class={styles.modalHeader}>
@@ -28,14 +30,27 @@ export const GPSModal = component$(
               </button>
             </div>
             <div class={styles.modalBody}>
-              {showSig.value[1].map((station) => {
-                return (
-                  <div class={styles.modalStation} key={station[0]}>
-                    <p class={styles.modalStationName}>{station[0]}</p>
-                    <p class={styles.modalStationDistance}>{station[1]}m</p>
-                  </div>
-                );
-              })}
+              {showSig.value[0] === "Loading" ? (
+                <div class={styles.modalLoading}>Loading...</div>
+              ) : (
+                showSig.value[1].map((station) => {
+                  return (
+                    <div
+                      class={styles.modalStation}
+                      key={station[0]}
+                      onClick$={() => {
+                        if (!showSig.value[0]) return;
+                        (showSig.value[0] as HTMLInputElement).value =
+                          station[0];
+                        showSig.value = [[], []];
+                      }}
+                    >
+                      <p class={styles.modalStationName}>{station[0]}</p>
+                      <p class={styles.modalStationDistance}>{station[1]}m</p>
+                    </div>
+                  );
+                })
+              )}
             </div>
           </div>
         </div>

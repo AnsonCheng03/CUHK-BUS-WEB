@@ -50,3 +50,14 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.modalLoading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+  padding: 5%;
+}
