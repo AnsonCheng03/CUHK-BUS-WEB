@@ -1,0 +1,13 @@
+.building {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  padding: 20px;
+  column-gap: 15px;
+}
+
+@media (max-width: 1024px) {
+  .building {
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+  }
+}

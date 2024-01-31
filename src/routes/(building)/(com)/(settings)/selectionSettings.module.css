@@ -1,0 +1,189 @@
+.busStatus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: #fff;
+  color: #333;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.toggles {
+  width: 90%;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 5%;
+  row-gap: 10%;
+}
+
+.toggleAllRoutes,
+.toggleDepartNow {
+  position: relative;
+  width: 100%;
+  height: 100px;
+}
+
+.toggleAllRoutes input[type="checkbox"],
+.toggleDepartNow input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.toggleAllRoutes label,
+.toggleDepartNow label {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: #eee;
+  border: 1.5px solid #eee;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border 0.25s ease-in-out,
+    font-weight 0.25s ease-in-out;
+}
+
+.toggleAllRoutes input[type="checkbox"]:checked + label,
+.toggleDepartNow input[type="checkbox"]:checked + label {
+  border: 1.5px solid #822e6b;
+  font-weight: bold;
+}
+
+.toggleDepartNow label::before {
+  content: "稍後";
+}
+
+.toggleDepartNow input[type="checkbox"]:checked + label::before {
+  content: "現在";
+}
+
+.availableRoutes {
+  width: 90%;
+  margin: 10px auto 30px auto;
+}
+
+.availableRoutesTitleContainer {
+  display: flex;
+  align-items: center;
+}
+
+.availableRoutesTitle {
+  display: inline-block;
+  margin: 0;
+  margin-right: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.availableRoutesTagContainer {
+  margin-top: 1%;
+}
+
+.availableRoutesTag::before {
+  content: "";
+  background-color: #229926;
+  box-shadow: 0 0 10px rgba(20%, 20%, 40%, 0.2);
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin-right: 14px;
+}
+
+.availableRoutesTag,
+.availableRoutesTagExample {
+  display: inline-block;
+  width: fitContent;
+  margin: 5px;
+  padding: 5px 18px;
+  line-height: calc(1.2rem);
+  border: 1px solid#229926;
+  border-radius: 5px;
+  user-select: none;
+  cursor: pointer;
+  transition: border 0.25s ease-in-out;
+}
+
+.availableRoutesTagExample {
+  margin: 0 5px;
+  border-color: #229926;
+  padding: 5px 10px;
+}
+
+.availableRoutesTag.no::before {
+  background-color: #666666;
+}
+
+.availableRoutesTagExample.no,
+.availableRoutesTag.no {
+  border-color: #666666;
+}
+
+.availableRoutesTag.suspended::before {
+  background-color: #ff0000;
+}
+
+.availableRoutesTagExample.suspended,
+.availableRoutesTag.suspended {
+  border-color: #ff0000;
+}
+
+.availableRoutesTag.delay::before {
+  background-color: #8b8000;
+}
+
+.availableRoutesTagExample.delay,
+.availableRoutesTag.delay {
+  border-color: #8b8000;
+}
+
+.availableRoutesTag:hover,
+.availableRoutesTagExample:hover {
+  border: 1px solid #007bff;
+}
+
+.timePicker {
+  display: flex;
+  width: 90%;
+  margin: 2px 0 10px 0;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5%;
+  gap: 5%;
+}
+
+.timeGroup {
+  width: 100%;
+  display: flex;
+}
+
+.timeGroup > span {
+  width: 50%;
+  display: grid;
+  place-self: center;
+  text-align: center;
+}
+
+.selectTime {
+  width: 100%;
+  background-color: #f0f0f0;
+  border: transparent;
+  outline: transparent;
+  font-size: 1rem;
+  text-align-last: center;
+  padding: 7px 12px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
