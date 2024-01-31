@@ -40,23 +40,22 @@ export function autoComplete(inp: HTMLInputElement, arr: string[]) {
         addActive(divElements);
       } else if (e.keyCode == 13) {
         if (currentFocus > -1) {
-          if (divElements) divElements[currentFocus]?.click();
+          divElements[currentFocus].click();
         }
       }
     }
   });
 
   function addActive(x: HTMLCollectionOf<HTMLDivElement>) {
-    if (!x) return false;
     removeActive(x);
     if (currentFocus >= x.length) currentFocus = 0;
     if (currentFocus < 0) currentFocus = x.length - 1;
-    x[currentFocus]?.classList.add("autoComplete-active");
+    x[currentFocus].classList.add("autoComplete-active");
   }
 
   function removeActive(x: HTMLCollectionOf<HTMLDivElement>) {
     for (let i = 0; i < x.length; i++) {
-      x[i]?.classList.remove("autoComplete-active");
+      x[i].classList.remove("autoComplete-active");
     }
   }
 
@@ -64,7 +63,7 @@ export function autoComplete(inp: HTMLInputElement, arr: string[]) {
     const x = document.getElementsByClassName("autoComplete-items");
     for (let i = 0; i < x.length; i++) {
       if (elmnt != x[i] && elmnt != inp) {
-        x[i]?.parentNode?.removeChild(x[i]);
+        x[i].parentNode?.removeChild(x[i]);
       }
     }
   }

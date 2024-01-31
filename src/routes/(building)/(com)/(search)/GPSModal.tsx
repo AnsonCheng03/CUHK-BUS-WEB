@@ -67,7 +67,7 @@ export const GPSModal = component$(
         </div>
       )
     );
-  }
+  },
 );
 
 export function CloseIcon(props: QwikIntrinsicElements["svg"], key: string) {

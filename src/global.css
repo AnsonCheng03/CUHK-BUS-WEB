@@ -14,6 +14,7 @@ body {
   background-color: #f5f6fa;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
+  overscroll-behavior: none;
 }
 
 ::-webkit-scrollbar {

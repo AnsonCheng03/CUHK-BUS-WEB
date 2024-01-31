@@ -73,5 +73,5 @@ export default component$(
         <ShowAvailableRoutes BusStatus={availableRoutes.value} />
       </div>
     );
-  }
+  },
 );

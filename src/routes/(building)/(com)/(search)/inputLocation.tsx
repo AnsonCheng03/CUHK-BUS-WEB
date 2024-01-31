@@ -49,7 +49,7 @@ const Header = component$(
         </div>
       </div>
     </div>
-  )
+  ),
 );
 
 const InputLocation = component$(
@@ -84,54 +84,52 @@ const InputLocation = component$(
               const formData = new FormData();
               formData.append("action", "getGPSNearest");
 
-              if (navigator.geolocation) {
-                showSig.value = ["Loading", []];
-                navigator.geolocation.getCurrentPosition((position) => {
-                  formData.append("lat", position.coords.latitude.toString());
-                  formData.append("lng", position.coords.longitude.toString());
+              showSig.value = ["Loading", []];
+              navigator.geolocation.getCurrentPosition((position) => {
+                formData.append("lat", position.coords.latitude.toString());
+                formData.append("lng", position.coords.longitude.toString());
 
-                  const data = fetch(
-                    "https://cu-bus.online/Essential/functions/api.php",
-                    {
-                      method: "POST",
-                      body: formData,
-                      cache: "no-store",
-                      mode: "cors", // no-cors, *cors, same-origin
-                      redirect: "follow", // manual, *follow, error
-                      credentials: "same-origin", // include, *same-origin, omit
-                      referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
-                    }
-                  );
+                const data = fetch(
+                  "https://cu-bus.online/Essential/functions/api.php",
+                  {
+                    method: "POST",
+                    body: formData,
+                    cache: "no-store",
+                    mode: "cors", // no-cors, *cors, same-origin
+                    redirect: "follow", // manual, *follow, error
+                    credentials: "same-origin", // include, *same-origin, omit
+                    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
+                  },
+                );
 
-                  data.then((res) => {
-                    if (!res.ok) {
-                      return;
-                    }
-                    res.json().then((data) => {
-                      console.log(data);
-                      showSig.value = [
-                        mode.value === "building"
-                          ? inputField.value
-                          : document.querySelector(`#${type}-station`),
-                        data.map(
-                          ({
-                            Location,
-                            Name,
-                            distance,
-                          }: {
-                            Location: string;
-                            Name: string;
-                            distance: number;
-                          }) => [Location, Name, distance]
-                        ),
-                      ];
-                    });
+                data.then((res) => {
+                  if (!res.ok) {
+                    return;
+                  }
+                  res.json().then((data) => {
+                    console.log(data);
+                    showSig.value = [
+                      mode.value === "building"
+                        ? inputField.value
+                        : document.querySelector(`#${type}-station`),
+                      data.map(
+                        ({
+                          Location,
+                          Name,
+                          distance,
+                        }: {
+                          Location: string;
+                          Name: string;
+                          distance: number;
+                        }) => [Location, Name, distance],
+                      ),
+                    ];
                   });
                 });
-              }
+              });
             }}
           >
-            <img src={GPSIcon} alt="GPSIcon" />
+            <img src={GPSIcon} alt="GPSIcon" width={24} height={24} />
           </button>
         </div>
 
@@ -167,7 +165,7 @@ const InputLocation = component$(
             >
               {options.value
                 .filter(([, , type]) => type === "station")
-                ?.map(([code, name]) => (
+                .map(([code, name]) => (
                   <option value={code} key={code}>
                     {name}
                   </option>
@@ -177,7 +175,7 @@ const InputLocation = component$(
         )}
       </div>
     );
-  }
+  },
 );
 
 export default component$(() => {
