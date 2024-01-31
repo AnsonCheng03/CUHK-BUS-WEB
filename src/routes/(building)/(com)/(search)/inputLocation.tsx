@@ -67,7 +67,8 @@ const InputLocation = component$(
     options: Signal<[string, string, "building" | "station"][]>;
     inputField: Signal<HTMLInputElement | null>;
     showSig: Signal<
-      [HTMLInputElement | "Loading" | null, [string, number][]] | [[], []]
+      | [HTMLInputElement | "Loading" | null, [string, string, number][]]
+      | [[], []]
     >;
   }) => {
     return (
@@ -109,15 +110,19 @@ const InputLocation = component$(
                     res.json().then((data) => {
                       console.log(data);
                       showSig.value = [
-                        inputField.value,
+                        mode.value === "building"
+                          ? inputField.value
+                          : document.querySelector(`#${type}-station`),
                         data.map(
                           ({
                             Location,
+                            Name,
                             distance,
                           }: {
                             Location: string;
+                            Name: string;
                             distance: number;
-                          }) => [Location, distance]
+                          }) => [Location, Name, distance]
                         ),
                       ];
                     });
@@ -157,8 +162,8 @@ const InputLocation = component$(
           <div class={styles.selectStation}>
             <select
               class={styles.selectStationSelect}
-              name="start-station"
-              id="start-station"
+              name={`${type}-station`}
+              id={`${type}-station`}
             >
               {options.value
                 .filter(([, , type]) => type === "station")
@@ -184,7 +189,7 @@ export default component$(() => {
   const endInputField = useSignal<HTMLInputElement | null>(null);
 
   const showSig = useSignal<
-    [HTMLInputElement | "Loading" | null, [string, number][]] | [[], []]
+    [HTMLInputElement | "Loading" | null, [string, string, number][]] | [[], []]
   >([[], []]);
 
   const fetchBusDetails = $(() => {
@@ -223,7 +228,7 @@ export default component$(() => {
 
   return (
     <>
-      <GPSModal showSig={showSig} />
+      <GPSModal showSig={showSig} mode={mode} />
       <form class={styles.inputLocation}>
         <Header mode={mode} />
 

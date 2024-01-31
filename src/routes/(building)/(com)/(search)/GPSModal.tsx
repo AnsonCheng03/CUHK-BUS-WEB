@@ -9,10 +9,13 @@ import styles from "./modal.module.css";
 export const GPSModal = component$(
   ({
     showSig,
+    mode,
   }: {
     showSig: Signal<
-      [HTMLInputElement | "Loading" | null, [string, number][]] | [[], []]
+      | [HTMLInputElement | "Loading" | null, [string, string, number][]]
+      | [[], []]
     >;
+    mode: Signal<"building" | "station">;
   }) => {
     return (
       (showSig.value[0] === "Loading" || showSig.value[1].length > 0) && (
@@ -40,13 +43,21 @@ export const GPSModal = component$(
                       key={station[0]}
                       onClick$={() => {
                         if (!showSig.value[0]) return;
-                        (showSig.value[0] as HTMLInputElement).value =
-                          station[0];
+                        if (mode.value === "building")
+                          (showSig.value[0] as HTMLInputElement).value =
+                            `${station[1]} (${station[0]})`;
+                        // change <select> value
+                        else
+                          (showSig.value[0] as HTMLInputElement).value =
+                            station[0];
+                        console.log(station[0]);
                         showSig.value = [[], []];
                       }}
                     >
-                      <p class={styles.modalStationName}>{station[0]}</p>
-                      <p class={styles.modalStationDistance}>{station[1]}m</p>
+                      <p class={styles.modalStationName}>{station[1]}</p>
+                      <p class={styles.modalStationDistance}>
+                        {Math.round(station[2] * 100) / 100}m
+                      </p>
                     </div>
                   );
                 })

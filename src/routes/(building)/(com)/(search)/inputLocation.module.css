@@ -206,3 +206,8 @@
   -moz-appearance: none;
   appearance: none;
 }
+
+.selectStationSelectStart,
+.selectStationSelectEnd {
+  display: inline-flex;
+}
