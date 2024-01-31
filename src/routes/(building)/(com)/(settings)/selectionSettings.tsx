@@ -55,7 +55,6 @@ export default component$(
       searchSettings.searchRoute[1] = Object.entries(prevRoutes)
         .filter(([, status]) => status !== "suspended" && status !== "no")
         .map(([route]) => route);
-      console.log(allRoutes);
     });
 
     useVisibleTask$(async () => {

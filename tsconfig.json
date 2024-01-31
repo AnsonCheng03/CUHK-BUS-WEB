@@ -27,6 +27,7 @@
     "./src/routes/(building)/(com)/(settings)/ShowAvailableRoutes.tsx",
     "./src/routes/(building)/(com)/(settings)/Toggles.tsx",
     "./src/routes/(building)/(com)/(settings)/TimePicker.tsx",
+    "./src/routes/(building)/(com)/(search)/GPSModal.tsx",
   ],
   "include": ["src", "./*.d.ts", "./*.config.ts"],
 }
