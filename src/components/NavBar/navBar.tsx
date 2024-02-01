@@ -9,7 +9,7 @@ export default component$(() => {
       <div class={styles.hamburger}>
         <div class={styles.bar}></div>
       </div>
-      <p class={styles.logo}>中大校巴資訊站</p>
+      <h1 class={styles.logo}>中大校巴資訊站</h1>
       <div class={styles.blur}></div>
       <ul>
         <li>
@@ -19,6 +19,9 @@ export default component$(() => {
         </li>
         <li>
           <Link href="/">到站時間</Link>
+        </li>
+        <li>
+          <Link href="/">有用Links</Link>
         </li>
       </ul>
     </nav>

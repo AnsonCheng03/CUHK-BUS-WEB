@@ -28,7 +28,7 @@
     "./src/routes/(building)/(com)/(settings)/TimePicker.tsx",
     "./src/routes/(building)/(com)/(search)/GPSModal.tsx",
     "./src/routes/(building)/(com)/(search)/Header.tsx",
-    "./src/routes/(building)/(com)/(search)/InputLocation.1.tsx",
+    "src/routes/(building)/(com)/(search)/InputLocationBox.tsx",
   ],
   "include": ["src", "./*.d.ts", "./*.config.ts"],
 }

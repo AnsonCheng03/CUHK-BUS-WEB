@@ -9,7 +9,7 @@ import styles from "./modal.module.css";
 export const GPSModal = component$(
   ({
     showSig,
-    mode,
+    inputLocation,
   }: {
     showSig: Signal<
       | [
@@ -18,7 +18,7 @@ export const GPSModal = component$(
         ]
       | [[], []]
     >;
-    mode: Signal<"building" | "station">;
+    inputLocation: [Signal<string>, Signal<string>];
   }) => {
     return (
       (showSig.value[0] === "Loading" || showSig.value[1].length > 0) && (
@@ -46,14 +46,15 @@ export const GPSModal = component$(
                       key={station[0]}
                       onClick$={() => {
                         if (!showSig.value[0]) return;
-                        if (mode.value === "building")
-                          (showSig.value[0] as HTMLInputElement).value =
-                            `${station[1]} (${station[0]})`;
-                        // change <select> value
-                        else
-                          (showSig.value[0] as HTMLInputElement).value =
-                            station[0];
-                        console.log(station[0]);
+                        (showSig.value[0] as HTMLInputElement).value =
+                          `${station[1]} (${station[0]})`;
+                        inputLocation[
+                          (showSig.value[0] as HTMLInputElement).id.includes(
+                            "start"
+                          )
+                            ? 0
+                            : 1
+                        ].value = `${station[1]} (${station[0]})`;
                         showSig.value = [[], []];
                       }}
                     >

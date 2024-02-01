@@ -1,4 +1,10 @@
-export function autoComplete(inp: HTMLInputElement, arr: string[]) {
+import { type Signal } from "@builder.io/qwik";
+
+export function autoComplete(
+  inp: HTMLInputElement,
+  arr: string[],
+  inputSignal: Signal<string>
+) {
   let currentFocus: number;
 
   inp.addEventListener("input", function (this: HTMLInputElement) {
@@ -21,6 +27,7 @@ export function autoComplete(inp: HTMLInputElement, arr: string[]) {
         b.innerHTML += `<input type='hidden' value='${arr[i]}'>`;
         b.addEventListener("click", function (this: HTMLElement) {
           inp.value = this.getElementsByTagName("input")[0].value;
+          inputSignal.value = inp.value;
           closeAllLists();
         });
         a.appendChild(b);

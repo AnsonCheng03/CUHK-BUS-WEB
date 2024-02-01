@@ -91,9 +91,12 @@ export const InputLocation = component$(
               class={styles.inputLocationInput}
               type="text"
               autoComplete={"off"}
-              name="start-location"
-              id="start-location"
-              bind:value={inputLocation}
+              name={`${type}-location`}
+              id={`${type}-location`}
+              value={inputLocation.value}
+              onChange$={(e: any) => {
+                if (inputLocation.value !== e.target.value) e.target.value = "";
+              }}
             ></input>
             <img
               src="~/../LoadInputStart"
@@ -114,11 +117,12 @@ export const InputLocation = component$(
               class={styles.selectStationSelect}
               name={`${type}-station`}
               id={`${type}-station`}
+              bind:value={inputLocation}
             >
               {options.value
                 .filter(([, , type]) => type === "station")
                 .map(([code, name]) => (
-                  <option value={code} key={code}>
+                  <option value={`${name} (${code})`} key={code}>
                     {name}
                   </option>
                 ))}

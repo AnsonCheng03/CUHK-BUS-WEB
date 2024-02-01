@@ -3,7 +3,7 @@ import styles from "./inputLocation.module.css";
 import { autoComplete } from "./(component)/autoCompleteFunction";
 import { GPSModal } from "./GPSModal";
 import { Header } from "./Header";
-import { InputLocation } from "./InputLocation.1";
+import { InputLocation } from "./InputLocationBox";
 
 export default component$(
   ({
@@ -60,15 +60,18 @@ export default component$(
 
       setTimeout(() => {
         startInputField.value &&
-          autoComplete(startInputField.value, autoCompleteField);
+          autoComplete(startInputField.value, autoCompleteField, startLocation);
         endInputField.value &&
-          autoComplete(endInputField.value, autoCompleteField);
+          autoComplete(endInputField.value, autoCompleteField, endLocation);
       }, 150);
     });
 
     return (
       <>
-        <GPSModal showSig={showSig} mode={mode} />
+        <GPSModal
+          showSig={showSig}
+          inputLocation={[startLocation, endLocation]}
+        />
         <form class={styles.inputLocation}>
           <Header mode={mode} />
 
@@ -95,7 +98,60 @@ export default component$(
             class={styles.inputSubmit}
             preventdefault:click
             onClick$={() => {
-              console.log("submit", searchSettings);
+              const formData = new FormData();
+
+              // Append search settings
+              formData.append("action", "getRoute");
+              formData.append(
+                "showAllRoutes",
+                searchSettings.showAllRoutes ? "1" : "0"
+              );
+              if (searchSettings.departNow) {
+                formData.append(
+                  "departNow",
+                  JSON.stringify(searchSettings.searchRoute)
+                );
+              } else {
+                formData.append(
+                  "requiredTime",
+                  JSON.stringify(searchSettings.requiredTime)
+                );
+              }
+
+              // Append start and end location
+              formData.append("mode", mode.value);
+
+              if (mode.value === "building") {
+                const startingLocation = startInputField.value
+                  ? startInputField.value.value
+                  : "";
+                const endingLocation = endInputField.value
+                  ? endInputField.value.value
+                  : "";
+                // Find the code of the building (get the content inside the last pair of bracket only)
+                formData.append(
+                  "startLocation",
+                  startingLocation.slice(
+                    startingLocation.lastIndexOf("(") + 1,
+                    startingLocation.lastIndexOf(")")
+                  )
+                );
+                formData.append(
+                  "endLocation",
+                  endingLocation.slice(
+                    endingLocation.lastIndexOf("(") + 1,
+                    endingLocation.lastIndexOf(")")
+                  )
+                );
+              } else {
+                formData.append("startLocation", startLocation.value);
+                formData.append("endLocation", endLocation.value);
+              }
+
+              console.log("submit");
+              for (const pair of formData.entries()) {
+                console.log(pair[0] + ", " + pair[1]);
+              }
             }}
           >
             提交
