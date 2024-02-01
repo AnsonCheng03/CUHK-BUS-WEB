@@ -59,7 +59,7 @@
   display: block;
   width: calc(100% - 1em);
   height: 100%;
-  border: 0 solid #007bff;
+  border: 0 solid rgb(142, 166, 216);
   padding: 0.5em;
   margin: 0;
   transition:
@@ -78,7 +78,7 @@
 }
 
 .inputLocationModeRadio:checked + label {
-  background-color: #007bff;
+  background-color: rgb(142, 166, 216);
   color: #fff;
 }
 
@@ -131,7 +131,7 @@
 .inputLocationInput:focus,
 .inputLocationInput:focus {
   outline: none;
-  border-bottom: 1px solid rgb(0, 113, 227);
+  border-bottom: 1px solid rgb(142, 166, 216);
 }
 
 .inputSubmit {
@@ -140,7 +140,7 @@
   margin: 10px auto;
   font-size: 0.87em;
   font-weight: bolder;
-  border: 1px solid #007bff;
+  border: 1px solid rgb(142, 166, 216);
   border-radius: 0.25rem;
   background-color: transparent;
   transition:
@@ -149,7 +149,7 @@
 }
 
 .inputSubmit:hover {
-  color: rgb(0, 113, 227);
+  color: rgb(142, 166, 216);
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -185,11 +185,11 @@
   word-break: break-word;
 }
 .autoComplete > div > div:hover {
-  background-color: #007bff;
+  background-color: rgb(142, 166, 216);
   color: #fff;
 }
 .autoComplete-active {
-  background-color: #007bff !important;
+  background-color: rgb(142, 166, 216) !important;
   color: #fff;
 }
 
