@@ -143,10 +143,14 @@ export default component$(
               formData.append("mode", mode.value);
 
               const startingLocation = startInputField.value
-                ? startInputField.value.value
+                ? mode.value == "building"
+                  ? startInputField.value.value
+                  : startLocation.value
                 : "";
               const endingLocation = endInputField.value
-                ? endInputField.value.value
+                ? mode.value == "building"
+                  ? endInputField.value.value
+                  : endLocation.value
                 : "";
 
               if (startingLocation === "" || endingLocation === "") {

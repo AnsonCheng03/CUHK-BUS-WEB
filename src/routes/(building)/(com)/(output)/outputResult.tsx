@@ -26,15 +26,15 @@ const RouteHeader = ({
 }) => (
   <div class={styles.outputResultHeader}>
     <p class={styles.outputResultBusNo}>{BusNo}</p>
-    <p class={styles.outputResultDuration}>
-      車程 {(Time / 60).toFixed(0)} 分鐘
-    </p>
     {Warning &&
       Warning.map((warning, index) => (
         <p key={index} class={styles.outputResultWarning}>
           {warning}
         </p>
       ))}
+    <p class={styles.outputResultDuration}>
+      車程 {(Time / 60).toFixed(0)} 分鐘
+    </p>
   </div>
 );
 
