@@ -52,7 +52,7 @@ export const InputLocation = component$(
                     redirect: "follow", // manual, *follow, error
                     credentials: "same-origin", // include, *same-origin, omit
                     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
-                  },
+                  }
                 );
 
                 data.then((res) => {
@@ -73,7 +73,7 @@ export const InputLocation = component$(
                           Location: string;
                           Name: string;
                           distance: number;
-                        }) => [Location, Name, distance],
+                        }) => [Location, Name, distance]
                       ),
                     ];
                   });
@@ -90,7 +90,8 @@ export const InputLocation = component$(
             <input
               class={styles.inputLocationInput}
               type="text"
-              autoComplete={"off"}
+              autoComplete="off"
+              autoCorrect="off"
               name={`${type}-location`}
               id={`${type}-location`}
               value={inputLocation.value}
@@ -131,5 +132,5 @@ export const InputLocation = component$(
         )}
       </div>
     );
-  },
+  }
 );

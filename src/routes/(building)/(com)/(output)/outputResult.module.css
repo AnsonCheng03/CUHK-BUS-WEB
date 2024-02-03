@@ -54,9 +54,8 @@
   margin: 0 5px;
   padding: 5px 15px;
   border-radius: 20px;
-  border: 1px solid #ff0000;
-  color: #ff0000;
-  background-color: #fff;
+  color: #fff;
+  background-color: #cc3300;
 }
 
 .outputResultArrivalTimeContainer {
