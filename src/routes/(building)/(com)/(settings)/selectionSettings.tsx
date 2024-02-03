@@ -21,12 +21,14 @@ export default component$(
 
     const fetchBusStatus = $(() => {
       // return fetch("/Data/Status.json", { cache: "no-store" });
+      console.log("fetchBusStatus");
       return fetch("https://cu-bus.online/Data/Status.json", {
         cache: "no-store",
       });
     });
 
     const fetchBusStatusTask = $(async () => {
+      console.log("fetchBusStatusTask");
       const res = await fetchBusStatus();
       if (!res.ok) {
         searchSettings.searchRoute[0] = searchSettings.searchRoute[1] = [
@@ -58,8 +60,10 @@ export default component$(
     });
 
     useVisibleTask$(async () => {
+      console.log("useVisibleTask$");
       await fetchBusStatusTask();
       setInterval(async () => {
+        console.log("setInterval");
         await fetchBusStatusTask();
       }, 60000);
     });
@@ -73,5 +77,5 @@ export default component$(
         <ShowAvailableRoutes BusStatus={availableRoutes.value} />
       </div>
     );
-  }
+  },
 );

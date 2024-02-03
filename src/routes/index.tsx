@@ -33,7 +33,7 @@ export default component$(() => {
     | null
     | "Loading"
   >(
-    null
+    null,
     // [
     // {
     //   Route: [

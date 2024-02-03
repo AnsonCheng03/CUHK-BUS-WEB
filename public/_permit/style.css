@@ -8,6 +8,7 @@ body {
   height: 100%;
   width: 100%;
   overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
   background: linear-gradient(
     45deg,
