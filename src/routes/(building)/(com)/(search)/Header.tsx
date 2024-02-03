@@ -11,14 +11,14 @@ export const Header = component$(
             class={styles.inputLocationModeRadio}
             type="radio"
             name="mode"
-            id="mode"
+            id="modeBuilding"
             value="building"
             checked={mode.value === "building"}
             onChange$={() => {
               mode.value = "building";
             }}
           />
-          <label class={styles.inputLocationModeLabel} for="mode">
+          <label class={styles.inputLocationModeLabel} for="modeBuilding">
             <span class={styles.inputLocationModeText}>輸入建築</span>
           </label>
         </div>
@@ -27,18 +27,18 @@ export const Header = component$(
             class={styles.inputLocationModeRadio}
             type="radio"
             name="mode"
-            id="mode"
+            id="modeStation"
             value="station"
             checked={mode.value === "station"}
             onChange$={() => {
               mode.value = "station";
             }}
           />
-          <label class={styles.inputLocationModeLabel} for="mode">
+          <label class={styles.inputLocationModeLabel} for="modeStation">
             <span class={styles.inputLocationModeText}>選取站名</span>
           </label>
         </div>
       </div>
     </div>
-  ),
+  )
 );
