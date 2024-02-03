@@ -11,10 +11,10 @@ export default component$(() => {
     departNow: true,
     searchRoute: [[""], [""]],
     requiredTime: [
-      ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"][
+      ["WK-Mon", "WK-Tue", "WK-Wed", "WK-Thu", "WK-Fri", "WK-Sat", "WK-Sun"][
         new Date().getDay() - 1
       ],
-      "教學日",
+      new Date().getDay() === 0 ? "HD" : "TD",
       new Date().getHours(),
       Math.ceil(new Date().getMinutes() / 5) * 5,
     ],
@@ -33,7 +33,7 @@ export default component$(() => {
     | null
     | "Loading"
   >(
-    null,
+    null
     // [
     // {
     //   Route: [

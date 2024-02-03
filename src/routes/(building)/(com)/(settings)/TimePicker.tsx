@@ -19,22 +19,22 @@ export const TimePicker = ({
         }}
       >
         {[
-          "星期一",
-          "星期二",
-          "星期三",
-          "星期四",
-          "星期五",
-          "星期六",
-          "星期日",
+          ["星期一", "WK-Mon"],
+          ["星期二", "WK-Tue"],
+          ["星期三", "WK-Wed"],
+          ["星期四", "WK-Thu"],
+          ["星期五", "WK-Fri"],
+          ["星期六", "WK-Sat"],
+          ["星期日", "WK-Sun"],
         ].map((day: any) => {
           return (
-            <option value={`${day}`} key={`${day}`}>
-              {`${day}`}
+            <option value={`${day[1]}`} key={`${day[1]}`}>
+              {`${day[0]}`}
             </option>
           );
         })}
       </select>
-      {searchSettings.requiredTime[0] !== "星期日" && (
+      {searchSettings.requiredTime[0] !== "WK-Sun" && (
         <select
           class={styles.selectTime}
           name="Travel-dayType"
@@ -44,10 +44,14 @@ export const TimePicker = ({
             searchSettings.requiredTime[1] = e.target.value;
           }}
         >
-          {["教學日", "非教學日", "假日"].map((day: any) => {
+          {[
+            ["教學日", "TD"],
+            ["非教學日", "NT"],
+            ["假日", "HD"],
+          ].map((day: any) => {
             return (
-              <option value={`${day}`} key={`${day}`}>
-                {`${day}`}
+              <option value={`${day[1]}`} key={`${day[1]}`}>
+                {`${day[0]}`}
               </option>
             );
           })}
