@@ -1,4 +1,10 @@
-import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import {
+  $,
+  component$,
+  useSignal,
+  useVisibleTask$,
+  type Signal,
+} from "@builder.io/qwik";
 import styles from "./inputLocation.module.css";
 import { autoComplete } from "./(component)/autoCompleteFunction";
 import { GPSModal } from "./GPSModal";
@@ -8,6 +14,7 @@ import { InputLocation } from "./InputLocationBox";
 export default component$(
   ({
     searchSettings,
+    result,
   }: {
     searchSettings: {
       showAllRoutes: boolean;
@@ -15,6 +22,13 @@ export default component$(
       searchRoute: string[][];
       requiredTime: (string | number)[];
     };
+    result: Signal<
+      | {
+          Route: (string | number | null)[][];
+          Details: { BusNo: string; Time: number; ArrivalTime: number[] };
+        }[]
+      | null
+    >;
   }) => {
     const mode = useSignal<"building" | "station">("building");
     const startLocation = useSignal("");
@@ -148,10 +162,27 @@ export default component$(
                 formData.append("endLocation", endLocation.value);
               }
 
-              console.log("submit");
-              for (const pair of formData.entries()) {
-                console.log(pair[0] + ", " + pair[1]);
-              }
+              const data = fetch(
+                "https://cu-bus.online/Essential/functions/api.php",
+                {
+                  method: "POST",
+                  body: formData,
+                  cache: "no-store",
+                  mode: "cors", // no-cors, *cors, same-origin
+                  redirect: "follow", // manual, *follow, error
+                  credentials: "same-origin", // include, *same-origin, omit
+                  referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
+                }
+              );
+
+              data.then((res) => {
+                if (!res.ok) {
+                  return;
+                }
+                res.json().then((data) => {
+                  result.value = data;
+                });
+              });
             }}
           >
             提交

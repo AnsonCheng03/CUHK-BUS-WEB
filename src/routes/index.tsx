@@ -20,20 +20,44 @@ export default component$(() => {
     ],
   });
 
-  const busResult = useSignal([
-    {
-      id: 1,
-      BusNo: "1A",
-      ArrivalTime: ["23:00", "04:15", "03:30", "02:45"],
-      Route: ["大學體育中心", "邵逸夫堂"],
-      Duration: 30,
-    },
-  ]);
+  const busResult = useSignal<
+    | {
+        Route: (string | number | null)[][];
+        Details: { BusNo: string; Time: number; ArrivalTime: number[] };
+      }[]
+    | null
+  >(
+    null
+    // [
+    // {
+    //   Route: [
+    //     ["YIAP", null, 79.54756274],
+    //     ["SPORTC", null, 126.0868326],
+    //     ["SCIC", null, 80.00911399],
+    //     ["FKHB", null, 669.1925832],
+    //     ["RESI34", "UPPERST", 102.8883132],
+    //     ["SHAWC", "UPPERST", 145.8532075],
+    //     ["CWCC", "DOWNST", 61.57763302],
+    //     ["RESI15", null, 42.44737859],
+    //     ["UCSR", null, 53.2862827],
+    //     ["CCHH", null, 141.2395914],
+    //     ["SHAWC", "DOWNST", 74.04654848],
+    //     ["RESI34", "DOWNST", 102.4130648],
+    //     ["UADM", null, 117.3661056],
+    //   ],
+    //   Details: {
+    //     BusNo: "3",
+    //     Time: 1716.4066550799996,
+    //     ArrivalTime: [1706781600, 1706782800, 1706784000],
+    //   },
+    // },
+    // ]
+  );
 
   return (
     <div class={styles.building}>
       <SelectionSettings searchSettings={searchSettings} />
-      <InputLocation searchSettings={searchSettings} />
+      <InputLocation searchSettings={searchSettings} result={busResult} />
       <OutputResult result={busResult} />
     </div>
   );
