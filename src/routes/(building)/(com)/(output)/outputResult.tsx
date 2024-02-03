@@ -158,9 +158,28 @@ export default component$(
           Details: { BusNo: string; Time: number; ArrivalTime: number[] };
         }[]
       | null
+      | string
     >;
   }) => {
     if (result.value === null) return <></>;
+    // if (result.value === "Loading")
+    if (typeof result.value === "string")
+      if (result.value === "Loading")
+        return (
+          <div class={styles.outputResult}>
+            <div class={styles.outputResultContainer}>
+              <p class={styles.outputResultNoResult}>Loading</p>
+            </div>
+          </div>
+        );
+      else
+        return (
+          <div class={styles.outputResult}>
+            <div class={styles.outputResultContainer}>
+              <p class={styles.outputResultNoResult}>{result.value}</p>
+            </div>
+          </div>
+        );
     return (
       <div class={styles.outputResult}>
         {result.value.length === 0 ? (

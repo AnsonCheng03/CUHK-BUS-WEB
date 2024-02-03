@@ -26,6 +26,7 @@ export default component$(() => {
         Details: { BusNo: string; Time: number; ArrivalTime: number[] };
       }[]
     | null
+    | "Loading"
   >(
     null
     // [

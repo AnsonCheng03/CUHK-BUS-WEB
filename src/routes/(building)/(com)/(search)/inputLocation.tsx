@@ -28,6 +28,7 @@ export default component$(
           Details: { BusNo: string; Time: number; ArrivalTime: number[] };
         }[]
       | null
+      | string
     >;
   }) => {
     const mode = useSignal<"building" | "station">("building");
@@ -112,6 +113,7 @@ export default component$(
             class={styles.inputSubmit}
             preventdefault:click
             onClick$={() => {
+              result.value = "Loading";
               const formData = new FormData();
 
               // Append search settings
@@ -141,6 +143,11 @@ export default component$(
               const endingLocation = endInputField.value
                 ? endInputField.value.value
                 : "";
+
+              if (startingLocation === "" || endingLocation === "") {
+                result.value = "請輸入起點和終點";
+                return;
+              }
               // Find the code of the building (get the content inside the last pair of bracket only)
               formData.append(
                 "startLocation",
