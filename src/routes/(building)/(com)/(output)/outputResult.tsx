@@ -97,7 +97,7 @@ const OutputBusRoute = ({
   Route: (string | number | null)[][];
   Details: { BusNo: string; Time: number; ArrivalTime: number[] };
 }) => {
-  let Time = Details.ArrivalTime[0];
+  let Time = Details.ArrivalTime?.length > 0 ? Details.ArrivalTime[0] : 0;
   return (
     <div class={styles.outputBusRoute}>
       <div class={styles.outputResultRouteHeader}>
@@ -111,7 +111,7 @@ const OutputBusRoute = ({
             下一班車：
             {
               // Details.ArrivalTime[0] in format (xx:xx:xx, HKT Time) of unix timestamp
-              getFormattedTime(Details.ArrivalTime[0])
+              getFormattedTime(Time)
             }
           </span>
         </div>
@@ -124,12 +124,16 @@ const OutputBusRoute = ({
         </div>
         <div class={styles.outputResultRouteExpand}>
           <div class={styles.outputResultRouteExpandContainer}>
-            {Route.map((route: (string | number | null)[]) => {
+            {Route.map((route: (string | number | null)[], index: number) => {
               return (
                 <div key={route[0]} class={styles.outputResultBusStopContainer}>
                   <p class={styles.outputResultBusStop}>{route[0]}</p>
                   <p class={styles.outputResultBusArrivalTime}>
-                    {getFormattedTime((Time += route[2] as number))}
+                    {getFormattedTime(
+                      (Time += (
+                        index === 0 ? 0 : Route[index - 1][2]
+                      ) as number)
+                    )}
                   </p>
                 </div>
               );

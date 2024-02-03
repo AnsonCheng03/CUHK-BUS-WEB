@@ -135,35 +135,31 @@ export default component$(
               // Append start and end location
               formData.append("mode", mode.value);
 
-              if (mode.value === "building") {
-                const startingLocation = startInputField.value
-                  ? startInputField.value.value
-                  : "";
-                const endingLocation = endInputField.value
-                  ? endInputField.value.value
-                  : "";
-                // Find the code of the building (get the content inside the last pair of bracket only)
-                formData.append(
-                  "startLocation",
-                  startingLocation.slice(
-                    startingLocation.lastIndexOf("(") + 1,
-                    startingLocation.lastIndexOf(")")
-                  )
-                );
-                formData.append(
-                  "endLocation",
-                  endingLocation.slice(
-                    endingLocation.lastIndexOf("(") + 1,
-                    endingLocation.lastIndexOf(")")
-                  )
-                );
-              } else {
-                formData.append("startLocation", startLocation.value);
-                formData.append("endLocation", endLocation.value);
-              }
+              const startingLocation = startInputField.value
+                ? startInputField.value.value
+                : "";
+              const endingLocation = endInputField.value
+                ? endInputField.value.value
+                : "";
+              // Find the code of the building (get the content inside the last pair of bracket only)
+              formData.append(
+                "startLocation",
+                startingLocation.slice(
+                  startingLocation.lastIndexOf("(") + 1,
+                  startingLocation.lastIndexOf(")")
+                )
+              );
+              formData.append(
+                "endLocation",
+                endingLocation.slice(
+                  endingLocation.lastIndexOf("(") + 1,
+                  endingLocation.lastIndexOf(")")
+                )
+              );
 
               const data = fetch(
-                "https://cu-bus.online/Essential/functions/api.php",
+                "http://localhost:8000/Essential/functions/api.php",
+                // "https://cu-bus.online/Essential/functions/api.php",
                 {
                   method: "POST",
                   body: formData,
