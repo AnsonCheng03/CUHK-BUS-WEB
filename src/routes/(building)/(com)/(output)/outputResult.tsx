@@ -4,10 +4,10 @@ import styles from "./outputResult.module.css";
 const outputRouteHeaderOnClick = $((e: any) => {
   //get arrow attribute active
   const outputResultArrow = e.target.parentNode.querySelector(
-    `.${styles.outputResultArrow}`
+    `.${styles.outputResultArrow}`,
   );
   const outputResultContainer = e.target.parentNode.parentNode.querySelector(
-    `.${styles.outputResultRouteExpand}`
+    `.${styles.outputResultRouteExpand}`,
   );
   const active = outputResultArrow.getAttribute("active") === "active";
   //set btn status
@@ -98,7 +98,7 @@ const OutputBusRoute = ({
                     {getFormattedTime(
                       (Time += (
                         index === 0 ? 0 : Route[index - 1][2]
-                      ) as number)
+                      ) as number),
                     )}
                   </p>
                 </div>
@@ -185,5 +185,5 @@ export default component$(
         )}
       </div>
     );
-  }
+  },
 );
