@@ -40,5 +40,5 @@ export const Header = component$(
         </div>
       </div>
     </div>
-  )
+  ),
 );

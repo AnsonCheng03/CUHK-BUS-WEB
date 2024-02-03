@@ -49,6 +49,15 @@
   color: rgb(216, 247, 234);
 }
 
+.outputResultWarning {
+  display: inline-block;
+  margin: 0 5px;
+  padding: 5px 15px;
+  border-radius: 20px;
+  border: 1px solid #ff0000;
+  color: #ff0000;
+}
+
 .outputResultArrivalTimeContainer {
   display: flex;
   flex-direction: column;

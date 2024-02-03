@@ -1,21 +1,6 @@
 import { $, component$, type Signal } from "@builder.io/qwik";
 import styles from "./outputResult.module.css";
 
-// const outputTimeHeaderOnCLick = (e: any) => {
-//   //get arrow attribute active
-//   const outputResultArrow = e.target.parentNode.querySelector(
-//     ".outputResult-arrow"
-//   );
-//   const outputResultContainer = e.target.parentNode.parentNode.querySelector(
-//     ".outputResult-arrival-time"
-//   );
-//   const active = outputResultArrow.getAttribute("active") === "active";
-
-//   //set btn status
-//   outputResultArrow.setAttribute("active", active ? false : "active");
-//   outputResultContainer.setAttribute("active", active ? false : "active");
-// };
-
 const outputRouteHeaderOnClick = $((e: any) => {
   //get arrow attribute active
   const outputResultArrow = e.target.parentNode.querySelector(
@@ -30,53 +15,26 @@ const outputRouteHeaderOnClick = $((e: any) => {
   outputResultContainer.setAttribute("active", active ? false : "active");
 });
 
-// const OutputArrivalTime = (prams) => {
-//   return (
-//     <div class={styles.outputResultArrivalTimeContainer}>
-//       <div
-//         class={styles.outputResultDepartureTimeHeader}
-//         onClick={outputTimeHeaderOnCLick}
-//       >
-//         <h3>到站</h3>
-//         {
-//           <div class={styles.outputResultDepartureTimeContainer}>
-//             <p>下一班</p>
-//             <p>{prams.nextBusArrivalTime}</p>
-//           </div>
-//         }
-//         <div class={styles.outputResultArrow}></div>
-//       </div>
-
-//       <div class={styles.outputResultArrivalTime}>
-//         <p class={styles.outputResultArrivalTimeTitle}>下一班車</p>
-//         <div class={styles.outputResultTimeContainer}>
-//           {prams.ArrivalTime.map((time) => {
-//             return (
-//               <p class={styles.outputResultTime} key={time}>
-//                 {time}
-//               </p>
-//             );
-//           })}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const OutputResult = ({ result }) => {
-//   const currentTime = new Date();
-//   const formattedCurrentTime =
-//     ("0" + currentTime.getHours()).slice(-2) +
-//     ":" +
-//     ("0" + currentTime.getMinutes()).slice(-2);
-// };
-
-const RouteHeader = ({ BusNo, Time }: { BusNo: string; Time: number }) => (
+const RouteHeader = ({
+  BusNo,
+  Time,
+  Warning,
+}: {
+  BusNo: string;
+  Time: number;
+  Warning: string[] | null;
+}) => (
   <div class={styles.outputResultHeader}>
     <p class={styles.outputResultBusNo}>{BusNo}</p>
     <p class={styles.outputResultDuration}>
       車程 {(Time / 60).toFixed(0)} 分鐘
     </p>
+    {Warning &&
+      Warning.map((warning, index) => (
+        <p key={index} class={styles.outputResultWarning}>
+          {warning}
+        </p>
+      ))}
   </div>
 );
 
@@ -95,9 +53,17 @@ const OutputBusRoute = ({
   Details,
 }: {
   Route: (string | number | null)[][];
-  Details: { BusNo: string; Time: number; ArrivalTime: number[] };
+  Details: {
+    BusNo: string;
+    Time: number;
+    ArrivalTime: number[] | null;
+    Warning: string[] | null;
+  };
 }) => {
-  let Time = Details.ArrivalTime?.length > 0 ? Details.ArrivalTime[0] : 0;
+  let Time =
+    Details.ArrivalTime && Details.ArrivalTime.length > 0
+      ? Details.ArrivalTime[0]
+      : 0;
   return (
     <div class={styles.outputBusRoute}>
       <div class={styles.outputResultRouteHeader}>
@@ -155,7 +121,12 @@ export default component$(
     result: Signal<
       | {
           Route: (string | number | null)[][];
-          Details: { BusNo: string; Time: number; ArrivalTime: number[] };
+          Details: {
+            BusNo: string;
+            Time: number;
+            ArrivalTime: number[] | null;
+            Warning: string[] | null;
+          };
         }[]
       | null
       | string
@@ -199,6 +170,7 @@ export default component$(
                   <RouteHeader
                     BusNo={route.Details.BusNo}
                     Time={route.Details.Time}
+                    Warning={route.Details.Warning}
                   />
                   <OutputBusRoute Route={route.Route} Details={route.Details} />
 

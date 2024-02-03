@@ -25,7 +25,12 @@ export default component$(
     result: Signal<
       | {
           Route: (string | number | null)[][];
-          Details: { BusNo: string; Time: number; ArrivalTime: number[] };
+          Details: {
+            BusNo: string;
+            Time: number;
+            ArrivalTime: number[] | null;
+            Warning: string[] | null;
+          };
         }[]
       | null
       | string

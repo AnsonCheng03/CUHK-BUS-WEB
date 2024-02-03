@@ -3,7 +3,7 @@ import { type Signal } from "@builder.io/qwik";
 export function autoComplete(
   inp: HTMLInputElement,
   arr: string[],
-  inputSignal: Signal<string>
+  inputSignal: Signal<string>,
 ) {
   let currentFocus: number;
 

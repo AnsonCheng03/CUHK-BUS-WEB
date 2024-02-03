@@ -50,7 +50,7 @@ export const GPSModal = component$(
                           `${station[1]} (${station[0]})`;
                         inputLocation[
                           (showSig.value[0] as HTMLInputElement).id.includes(
-                            "start"
+                            "start",
                           )
                             ? 0
                             : 1
@@ -71,7 +71,7 @@ export const GPSModal = component$(
         </div>
       )
     );
-  }
+  },
 );
 
 export function CloseIcon(props: QwikIntrinsicElements["svg"], key: string) {
