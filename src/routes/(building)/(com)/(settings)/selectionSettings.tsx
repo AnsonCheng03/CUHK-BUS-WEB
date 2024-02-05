@@ -20,11 +20,10 @@ export default component$(
     >([]);
 
     const fetchBusStatus = $(() => {
-      // return fetch("/Data/Status.json", { cache: "no-store" });
-      console.log("fetchBusStatus");
-      return fetch("https://cu-bus.online/Data/Status.json", {
-        cache: "no-store",
-      });
+      return fetch("/Data/Status.json", { cache: "no-store" });
+      // return fetch("https://cu-bus.online/Data/Status.json", {
+      //   cache: "no-store",
+      // });
     });
 
     const fetchBusStatusTask = $(async () => {
@@ -77,5 +76,5 @@ export default component$(
         <ShowAvailableRoutes BusStatus={availableRoutes.value} />
       </div>
     );
-  },
+  }
 );

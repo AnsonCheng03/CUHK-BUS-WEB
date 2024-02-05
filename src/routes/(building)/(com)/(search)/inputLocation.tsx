@@ -127,17 +127,17 @@ export default component$(
               formData.append("action", "getRoute");
               formData.append(
                 "showAllRoutes",
-                searchSettings.showAllRoutes ? "1" : "0",
+                searchSettings.showAllRoutes ? "1" : "0"
               );
               if (searchSettings.departNow) {
                 formData.append(
                   "departNow",
-                  JSON.stringify(searchSettings.searchRoute),
+                  JSON.stringify(searchSettings.searchRoute)
                 );
               } else {
                 formData.append(
                   "requiredTime",
-                  JSON.stringify(searchSettings.requiredTime),
+                  JSON.stringify(searchSettings.requiredTime)
                 );
               }
 
@@ -164,20 +164,20 @@ export default component$(
                 "startLocation",
                 startingLocation.slice(
                   startingLocation.lastIndexOf("(") + 1,
-                  startingLocation.lastIndexOf(")"),
-                ),
+                  startingLocation.lastIndexOf(")")
+                )
               );
               formData.append(
                 "endLocation",
                 endingLocation.slice(
                   endingLocation.lastIndexOf("(") + 1,
-                  endingLocation.lastIndexOf(")"),
-                ),
+                  endingLocation.lastIndexOf(")")
+                )
               );
 
               const data = fetch(
-                // "http://localhost:8000/Essential/functions/api.php",
-                "https://cu-bus.online/Essential/functions/api.php",
+                "http://localhost:8000/Essential/functions/api.php",
+                // "https://cu-bus.online/Essential/functions/api.php",
                 {
                   method: "POST",
                   body: formData,
@@ -186,7 +186,7 @@ export default component$(
                   redirect: "follow", // manual, *follow, error
                   credentials: "same-origin", // include, *same-origin, omit
                   referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
-                },
+                }
               );
 
               data.then((res) => {
@@ -204,5 +204,5 @@ export default component$(
         </form>
       </>
     );
-  },
+  }
 );

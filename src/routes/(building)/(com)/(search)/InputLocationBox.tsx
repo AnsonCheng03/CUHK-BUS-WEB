@@ -43,7 +43,8 @@ export const InputLocation = component$(
                 formData.append("lng", position.coords.longitude.toString());
 
                 const data = fetch(
-                  "https://cu-bus.online/Essential/functions/api.php",
+                  "http://localhost:8000/Essential/functions/api.php",
+                  // "https://cu-bus.online/Essential/functions/api.php",
                   {
                     method: "POST",
                     body: formData,
@@ -52,7 +53,7 @@ export const InputLocation = component$(
                     redirect: "follow", // manual, *follow, error
                     credentials: "same-origin", // include, *same-origin, omit
                     referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade,
-                  },
+                  }
                 );
 
                 data.then((res) => {
@@ -73,7 +74,7 @@ export const InputLocation = component$(
                           Location: string;
                           Name: string;
                           distance: number;
-                        }) => [Location, Name, distance],
+                        }) => [Location, Name, distance]
                       ),
                     ];
                   });
@@ -132,5 +133,5 @@ export const InputLocation = component$(
         )}
       </div>
     );
-  },
+  }
 );

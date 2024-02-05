@@ -23,8 +23,12 @@
 }
 
 .outputResultHeader {
-  width: 100%;
-  padding: 10px 0;
+  width: calc(100% - 20px);
+  padding: 10px 10px;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
   /* border-bottom: 1px solid rgb(142, 166, 216); */
   border-radius: 10px 10px 0 0;
   color: rgb(50, 50, 50);
@@ -33,17 +37,17 @@
 
 .outputResultBusNo {
   display: inline-block;
+  margin: 0;
   background-color: #fff;
   color: #000;
-  margin: 0 10px;
   padding: 5px 15px;
   border-radius: 20px;
 }
 
 .outputResultDuration {
   display: inline-block;
-  margin: 0 5px;
   padding: 5px 15px;
+  margin: 0;
   border-radius: 20px;
   border: 1px solid rgb(216, 247, 234);
   color: rgb(216, 247, 234);
@@ -51,11 +55,13 @@
 
 .outputResultWarning {
   display: inline-block;
-  margin: 0 5px;
   padding: 5px 15px;
+  margin: 0;
   border-radius: 20px;
   color: #fff;
   background-color: #cc3300;
+  max-width: calc(100% - 30px);
+  overflow: auto;
 }
 
 .outputResultArrivalTimeContainer {
@@ -185,7 +191,6 @@
   display: flex;
   width: 100%;
   padding-bottom: 1.25rem;
-  margin: 1rem 0 2rem 0;
   border-bottom: 0.5px solid #ddd;
 }
 
@@ -203,7 +208,7 @@
   border: 1px solid rgb(142, 166, 216);
   color: rgb(142, 166, 216);
   padding: 5px 10px;
-  margin: -0.25rem 20px 0 20px;
+  margin: -0.25rem 0 0 0;
   border-radius: 20px;
 }
 
@@ -266,4 +271,13 @@
   width: 8px;
   background-color: rgb(142, 166, 216);
   border-radius: 10px;
+}
+
+.outputResultRouteStart {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-right: 1rem;
+  width: calc(100% - 1rem);
 }

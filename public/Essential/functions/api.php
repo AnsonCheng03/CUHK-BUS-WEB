@@ -25,6 +25,12 @@ function haversineGreatCircleDistance(
   return $angle * $earthRadius;
 }
 
+
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET,POST,OPTIONS,DELETE,PUT");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie, Token");
+
 // if (!isset($_POST['CSRF']) || $_POST['CSRF'] != $_SESSION['_token']) {
 //   http_response_code(403);
 //   die("Token Error!");
@@ -62,13 +68,18 @@ function getRoute($startingStation, $endingStation, $Route, $selectedTime, $stat
   // foreach merge Route
   foreach (array_merge(...$Route) as $busNo) {
     // get all route
-    $stmt = $conn->prepare("SELECT `Route` FROM `Route` WHERE `BUSNO` = ?;");
+    $stmt = $conn->prepare("SELECT `Route`, `Warning` FROM `Route` WHERE `BUSNO` = ?;");
     $stmt->bind_param("s", $busNo);
     $stmt->execute();
-    $routeResult = $stmt->get_result()->fetch_all(MYSQLI_ASSOC)[0]["Route"];
+    $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $routeResult = $result[0]["Route"];
+    $warning = $result[0]["Warning"];
+
     if (!$routeResult)
       continue;
     $SearchRoute[$busNo]["Route"] = $routeResult;
+    if ($warning)
+      $SearchRoute[$busNo]["Details"]["Warning"][] = $warning;
     $SearchRoute[$busNo]["Route"] = json_decode($SearchRoute[$busNo]["Route"], true);
 
     // check index of startingStation and endingStation
@@ -77,15 +88,20 @@ function getRoute($startingStation, $endingStation, $Route, $selectedTime, $stat
     });
     $startingStationIndex = array_search($startingStation, array_column($tmpSearch, 0));
     $endingStationIndex = -1;
-    do {
-      $tmpEndingStationIndex = array_search($endingStation, array_column($tmpSearch, 0));
-      if ($tmpEndingStationIndex !== false) {
-        $endingStationIndex = $tmpEndingStationIndex;
-        break;
-      }
-    } while ($tmpEndingStationIndex !== false && $endingStationIndex < $startingStationIndex);
 
-    if ($startingStationIndex === false || $endingStationIndex === false || $endingStationIndex < $startingStationIndex) {
+    if ($startingStation === $endingStation) {
+      $endingStationIndex = array_search($endingStation, array_column(array_reverse($tmpSearch), 0));
+      $endingStationIndex = count($tmpSearch) - $endingStationIndex - 1;
+    } else
+      do {
+        $tmpEndingStationIndex = array_search($endingStation, array_column($tmpSearch, 0));
+        if ($tmpEndingStationIndex !== false) {
+          $endingStationIndex = $tmpEndingStationIndex;
+          break;
+        }
+      } while ($tmpEndingStationIndex !== false && $endingStationIndex < $startingStationIndex);
+
+    if ($startingStationIndex === false || $endingStationIndex === false || $endingStationIndex <= $startingStationIndex) {
       unset($SearchRoute[$busNo]);
       continue;
     } else {
@@ -117,7 +133,7 @@ function getRoute($startingStation, $endingStation, $Route, $selectedTime, $stat
 
     // if bus is going expire(In Route[1] but not Route[0]), add warning
     if (in_array($busNo, $Route[1]) && !in_array($busNo, $Route[0])) {
-      $SearchRoute[$busNo]["Details"]["Warning"][] = "EXPIRE";
+      $SearchRoute[$busNo]["Details"]["Warning"][] = "尾班車已開出";
     }
 
     // replace $SearchRoute[$busNo]["Route"] with chinese
@@ -137,22 +153,43 @@ function getRoute($startingStation, $endingStation, $Route, $selectedTime, $stat
   return $SearchRoute;
 }
 
+function getRouteByTime(
+  $requiredTime
+) {
+  $conn = new mysqli("217.21.74.51", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
+
+  $requiredTime[0] = "%" . $requiredTime[0] . "%";
+  $requiredTime[1] = "%" . $requiredTime[1] . "%";
+  $requiredTimeStr = $requiredTime[2] . ":" . $requiredTime[3];
+
+  $stmt = $conn->prepare("SELECT `BUSNO` FROM `Route` WHERE `Days` LIKE ? AND `Weekdays` LIKE ? AND `StartTime` <= ? AND `EndTime` >= ?;");
+  $stmt->bind_param("ssss", $requiredTime[1], $requiredTime[0], $requiredTimeStr, $requiredTimeStr);
+  $stmt->execute();
+  $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+  $Route = [array_map(fn($item) => $item["BUSNO"], $result), []];
+
+  return $Route;
+}
+
 switch ($_POST['action']) {
   case "getData":
-    $stmt = $conn->prepare("SELECT * FROM `translatebuilding`;");
+    $stmt = $conn->prepare("SELECT *, 'translatebuilding' as TableName FROM `translatebuilding` 
+                        UNION ALL 
+                        SELECT *, 'translateroute' as TableName FROM `translateroute`;");
     $stmt->execute();
-    $buildingResult = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt = $conn->prepare("SELECT * FROM `translateroute`;");
-    $stmt->execute();
-    $stationResult = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $conn->close();
+    $translateResult = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
     $result = array_map(function ($item) use ($lang) {
-      return [$item["Code"], $item[$lang], "building"];
-    }, $buildingResult);
-    $result = array_merge($result, array_map(function ($item) use ($lang) {
-      return [$item["Code"], $item[$lang], "station"];
-    }, $stationResult));
+      return [
+        $item["Code"],
+        $item[$lang],
+        $item["TableName"] === "translatebuilding" ? "building" : "station"
+      ];
+    }, $translateResult);
+
+
+    // unique
+    $result = array_map("unserialize", array_unique(array_map("serialize", $result)));
 
     die(json_encode($result));
 
@@ -205,18 +242,51 @@ switch ($_POST['action']) {
 
   case "getRoute":
 
-    $stmt = $conn->prepare("SELECT * FROM `translatebuilding`;");
+    $stmt = $conn->prepare("SELECT * FROM `translatebuilding`, `translateroute`;");
     $stmt->execute();
-    $buildingResult = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    $stmt = $conn->prepare("SELECT * FROM `translateroute`;");
-    $stmt->execute();
-    $stationResult = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    $translateResult = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-    $Route = $_POST["departNow"] ? json_decode($_POST["departNow"], true) : json_decode($_POST["Route"], true);
-    $outputRoute = getRoute($_POST["startLocation"], $_POST["endLocation"], $Route, time(), array_merge($buildingResult, $stationResult));
+    $startLocation = [$_POST["startLocation"]];
+    $endLocation = [$_POST["endLocation"]];
+    $requiredTime = json_decode($_POST["requiredTime"], true);
+    $Route = $_POST["departNow"] ? json_decode($_POST["departNow"], true) : getRouteByTime($requiredTime);
+
+    if ($_POST["mode"] === "building") {
+      $stmt = $conn->prepare("SELECT * FROM `station` WHERE `建築物` = ?;");
+      $stmt->bind_param("s", $_POST["startLocation"]);
+      $stmt->execute();
+      $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+      $startLocation = array_map(fn($item) => $item["最近之車站"], $result);
+
+      $stmt->bind_param("s", $_POST["endLocation"]);
+      $stmt->execute();
+      $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+      $endLocation = array_map(fn($item) => $item["最近之車站"], $result);
+    }
+
+    $stmt->close();
+
+
+    $outputRoute = [];
+
+    foreach ($startLocation as $start) {
+      foreach ($endLocation as $end) {
+        $outputRoute[] = getRoute(
+          $start,
+          $end,
+          $Route,
+          strtotime(
+            $requiredTime ? $requiredTime[2] . ":" . $requiredTime[3] . ":00" : date("H:i:s")
+          ),
+          $translateResult
+        );
+      }
+    }
+
+    $outputRoute = array_merge(...$outputRoute);
 
     usort($outputRoute, function ($a, $b) {
-      return $a[1]["ArrivalTime"][0] - $b[1]["ArrivalTime"][0];
+      return $a["Details"]["ArrivalTime"][0] - $b["Details"]["ArrivalTime"][0];
     });
 
     die(json_encode($outputRoute));

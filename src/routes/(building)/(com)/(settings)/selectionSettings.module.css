@@ -74,8 +74,22 @@
 }
 
 .availableRoutesTitleContainer {
-  display: flex;
   align-items: center;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.availableRoutesTitle {
+  width: 120px;
+  display: inline-block;
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.availableRoutesTitleLine {
+  overflow: auto;
+  display: flex;
 }
 
 .availableRoutesTitle {
@@ -99,6 +113,10 @@
   height: 10px;
   display: inline-block;
   margin-right: 14px;
+}
+
+.availableRoutesTagExample {
+  min-width: fit-content;
 }
 
 .availableRoutesTag,
