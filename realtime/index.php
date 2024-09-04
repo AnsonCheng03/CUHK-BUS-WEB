@@ -225,7 +225,8 @@ function displayBuses($allBuses, $lang, $token, $translation, $dest)
 
         echo "</div>"; // Close bus-row
 
-        $countoutput++;
+        if (!$bus['arrived'])
+            $countoutput++;
     }
     echo "</div>"; // Close bus-grid
 
