@@ -20,6 +20,8 @@ nav {
   display: grid;
   grid-template-columns: 1fr 3fr;
   align-items: center;
+  left: 0;
+  width: 100%;
 }
 
 nav h1 {
@@ -73,6 +75,7 @@ nav a.active:link {
     top: auto;
     bottom: 0;
     width: 100%;
+    z-index: 9999;
   }
   nav h1 {
     display: none;
@@ -84,6 +87,6 @@ nav a.active:link {
   }
 
   main {
-    margin: 10px 0 75px 0;
+    margin: 0 0 75px 0;
   }
 }

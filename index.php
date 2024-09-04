@@ -4,16 +4,16 @@ include_once('Essential/functions/functions.php');
 
 // detect language from browser
 if (isset($_GET['lang'])) {
-  $lang = $_GET['lang'] == "en" ? 1 : 0;
+  $lang = $_GET['lang'] == "en" ? 0 : 1;
 } else {
   if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
     $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
     if ($lang == "zh" || $lang == "zh-HK" || $lang == "zh-TW" || $lang == "zh-CN")
-      $lang = 0;
-    else
       $lang = 1;
+    else
+      $lang = 0;
   } else
-    $lang = 0;
+    $lang = 1;
 }
 date_default_timezone_set("Asia/Hong_Kong");
 include('Essential/functions/initdatas.php');
@@ -25,6 +25,9 @@ switch (urlquery('mode')) {
     break;
   case 'info':
     $currentpage = 'info';
+    break;
+  case 'settings':
+    $currentpage = 'settings';
     break;
   case 'realtime':
   default:
@@ -38,20 +41,38 @@ switch (urlquery('mode')) {
 
 <head>
   <?php
+  echo "<link rel='stylesheet' href='Essential/general.css?v=" . $version . "'>";
+  echo "<script src='Essential/general.js?v=" . $version . "'></script>";
   if ($currentpage == 'realtime') {
-    echo "<title>" . $translation['title_realtime'][$lang] . " | 中大校巴資訊站 CU BUS INFOPAGE</title>";
+    echo "<title>" . $translation['title_realtime'][$lang] . " | " . $translation['web_info_title'][$lang] . "</title>";
     echo "<meta name='title' content='" . $translation['title_realtime'][$lang] . " | 中大校巴資訊站 CU BUS INFOPAGE'>";
     echo "<meta name='description' content='" . $translation['meta_desc_realtime'][$lang] . "'>";
     echo "<link rel='stylesheet' href='Essential/realtime.css?v=" . $version . "'>";
     echo "<script src='Essential/realtime.js?v=" . $version . "'></script>";
-  } else {
-    echo "<title>" . $translation['title_routesearch'][$lang] . " | 中大校巴資訊站 CU BUS INFOPAGE</title>";
+  } else if ($currentpage == 'routeselection') {
+    echo "<title>" . $translation['title_routesearch'][$lang] . " | " . $translation['web_info_title'][$lang] . "</title>";
     echo "<meta name='title' content='" . $translation['title_routesearch'][$lang] . " | 中大校巴資訊站 CU BUS INFOPAGE'>";
     echo "<meta name='description' content='" . $translation['meta_desc_routesearch'][$lang] . "'>";
     echo "<link rel='stylesheet' href='Essential/mainpage.css?v=" . $version . "'>";
     echo "<script src='Essential/mainpage.js?v=" . $version . "'></script>";
+  } else if ($currentpage == 'settings') {
+    echo "<title>" . $translation['title_settings'][$lang] . " | " . $translation['web_info_title'][$lang] . "</title>";
+    echo "<meta name='title' content='" . $translation['title_settings'][$lang] . " | 中大校巴資訊站 CU BUS INFOPAGE'>";
+    echo "<meta name='description' content='" . $translation['meta_desc_settings'][$lang] . "'>";
+    echo "<link rel='stylesheet' href='Essential/settings.css?v=" . $version . "'>";
+    echo "<script src='Essential/settings.js?v=" . $version . "'></script>";
+  } else if ($currentpage == 'info') {
+    echo "<title>" . $translation['title_info'][$lang] . " | " . $translation['web_info_title'][$lang] . "</title>";
+    echo "<meta name='title' content='" . $translation['title_info'][$lang] . " | 中大校巴資訊站 CU BUS INFOPAGE'>";
+    echo "<meta name='description' content='" . $translation['meta_desc_info'][$lang] . "'>";
+    echo "<link rel='stylesheet' href='Essential/info.css?v=" . $version . "'>";
+    echo "<script src='Essential/info.js?v=" . $version . "'></script>";
+  } else {
+    echo "<title>中大校巴資訊站 CU BUS INFOPAGE</title>";
+    echo "<meta name='title' content='中大校巴資訊站 CU BUS INFOPAGE'>";
+    echo "<meta name='description' content='中大校巴資訊站 CU BUS INFOPAGE'>";
   }
-  echo "<link rel='stylesheet' href='Essential/general.css?v=" . $version . "'>";
+
   ?>
   <meta charset="utf-8">
   <meta http-equiv="Content-Language" content="<?php echo $lang == 1 ? "en" : "zh" ?>">
@@ -75,6 +96,7 @@ switch (urlquery('mode')) {
   <meta name="google" content="notranslate">
   <meta name="google" value="notranslate">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 
 <nav>
@@ -101,7 +123,7 @@ switch (urlquery('mode')) {
         </a>
       </li>
       <li>
-        <a href="#settings" class="<?php echo $currentpage == 'settings' ? 'active' : ''; ?>">
+        <a onclick="append_query('mode','settings');" class="<?php echo $currentpage == 'settings' ? 'active' : ''; ?>">
           <i class="fa-solid fa-gear"></i>
           <?php echo $translation["NAV-Settings"][$lang] ?>
         </a>
@@ -118,6 +140,9 @@ switch (urlquery('mode')) {
       break;
     case 'info':
       include('indexpages/info.php');
+      break;
+    case 'settings':
+      include('indexpages/settings.php');
       break;
     case 'realtime':
     default:

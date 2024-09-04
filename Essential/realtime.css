@@ -12,7 +12,7 @@ h1 {
 .image-wrapper {
   width: 23px;
   padding: 5px;
-  border: 1px solid black;
+  border: 1px solid rgb(118, 118, 118);
   border-radius: 30%;
   cursor: pointer;
   margin: auto;
@@ -100,7 +100,7 @@ h1 {
   padding: 20px 5%;
   background-color: #fff;
   display: grid;
-  grid-template-columns: 1fr 2fr 50px;
+  grid-template-columns: auto 1fr 50px;
   gap: 5%;
   border-bottom: 1px solid #ddd;
   margin: 0;
@@ -108,8 +108,22 @@ h1 {
   align-items: center;
 }
 
+@media screen and (max-width: 768px) {
+  .stopselector {
+    position: sticky;
+    top: 0;
+  }
+}
+
 .stopselector span {
-  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgb(118, 118, 118);
+  border-radius: 5px;
+  padding: 2px 0;
+  padding: 4px 10px;
+  white-space: nowrap;
 }
 
 .select-box {
@@ -121,18 +135,10 @@ h1 {
   text-align: -webkit-center;
   text-align-last: center;
   border-radius: 5px;
+  width: 100%;
 }
 
 /* Result */
-
-form span {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #000;
-  border-radius: 5px;
-  padding: 2px 0;
-}
 
 .bussect {
   width: 80%;
@@ -253,7 +259,7 @@ form span {
 
 .bus-row {
   display: grid;
-  grid-template-columns: 30px 1fr 40px;
+  grid-template-columns: 30px 1fr 80px;
   align-items: center;
   padding: 10px 7%;
   border-bottom: 1px solid #ddd;
