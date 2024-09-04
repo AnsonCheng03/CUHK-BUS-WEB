@@ -81,17 +81,6 @@ if (!$departnowbtn) {
     foreach ($bus as $index => $busarr)
         if (($busarr["stats"]["status"] == "no" && $busarr["stats"]["prevstatus"] != "normal") || ($busarr["stats"]["status"] == "suspended" && $busarr["stats"]["prevstatus"] != "normal"))
             unset($bus[$index]);
-
-
-    //Update Current bus
-    $operating = array_keys(array_filter($bus, function ($busarr) {
-        return $busarr["stats"]["status"] == "normal" || $busarr["stats"]["status"] == "delay";
-    }));
-
-    if ($operating)
-        echo '<script> document.querySelector(".show-time").innerHTML = "' . $translation["info-running"][$lang] . implode(", ", $operating) . '"; document.currentScript.remove();</script>';
-    else
-        echo '<script> document.querySelector(".show-time").innerHTML = "' . $translation["stop-running"][$lang] . '"; document.currentScript.remove();</script>';
 }
 $bus = array_filter($bus);
 
@@ -167,7 +156,6 @@ do {
         //Startline Bus (Test : 39區 → 善衡書院)
         foreach ($bus as $busno => $line) {
             //Get start station index
-            $successful = 0;
             $attrline = $line["stations"]["attr"];
             $timeline = $line["stations"]["time"];
             $line = $line["stations"]["name"];
@@ -181,8 +169,6 @@ do {
                 //Get end station index
                 $busendstation = array_search($deststation[$currdest], $searchline);
                 if ($busendstation !== false) {
-                    $noroute = false;
-                    $successful = 1;
                     //Trim $line
                     $newline = array_slice($searchline, 0, $busendstation + 1, true);
                     $newlineattr = array_slice($searchlineattr, 0, $busendstation + 2, true);
@@ -208,7 +194,6 @@ do {
                     }
 
                     $routeresult["start"][] = $startpos;
-                    $routeresult["exchange"][] = "";
                     $routeresult["end"][] = $endpos;
                     $routeresult["time"][] = array_sum($newlinetime);
                     if (isset($bus[$busno . "#"]) || strpos($busno, "#") !== false) {
@@ -217,69 +202,10 @@ do {
                         $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $newline);
                     }
                 }
-
-                if ($successful == 0) {
-                    //try again with ascending
-                    $busstopnum = array_search($startstation[$currstart], $line);
-                    if ($busstopnum !== false) {
-                        //Get route after start station
-                        $searchline = array_slice($line, $busstopnum + 1);
-                        $searchlineattr = array_slice($attrline, $busstopnum);
-                        $searchlinetime = array_slice($timeline, $busstopnum);
-
-                        //Get end station index
-                        $busendstation = array_search($deststation[$currdest], $searchline);
-                        if ($busendstation !== false) {
-                            $noroute = false;
-                            //Trim $line
-                            $newline = array_slice($searchline, 0, $busendstation + 1, true);
-                            $newlineattr = array_slice($searchlineattr, 0, $busendstation + 2, true);
-                            $newlinetime = array_slice($searchlinetime, 0, $busendstation + 2, true);
-
-                            //Output
-                            $routeresult["busno"][] = $busno;
-                            foreach ($newline as $stopindex => $stop) {
-                                $newline[$stopindex] = $translation[$stop][$lang];
-                            }
-
-                            //Start
-                            if ($translation[$newlineattr[0]][$lang]) {
-                                $startpos = $translation[$startstation[$currstart]][$lang] . " (" . $translation[$newlineattr[0]][$lang] . ")";
-                            } else {
-                                $startpos = $translation[$startstation[$currstart]][$lang];
-                            }
-
-                            //End
-                            if ($translation[end($newlineattr)][$lang]) {
-                                $endpos = end($newline) . " (" . $translation[end($newlineattr)][$lang] . ")";
-                            } else {
-                                $endpos = end($newline);
-                            }
-
-                            $routeresult["start"][] = $startpos;
-                            $routeresult["exchange"][] = "";
-                            $routeresult["end"][] = $endpos;
-                            $routeresult["time"][] = array_sum($newlinetime);
-                            if (isset($bus[$busno . "#"]) || strpos($busno, "#") !== false) {
-                                $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $newline) . "<br><br><span class=\"departtime\">" . $translation["info-sch"][$lang] . $bus[$busno]["schedule"][2] . "</span>";
-                            } else {
-                                $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $newline);
-                            }
-                        }
-                    }
-                }
             }
-        }
 
-
-        //No Direct Route (Test : 39區 → 敬文書院 → 地鐵大學站廣場)
-        if ($noroute || $forceshowexchange) {
-
-            foreach ($bus as $busno => $line) {
-                //Get start station index
-                $attrline = $line["stations"]["attr"];
-                $timeline = $line["stations"]["time"];
-                $line = $line["stations"]["name"];
+            // Try again with ascending order if not found
+            if (!isset($routeresult["busno"]) || empty($routeresult["busno"])) {
                 $busstopnum = array_search($startstation[$currstart], $line);
                 if ($busstopnum !== false) {
                     //Get route after start station
@@ -287,162 +213,41 @@ do {
                     $searchlineattr = array_slice($attrline, $busstopnum);
                     $searchlinetime = array_slice($timeline, $busstopnum);
 
-                    foreach ($searchline as $station) {
+                    //Get end station index
+                    $busendstation = array_search($deststation[$currdest], $searchline);
+                    if ($busendstation !== false) {
+                        //Trim $line
+                        $newline = array_slice($searchline, 0, $busendstation + 1, true);
+                        $newlineattr = array_slice($searchlineattr, 0, $busendstation + 2, true);
+                        $newlinetime = array_slice($searchlinetime, 0, $busendstation + 2, true);
 
-                        //Let $Station as Start
-                        foreach ($bus as $newbusno => $newline) {
-                            //Get start station index
-                            $successful = 0;
-                            $newlineattr = $newline["stations"]["attr"];
-                            $newlinetime = $newline["stations"]["time"];
-                            $newline = $newline["stations"]["name"];
-                            $newbusstopnum = array_search($station, array_reverse($newline, true));
-                            if ($newbusstopnum !== false) {
-                                //Get route after start station
-                                $newsearchline = array_slice($newline, $newbusstopnum + 1);
-                                $newsearchlineattr = array_slice($newlineattr, $newbusstopnum);
-                                $newsearchlinetime = array_slice($newlinetime, $newbusstopnum);
+                        //Output
+                        $routeresult["busno"][] = $busno;
+                        foreach ($newline as $stopindex => $stop) {
+                            $newline[$stopindex] = $translation[$stop][$lang];
+                        }
 
-                                //Get end station index
-                                $busendstation = array_search($station, $searchline);
-                                $secbusendstation = array_search($deststation[$currdest], $newsearchline);
-                                if ($secbusendstation !== false && $busendstation !== false) {
-                                    $successful = 1;
-                                    $routeresult["busno"][] = $busno . "→" . $newbusno;
+                        //Start
+                        if ($translation[$newlineattr[0]][$lang]) {
+                            $startpos = $translation[$startstation[$currstart]][$lang] . " (" . $translation[$newlineattr[0]][$lang] . ")";
+                        } else {
+                            $startpos = $translation[$startstation[$currstart]][$lang];
+                        }
 
-                                    //Trim $line & $newsearchline
-                                    $searchline = array_slice($searchline, 0, $busendstation + 1, true);
-                                    $newsearchline = array_slice($newsearchline, 0, $secbusendstation + 1, true);
-                                    $searchlineattr = array_slice($searchlineattr, 0, $busendstation + 2, true);
-                                    $newsearchlineattr = array_slice($newsearchlineattr, 0, $secbusendstation + 2, true);
-                                    $searchlinetime = array_slice($searchlinetime, 0, $busendstation + 2, true);
-                                    $newsearchlinetime = array_slice($newsearchlinetime, 0, $secbusendstation + 2, true);
+                        //End
+                        if ($translation[end($newlineattr)][$lang]) {
+                            $endpos = end($newline) . " (" . $translation[end($newlineattr)][$lang] . ")";
+                        } else {
+                            $endpos = end($newline);
+                        }
 
-                                    foreach ($searchline as $stopindex => $stop) {
-                                        $searchline[$stopindex] = $translation[$stop][$lang];
-                                    }
-                                    foreach ($newsearchline as $stopindex => $stop) {
-                                        $newsearchline[$stopindex] = $translation[$stop][$lang];
-                                    }
-
-                                    //Start
-                                    if ($translation[$searchlineattr[0]][$lang]) {
-                                        $startpos = $translation[$startstation[$currstart]][$lang] . " (" . $translation[$searchlineattr[0]][$lang] . ")";
-                                    } else {
-                                        $startpos = $translation[$startstation[$currstart]][$lang];
-                                    }
-
-                                    //Exchange End
-                                    if ($translation[end($searchlineattr)][$lang]) {
-                                        $exchangeposen = end($searchline) . " (" . $translation[end($searchlineattr)][$lang] . ")";
-                                    } else {
-                                        $exchangeposen = end($searchline);
-                                    }
-
-                                    //Exchange Start
-                                    if ($translation[$newsearchlineattr[0]][$lang]) {
-                                        $exchangeposst = end($searchline) . " (" . $translation[$newsearchlineattr[0]][$lang] . ")";
-                                    } else {
-                                        $exchangeposst = end($searchline);
-                                    }
-
-                                    //Exchange Group
-                                    if ($exchangeposen == $exchangeposst) {
-                                        $exchangepos = $exchangeposen;
-                                    } else {
-                                        $exchangepos = $exchangeposen . " → " . $exchangeposst;
-                                    }
-
-                                    //End
-                                    if ($translation[end($newsearchlineattr)][$lang]) {
-                                        $endpos = end($newsearchline) . " (" . $translation[end($newsearchlineattr)][$lang] . ")";
-                                    } else {
-                                        $endpos = end($newsearchline);
-                                    }
-
-                                    $routeresult["start"][] = $startpos;
-                                    $routeresult["exchange"][] = $exchangepos;
-                                    $routeresult["end"][] = $endpos;
-                                    $routeresult["time"][] = array_sum($searchlinetime) + array_sum($newsearchlinetime);
-                                    $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $searchline) . " <br> 【 " . $translation["table-transfer"][$lang] . $exchangepos . " 】 <br> " . $translation[$station][$lang] . " ➤ " . implode(" ➤ ", $newsearchline);
-                                }
-
-                                if ($successful == 0) {
-                                    //try again with ascending
-                                    $newbusstopnum = array_search($station, $newline);
-                                    if ($newbusstopnum !== false) {
-                                        //Get route after start station
-                                        $newsearchline = array_slice($newline, $newbusstopnum + 1);
-                                        $newsearchlineattr = array_slice($newlineattr, $newbusstopnum);
-                                        $newsearchlinetime = array_slice($newlinetime, $newbusstopnum);
-
-                                        //Get end station index
-                                        $busendstation = array_search($station, $searchline);
-                                        $secbusendstation = array_search($deststation[$currdest], $newsearchline);
-
-                                        if ($secbusendstation !== false && $busendstation !== false) {
-                                            $successful = 1;
-                                            $routeresult["busno"][] = $busno . "→" . $newbusno;
-
-                                            //Trim $line & $newsearchline
-                                            $searchline = array_slice($searchline, 0, $busendstation + 1, true);
-                                            $newsearchline = array_slice($newsearchline, 0, $secbusendstation + 1, true);
-                                            $searchlineattr = array_slice($searchlineattr, 0, $busendstation + 2, true);
-                                            $newsearchlineattr = array_slice($newsearchlineattr, 0, $secbusendstation + 2, true);
-                                            $searchlinetime = array_slice($searchlinetime, 0, $busendstation + 2, true);
-                                            $newsearchlinetime = array_slice($newsearchlinetime, 0, $secbusendstation + 2, true);
-
-                                            foreach ($searchline as $stopindex => $stop) {
-                                                $searchline[$stopindex] = $translation[$stop][$lang];
-                                            }
-                                            foreach ($newsearchline as $stopindex => $stop) {
-                                                $newsearchline[$stopindex] = $translation[$stop][$lang];
-                                            }
-
-                                            //Start
-                                            if ($translation[$searchlineattr[0]][$lang]) {
-                                                $startpos = $translation[$startstation[$currstart]][$lang] . " (" . $translation[$searchlineattr[0]][$lang] . ")";
-                                            } else {
-                                                $startpos = $translation[$startstation[$currstart]][$lang];
-                                            }
-
-                                            //Exchange End
-                                            if ($translation[end($searchlineattr)][$lang]) {
-                                                $exchangeposen = end($searchline) . " (" . $translation[end($searchlineattr)][$lang] . ")";
-                                            } else {
-                                                $exchangeposen = end($searchline);
-                                            }
-
-                                            //Exchange Start
-                                            if ($translation[$newsearchlineattr[0]][$lang]) {
-                                                $exchangeposst = end($searchline) . " (" . $translation[$newsearchlineattr[0]][$lang] . ")";
-                                            } else {
-                                                $exchangeposst = end($searchline);
-                                            }
-
-                                            //Exchange Group
-                                            if ($exchangeposen == $exchangeposst) {
-                                                $exchangepos = $exchangeposen;
-                                            } else {
-                                                $exchangepos = $exchangeposen . " → " . $exchangeposst;
-                                            }
-
-                                            //End
-                                            if ($translation[end($newsearchlineattr)][$lang]) {
-                                                $endpos = end($newsearchline) . " (" . $translation[end($newsearchlineattr)][$lang] . ")";
-                                            } else {
-                                                $endpos = end($newsearchline);
-                                            }
-
-                                            $routeresult["start"][] = $startpos;
-                                            $routeresult["exchange"][] = $exchangepos;
-                                            $routeresult["end"][] = $endpos;
-                                            $routeresult["time"][] = array_sum($searchlinetime) + array_sum($newsearchlinetime);
-                                            $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $searchline) . " <br> 【 " . $translation["table-transfer"][$lang] . $translation[$station][$lang] . " 】 <br> " . $translation[$station][$lang] . " ➤ " . implode(" ➤ ", $newsearchline);
-                                        }
-                                    }
-                                }
-                            }
+                        $routeresult["start"][] = $startpos;
+                        $routeresult["end"][] = $endpos;
+                        $routeresult["time"][] = array_sum($newlinetime);
+                        if (isset($bus[$busno . "#"]) || strpos($busno, "#") !== false) {
+                            $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $newline) . "<br><br><span class=\"departtime\">" . $translation["info-sch"][$lang] . $bus[$busno]["schedule"][2] . "</span>";
+                        } else {
+                            $routeresult["route"][] = $translation[$startstation[$currstart]][$lang] . " ➤ " . implode(" ➤ ", $newline);
                         }
                     }
                 }
@@ -453,7 +258,6 @@ do {
     $currstart = 0;
     $currdest++;
 } while ($currdest < $totaldest);
-
 
 if (empty($routeresult)) {
     $routeresult["busno"] = array("N/A");
