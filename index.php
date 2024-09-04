@@ -19,10 +19,20 @@ date_default_timezone_set("Asia/Hong_Kong");
 include('Essential/functions/initdatas.php');
 
 // detect current page
-if (urlquery('mode') == 'realtime')
-  $currentpage = 'realtime';
-else
-  $currentpage = 'routeselection';
+switch (urlquery('mode')) {
+  case 'realtime':
+    $currentpage = 'realtime';
+    break;
+  case 'route':
+    $currentpage = 'routeselection';
+    break;
+  case 'info':
+    $currentpage = 'info';
+    break;
+  default:
+    $currentpage = 'routeselection';
+    break;
+}
 ?>
 
 
@@ -43,6 +53,7 @@ else
     echo "<link rel='stylesheet' href='Essential/mainpage.css?v=" . $version . "'>";
     echo "<script src='Essential/mainpage.js?v=" . $version . "'></script>";
   }
+  echo "<link rel='stylesheet' href='Essential/general.css?v=" . $version . "'>";
   ?>
   <meta charset="utf-8">
   <meta http-equiv="Content-Language" content="<?php echo $lang == 1 ? "en" : "zh" ?>">
@@ -65,16 +76,58 @@ else
   <meta name="MobileOptimized" content="320" />
   <meta name="google" content="notranslate">
   <meta name="google" value="notranslate">
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
-<?php
-if ($currentpage == 'realtime')
-  include('indexpages/realtime.php');
-else
-  include('indexpages/routeselection.php');
-?>
+<nav>
+  <h1><?php echo $translation["WEB-Title"][$lang] ?></h1>
+  <div class="navFunctions">
+    <ul>
+      <li>
+        <a onclick="append_query('mode','realtime');" class="<?php echo $currentpage == 'realtime' ? 'active' : ''; ?>">
+          <i class="fa-solid fa-house"></i>
+          <?php echo $translation["NAV-Home"][$lang] ?>
+        </a>
+      </li>
+      <li>
+        <a onclick="append_query('mode','route');"
+          class="<?php echo $currentpage == 'routeselection' ? 'active' : ''; ?>">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <?php echo $translation["NAV-StationSearch"][$lang] ?>
+        </a>
+      </li>
+      <li>
+        <a onclick="append_query('mode','info');" class="<?php echo $currentpage == 'info' ? 'active' : ''; ?>">
+          <i class="fa-solid fa-info"></i>
+          <?php echo $translation["NAV-Info"][$lang] ?>
+        </a>
+      </li>
+      <li>
+        <a href="#settings" class="<?php echo $currentpage == 'settings' ? 'active' : ''; ?>">
+          <i class="fa-solid fa-gear"></i>
+          <?php echo $translation["NAV-Settings"][$lang] ?>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<main>
 
+  <?php
+  switch ($currentpage) {
+    case 'routeselection':
+      include('indexpages/routeselection.php');
+      break;
+    case 'info':
+      include('indexpages/info.php');
+      break;
+    case 'realtime':
+    default:
+      include('indexpages/realtime.php');
+      break;
+  }
+  ?>
+</main>
 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3579541618707661" data-ad-slot="8668958470"
   data-ad-format="auto" data-full-width-responsive="true"></ins>
 <script>

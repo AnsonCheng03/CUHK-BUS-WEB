@@ -1,13 +1,5 @@
 <body>
-    <div class="navbar">
-        <div class="back nav">
-            <button onclick="append_query('mode','route');" /><?php echo $translation["back_btn"][$lang] ?></button>
-        </div>
-        <div class="lang-selector nav">
-            <button onclick="append_query('lang','tc');" />中文</button>
-            <button onclick="append_query('lang','en');" />ENG</button>
-        </div>
-    </div>
+
 
     <h1><?php echo $translation['title_realtime'][$lang]; ?></h1>
 
@@ -56,14 +48,4 @@
 
     <div class="realtimeresult"></div>
 
-
-    <!-- Website Suggestions-->
-    <?php
-    echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
-    foreach ($WebsiteLinks as $row) {
-        if ($row[0][$lang])
-            echo "<a target='_blank' class='websites'  href='" . $row[1] . "'>" . $row[0][$lang] . "</a>";
-    }
-    echo "</div>";
-    ?>
 </body>

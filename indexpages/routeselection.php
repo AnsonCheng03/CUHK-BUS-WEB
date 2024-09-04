@@ -4,25 +4,6 @@ $fetcherror = false;
 ?>
 
 
-
-
-<!--Select Language && Function Buttons-->
-<div class="lang-selector nav">
-  <button onclick="append_query('lang','tc');" />中文</button>
-  <button onclick="append_query('lang','en');" />ENG</button>
-</div>
-
-<div class="refreshbtn nav">
-  <button id="refresh-btn"
-    onclick="window.location.reload();" /><?php echo $translation["refresh-btn"][$lang] ?></button>
-</div>
-
-<!--Title & Alert-->
-<h1><?php echo $translation["WEB-Title"][$lang] ?></h1>
-<h2>v.
-  <?php echo $version . "<br> ( " . $translation["last-update"][$lang] . date("d/m/Y H:i", filemtime("Data/Station.csv")) . " )" ?>
-</h2>
-
 <?php
 foreach ($notice as $noti) {
   alert($noti["pref"]["type"], $noti["content"][$lang]);
@@ -327,23 +308,6 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
 <footer>
 
   <div class="abouts">
-    <!-- Website Suggestions-->
-
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3579541618707661" data-ad-slot="8668958470"
-      data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
-    <?php
-    echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
-    foreach ($WebsiteLinks as $row) {
-      if ($row[0][$lang])
-        echo "<a target='_blank' class='websites'  href='" . $row[1] . "'>" . $row[0][$lang] . "</a>";
-    }
-    echo "</div>";
-    ?>
-
     <!-- About !-->
 
     <?php
