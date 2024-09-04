@@ -69,6 +69,8 @@ if (isset($initdataitems["Station"]) && $initdataitems["Station"] === true) {
     $stmt = $conn->prepare("SELECT * FROM station");
     $stmt->execute();
     $result = $stmt->get_result();
+    if (isset($station))
+        unset($station);
     while ($row = $result->fetch_assoc()) {
         $station[$row['最近之車站']][] = $row['建築物'];
     }

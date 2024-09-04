@@ -3,7 +3,7 @@
 .image-wrapper {
   width: 23px;
   padding: 5px;
-  border: 1px solid rgb(118, 118, 118);
+  border: 1px solid #d4a373;
   border-radius: 30%;
   cursor: pointer;
   margin: auto;
@@ -93,7 +93,7 @@
   display: grid;
   grid-template-columns: auto 1fr 50px;
   gap: 5%;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ccd5ae;
   margin: 0;
   justify-content: center;
   align-items: center;
@@ -110,7 +110,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid rgb(118, 118, 118);
+  /* border: 1px solid rgb(118, 118, 118); */
+  background-color: #d4a373;
+  color: #fff;
   border-radius: 5px;
   padding: 2px 0;
   padding: 4px 10px;
@@ -127,6 +129,7 @@
   text-align-last: center;
   border-radius: 5px;
   width: 100%;
+  border: 1px solid #d4a373;
 }
 
 /* Result */
@@ -253,7 +256,7 @@
   grid-template-columns: 30px 1fr 80px;
   align-items: center;
   padding: 10px 7%;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ccd5ae;
   gap: 7%;
   cursor: pointer;
   min-height: 50px;
