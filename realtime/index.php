@@ -1,151 +1,191 @@
 <?php
 
-
 date_default_timezone_set("Asia/Hong_Kong");
 include('../Essential/functions/functions.php');
 include_once('../Essential/functions/loadenv.php');
-$lang = $_POST['lang'];
-$initdataitems = array(
+
+$lang = $_POST['lang'] ?? 'en';
+$dest = $_POST['Dest'] ?? '';
+
+$initdataitems = [
     "Route" => true,
     "Translate" => true,
-);
+];
 include('../Essential/functions/initdatas.php');
 
+// Load bus schedule and status
 $busschedule = json_decode(file_get_contents('../Data/timetable.json'), true);
+$busservices = json_decode(file_get_contents('../Data/Status.json'), true);
 
-if ($_POST['loop'] != 'loop') {
-    $conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'));
-    if ($conn->connect_error)
-        die("Connection failed: " . $conn->connect_error);
-    $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) 
-            VALUES (?, 'realtime', ?, ?);");
-    $stmt->bind_param("sss", $Time, $_POST['Dest'], $lang);
-    $Time = (new DateTime())->format('Y-m-d H:i:s');
+// Log the request if not a loop
+if ($_POST['loop'] !== 'loop') {
+    logRequest($dest, $lang);
+}
+
+// Process bus status
+$currentbusservices = end($busservices);
+$thirtyminbusservice = array_slice($busservices, -30, 1)[0] ?? [];
+
+if (isset($currentbusservices['ERROR'])) {
+    alert("alert", $translation["fetch-error"][$lang]);
+    $bus = filterBusesBySchedule($bus);
+} else {
+    $bus = processBusStatus($currentbusservices, $thirtyminbusservice, $bus);
+}
+
+$outputschedule = array_filter($busschedule, fn($key) => explode("|", $key)[0] == $dest, ARRAY_FILTER_USE_KEY);
+
+// Generate CSRF token
+$_SESSION['_token'] = bin2hex(openssl_random_pseudo_bytes(32));
+
+// Process and display bus information
+$allBuses = processAndSortBuses($outputschedule, $bus, $lang, $translation);
+displayBuses($allBuses, $lang, $_SESSION['_token'] ?? 'null', $translation, $dest);
+
+function logRequest($dest, $lang)
+{
+    $conn = connectToDatabase();
+    $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) VALUES (NOW(), 'realtime', ?, ?)");
+    $stmt->bind_param("ss", $dest, $lang);
     $stmt->execute();
     $stmt->close();
     $conn->close();
 }
 
+function filterBusesBySchedule($bus)
+{
+    $currenttime = time();
+    return array_filter($bus, function ($busarr) use ($currenttime) {
+        $starttime = strtotime($busarr["schedule"][0]);
+        $endtime = strtotime($busarr["schedule"][1]);
+        $weekday = "WK-" . date('D');
+        return $currenttime >= $starttime && $currenttime <= $endtime && strpos($busarr["schedule"][4], $weekday) !== false;
+    });
+}
 
-//Bus Status
-
-$busservices = json_decode(file_get_contents('../Data/Status.json'), true);
-$currentbusservices = end($busservices);
-$thirtyminbusservice = array_pop(array_slice($busservices, -30, 1));
-if (isset($currentbusservices['ERROR'])) {
-    $fetcherror = true;
-    alert("alert", $translation["fetch-error"][$lang]);
-} else {
+function processBusStatus($currentbusservices, $thirtyminbusservice, $bus)
+{
     foreach ($currentbusservices as $busnumber => $busstatus) {
-        $bus[$busnumber]["stats"]["status"] = $busstatus;
-        $bus[$busnumber]["stats"]["prevstatus"] = $thirtyminbusservice[$busnumber];
+        $bus[$busnumber]["stats"] = [
+            "status" => $busstatus,
+            "prevstatus" => $thirtyminbusservice[$busnumber] ?? null
+        ];
         if (isset($bus[$busnumber . "#"])) {
-            $bus[$busnumber . "#"]["stats"]["status"] = $busstatus;
-            $bus[$busnumber . "#"]["stats"]["prevstatus"] = $thirtyminbusservice[$busnumber];
+            $bus[$busnumber . "#"]["stats"] = $bus[$busnumber]["stats"];
         }
     }
+    return array_filter(
+        $bus,
+        fn($busarr) =>
+        $busarr["stats"]["status"] != "no" || $busarr["stats"]["prevstatus"] == "normal"
+    );
 }
 
-if (isset($fetcherror)) {
-    foreach ($bus as $index => $busarr) {
-        //Base on time
-        $currenttime = (new DateTime())->getTimestamp();
-        $starttime = (DateTime::createFromFormat("H:i", $busarr["schedule"][0]))->getTimestamp();
-        $endtime = (DateTime::createFromFormat("H:i", $busarr["schedule"][1]))->getTimestamp();
-        if ($currenttime < $starttime || $currenttime > $endtime)
-            unset($bus[$index]);
+function processAndSortBuses($outputschedule, $bus, $lang, $translation)
+{
+    $allBuses = [];
+    $conn = connectToDatabase();
+    $stmt = prepareStatement($conn);
 
-        //Base on weekday or day
-        if (strpos($busarr["schedule"][4], "WK-" . (new DateTime())->format('D')) === false)
-            unset($bus[$index]);
-    }
-} else {
-    foreach ($bus as $index => $busarr)
-        if (($busarr["stats"]["status"] == "no" && $busarr["stats"]["prevstatus"] != "normal") || ($busarr["stats"]["status"] == "suspended" && $busarr["stats"]["prevstatus"] != "normal"))
-            unset($bus[$index]);
-}
-$bus = array_filter($bus);
+    $nowtime = date('H:i:s');
+    $currtime = date('H:i:s', strtotime("-30 minutes"));
 
-
-$outputschedule = array_filter($busschedule, function ($key) {
-    return explode("|", $key)[0] == $_POST['Dest'];
-}, ARRAY_FILTER_USE_KEY);
-
-
-$_SESSION['_token'] = bin2hex(openssl_random_pseudo_bytes(32));
-
-session_start();
-$conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'));
-if ($conn->connect_error)
-    die("Connection failed: " . $conn->connect_error);
-$conn->query("SET SESSION time_zone = '+8:00'");
-$stmt = $conn->prepare("SELECT
-DATE_FORMAT(`Time`,'%H'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2 , COUNT(*) 
-FROM `report` 
-WHERE (`Time` >= (now() - interval 30 minute)) AND `BusNum` = ? AND `StopAttr` = ? 
-GROUP BY CONCAT( DATE_FORMAT(`Time`,'%m-%d-%Y %H:'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2)");
-
-$stmt->bind_param("ss", $busnum, $Stop);
-
-
-$countoutput = 0;
-foreach ($outputschedule as $stationname => $schedule) {
-    ksort($schedule);
-    foreach ($schedule as $busno => $timetable) {
-        if (isset($bus[$busno]) && $timetable) {
-            echo "
-                <div class='bussect'>
-                    <div class='busname'>" . $busno .
-                "<button data='" . $busno . "' lang='" . $lang . "' tk='" .
-                (isset($_SESSION) && isset($_SESSION['_token']) ? $_SESSION['_token'] : 'null')
-                . "' stop='" . $stationname . "' onclick='realtimesubmit(this);'>" . $translation['bus-arrive-btn'][$lang] . "</button>" .
-                "</div>";
-
-            $busnum = $busno;
-            $Stop = $stationname;
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            while ($row = $result->fetch_array(MYSQLI_NUM)) {
-                echo "
-                    <div class=\"userreport\">
-                        <div class=\"businfo\">[ " . $row[2] . " ] " . $translation['schoolbus_arrival'][$lang] . "</div>
-                        <div class=\"arrtime\"> ~ " . $row[0] . ":" . sprintf('%02d', $row[1]) . "</div>
-                    </div>
-                ";
+    foreach ($outputschedule as $stationname => $schedule) {
+        foreach ($schedule as $busno => $timetable) {
+            if (isset($bus[$busno]) && $timetable) {
+                $allBuses = array_merge($allBuses, getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation));
+                $allBuses = array_merge($allBuses, getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime, $lang, $translation));
             }
-
-            $outputtimecount = 0;
-            $nowtime = (new DateTime())->format('H:i:s');
-            $currtime = (new DateTime())->modify("-30 minutes")->format('H:i:s');
-            sort($timetable);
-            foreach ($timetable as $time) {
-                if ($time >= $currtime) {
-                    if ($time <= $nowtime) {
-                        echo "<div class='bustype arrived'>";
-                    } else {
-                        if ($outputtimecount > 4)
-                            break;
-                        $outputtimecount++;
-                        echo "<div class='bustype'>";
-                    }
-                    echo "<div class='businfo'>" .
-                        (explode("|", $stationname)[1] ? $translation[explode("|", $stationname)[1]][$lang] : $translation["mode-realtime"][$lang]) .
-                        "</div>";
-                    echo "<div class='arrtime'> ~ " . substr($time, 0, -3) . "</div>";
-                    echo "</div>";
-                }
-            }
-            $countoutput++;
-            echo "
-                </div>
-            ";
         }
     }
-}
-if ($countoutput == 0) {
-    echo '<div class=\'bussect\'><div class=\'busname\'>' . $translation["No-bus-time"][$lang] . '</div></div>';
+
+    $stmt->close();
+    $conn->close();
+
+    usort($allBuses, fn($a, $b) => strtotime($a['time']) - strtotime($b['time']));
+    return $allBuses;
 }
 
-$stmt->close();
-$conn->close();
+function connectToDatabase()
+{
+    $conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'));
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $conn->query("SET SESSION time_zone = '+8:00'");
+    return $conn;
+}
+
+function prepareStatement($conn)
+{
+    return $conn->prepare("SELECT
+        DATE_FORMAT(`Time`,'%H'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2 , COUNT(*) 
+        FROM `report` 
+        WHERE (`Time` >= (now() - interval 30 minute)) AND `BusNum` = ? AND `StopAttr` = ? 
+        GROUP BY CONCAT( DATE_FORMAT(`Time`,'%m-%d-%Y %H:'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2)");
+}
+
+function getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation)
+{
+    $stmt->bind_param("ss", $busno, $stationname);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $userReportedTimes = [];
+    while ($row = $result->fetch_array(MYSQLI_NUM)) {
+        $userReportedTimes[] = [
+            'busno' => $busno,
+            'direction' => $translation['schoolbus_arrival'][$lang],
+            'time' => $row[0] . ":" . sprintf('%02d', $row[1]),
+            'isUserReport' => true,
+            'reportTime' => $row[2]
+        ];
+    }
+    return $userReportedTimes;
+}
+
+function getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime, $lang, $translation)
+{
+    $scheduledTimes = [];
+    foreach ($timetable as $time) {
+        if ($time >= $currtime) {
+            $scheduledTimes[] = [
+                'busno' => $busno,
+                'direction' => (explode("|", $stationname)[1] ? $translation[explode("|", $stationname)[1]][$lang] : $translation["mode-realtime"][$lang]),
+                'time' => substr($time, 0, -3),
+                'isUserReport' => false,
+                'arrived' => ($time <= $nowtime)
+            ];
+        }
+    }
+    return $scheduledTimes;
+}
+
+function displayBuses($allBuses, $lang, $token, $translation, $dest)
+{
+    $countoutput = 0;
+    foreach ($allBuses as $bus) {
+        echo "<div class='bussect'>";
+        echo "<div class='busname'>" . $bus['busno'] .
+            "<button data='" . $bus['busno'] . "' lang='" . $lang . "' tk='" . $token .
+            "' stop='" . $dest . "' onclick='realtimesubmit(this);'>" . $translation['bus-arrive-btn'][$lang] . "</button>" .
+            "</div>";
+
+        if ($bus['isUserReport']) {
+            echo "<div class=\"userreport\">";
+            echo "<div class=\"businfo\">[ " . $bus['reportTime'] . " ] " . $bus['direction'] . "</div>";
+        } else {
+            echo "<div class='" . ($bus['arrived'] ? 'bustype arrived' : 'bustype') . "'>";
+            echo "<div class='businfo'>" . $bus['direction'] . "</div>";
+        }
+
+        echo "<div class='arrtime'> ~ " . $bus['time'] . "</div>";
+        echo "</div>";
+        echo "</div>";
+
+        $countoutput++;
+    }
+
+    if ($countoutput == 0) {
+        echo '<div class=\'bussect\'><div class=\'busname\'>' . $translation["No-bus-time"][$lang] . '</div></div>';
+    }
+}
