@@ -12,7 +12,8 @@ include('Essential/functions/initdatas.php');
     <meta name="title" content="<?php echo $translation['title_realtime'][$lang]; ?> | 中大校巴資訊站 CU BUS INFOPAGE">
     <meta http-equiv="Content-Language" content="<?php echo $lang == 1 ? "en" : "zh" ?>">
     <meta name="description" content="<?php echo $translation['meta_desc_realtime'][$lang]; ?> ">
-    <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
+    <meta name="keywords"
+        content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
     <meta name="robots" content="index, follow">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="revisit-after" content="7 days">
@@ -69,14 +70,15 @@ include('Essential/functions/initdatas.php');
             }
         }
     }
-    $allbusstop =  array_filter(array_unique($allbusstop));
+    $allbusstop = array_filter(array_unique($allbusstop));
     sort($allbusstop);
 
     ?>
 
     <form class="stopselector" method="POST" onchange="submitform(this, '.realtimeresult', 'realtime/index.php');">
         <span><?php echo $translation['DescTxt-yrloc'][$lang] ?>
-            <img alt="Get Current Location" class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
+            <img alt="Get Current Location" class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box"
+                onclick="getLocation(this.id);"></img>
         </span>
         <select mode="station" class="select-box" name="Dest" id="Dest">
             <option disabled selected><?php echo $translation['DescTxt2'][$lang] ?></option>
@@ -94,7 +96,7 @@ include('Essential/functions/initdatas.php');
 
 
     <!-- Website Suggestions-->
-    <?
+    <?php
     echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
     foreach ($WebsiteLinks as $row) {
         if ($row[0][$lang])
@@ -103,7 +105,8 @@ include('Essential/functions/initdatas.php');
     echo "</div>";
     ?>
 
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3579541618707661" data-ad-slot="8668958470" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3579541618707661" data-ad-slot="8668958470"
+        data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
@@ -139,7 +142,7 @@ include('Essential/functions/initdatas.php');
 
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js').then(function(reg) {}).catch(function(err) {})
+            navigator.serviceWorker.register('service-worker.js').then(function (reg) { }).catch(function (err) { })
         }
     </script>
 </footer>

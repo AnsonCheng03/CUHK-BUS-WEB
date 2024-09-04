@@ -1,6 +1,6 @@
 <!doctype html>
 
-<?
+<?php
 include('../../../Essential/functions/functions.php');
 
 foreach (csv_to_array(__DIR__ . "/../../../Data/Route") as $busno) {
@@ -26,8 +26,7 @@ foreach (array_slice(csv_to_array(__DIR__ . "/../../../Data/Translate"), 1) as $
 
 $lang = 0;
 $busno = str_replace("|ext|", "#", explode("/", $_GET['route'])[0]);
-if (!isset($bus[$busno])) 
-{
+if (!isset($bus[$busno])) {
     http_response_code(404);
     die('<script>window.location.replace("../");</script>');
 }
@@ -198,9 +197,9 @@ switch ($busno) {
                     "acceptedAnswer": {
                         "@type": "Answer",
                         "text": "<?php echo (strpos($bus[$busno]["schedule"][3], "HD") !== false || $bus[$busno]["schedule"][3] === "HD" ?
-                                        "假日" : (strpos($bus[$busno]["schedule"][3], "TD") === false && $bus[$busno]["schedule"][3] !== "TD" ?
-                                            "非教學日" : "教學日"
-                                        )) ?>"
+                            "假日" : (strpos($bus[$busno]["schedule"][3], "TD") === false && $bus[$busno]["schedule"][3] !== "TD" ?
+                            "非教學日" : "教學日"
+                        )) ?>"
                     }
                 }, {
                     "@type": "Question",
@@ -222,7 +221,8 @@ switch ($busno) {
         <meta http-equiv="Content-Language" content="zh">
         <meta name="title" content="校巴資訊 - <?php echo $busno ?> | 中大校巴資訊站 CU BUS INFOPAGE">
         <meta name="description" content="你可在本頁搜尋到 <?php echo $busno ?> 校巴之資訊，包括開出時間、是否允許行李、路線等。">
-        <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop, <?php echo $busno ?>">
+        <meta name="keywords"
+            content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop, <?php echo $busno ?>">
         <meta name="robots" content="index, follow">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="author" content="Anson Cheng">
@@ -485,7 +485,7 @@ switch ($busno) {
                             <h3>服務時間</h3>
                             <p class="time">' . $bus[$busno]['schedule'][0] . ' - ' . $bus[$busno]['schedule'][1] . '</p>
                             <p class="days">' . (strpos($bus[$busno]["schedule"][3], "HD") !== false || $bus[$busno]["schedule"][3] === "HD" ?
-            "假日" : (strpos($bus[$busno]["schedule"][3], "TD") === false && $bus[$busno]["schedule"][3] !== "TD" ?
+                "假日" : (strpos($bus[$busno]["schedule"][3], "TD") === false && $bus[$busno]["schedule"][3] !== "TD" ?
                 "非教學日" : "教學日"
             )) . '</p>
                         </div>
@@ -519,7 +519,7 @@ switch ($busno) {
                         <div class="card">
                             <div class="card-content">
                                 <h3>第' . ($index + 1) . '站' .
-                        ($bus[$busno]['stations']['attr'][$index] !== "NULL" ? '（' . $translation[$bus[$busno]['stations']['attr'][$index]][$lang] . '）</h3>' : "</h3>") .
+                    ($bus[$busno]['stations']['attr'][$index] !== "NULL" ? '（' . $translation[$bus[$busno]['stations']['attr'][$index]][$lang] . '）</h3>' : "</h3>") .
                         '<h4>' . $translation[$stopname][$lang] . '</h4>
                             </div>
                         </div>
