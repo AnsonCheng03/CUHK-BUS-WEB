@@ -58,8 +58,6 @@ if (isset($buserrstat["suspended"]))
 if ($finalerrbus !== "")
   alert("alert", $finalerrbus);
 
-if (isset($buserrstat["justeos"]))
-  alert("Binfo", $translation["justeos-alert"][$lang] . implode(", ", $buserrstat["justeos"]));
 
 //Concat all bus stops
 foreach ($bus as $busnum) {
@@ -101,29 +99,50 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
   autocomplete="off">
   <input hidden type="hidden" name="language" value="<?php echo $lang ?>"></input>
 
-  <div class="switch-toggle">
-    <input id="building" name="mode" type="radio" value="building" checked />
-    <label for="building"><?php echo $translation["mode-building"][$lang] ?></label>
-
-    <input id="station" name="mode" type="radio" value="station" />
-    <label for="station"><?php echo $translation["mode-station"][$lang] ?></label>
-
-    <input disabled id="realtime" name="mode0" type="radio" value="realtime"
-      onclick="append_query('mode', 'realtime');" />
-    <label for="realtime"
-      onclick="append_query('mode', 'realtime');"><?php echo $translation["mode-realtime"][$lang] ?></label>
-  </div>
+  <input id="building" name="mode" type="radio" value="building" checked hidden />
 
   <div class="search-boxes">
     <div class="info-box optionssel">
 
-      <div class="bus-options">
-        <span class="slider-wrapper">
-          <label for="showallroute"><?php echo $translation["showallroute-info"][$lang] ?></label>
-          <label class="switch"><input type="checkbox" id="showallroute" name="showallroute">
-            <span class="slider"></span>
-          </label>
-        </span>
+
+      <div class="locationchooser">
+        <label for="Start" id="Start-label"><?php echo $translation["Form-Start"][$lang] ?></label>
+        <div class="locationinput">
+          <div mode="building" class="autocomplete">
+            <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Startbd"
+              name="Startbd" autocomplete="off">
+          </div>
+          <select mode="station" class="select-box" name="Start" id="Start">
+            <?php
+            foreach ($allbusstop as $value)
+              echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
+            ?>
+          </select>
+        </div>
+        <div class="functionbuttons">
+          <img alt="Get Current Location" width='23px' height='23px' class='image-wrapper' src='Images/GPS.jpg'
+            id='Start-GPS-box' onclick='getLocation(this.id);'></img>
+        </div>
+      </div>
+
+      <div class="locationchooser">
+        <label for="Dest" id="Dest-label"> <?php echo $translation["Form-Dest"][$lang] ?></label>
+        <div class="locationinput">
+          <div mode="building" class="autocomplete">
+            <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Destbd"
+              name="Destbd" autocomplete="off">
+          </div>
+          <select mode="station" class="select-box" name="Dest" id="Dest">
+            <?php
+            foreach ($allbusstop as $value)
+              echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
+            ?>
+          </select>
+        </div>
+        <div class="functionbuttons">
+          <img alt="Get Current Location" width='23px' height='23px' class="image-wrapper" src="Images/GPS.jpg"
+            id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
+        </div>
       </div>
 
       <div class="bus-options">
@@ -176,68 +195,14 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
       </div>
 
       <!--自動時間!-->
-      <div id="time-now" class="show-time" style="display: none;">
-        <?php
-        if ($fetcherror)
-          echo $translation["fetch-error"][$lang];
-        else {
-          $operating = array_keys(array_filter($bus, function ($busarr) {
-            return $busarr["stats"]["status"] == "normal" || $busarr["stats"]["status"] == "delay";
-          }));
+      <?php
+      if ($fetcherror) {
+        echo '<div id="time-now" class="show-time" style="display: none;">';
+        echo $translation["fetch-error"][$lang];
+        echo "</div>";
+      }
 
-          if ($operating)
-            echo $translation["info-running"][$lang] . implode(", ", $operating);
-          else
-            echo $translation["stop-running"][$lang];
-        }
-        ?>
-      </div>
-    </div>
-
-
-    <div class="info-box routesel">
-      <h3><?php echo $translation["DescTxt1"][$lang] ?> </h3>
-
-
-      <div class="locationchooser">
-        <label for="Start" id="Start-label"><?php echo $translation["Form-Start"][$lang] ?></label>
-        <div class="locationinput">
-          <div mode="building" class="autocomplete">
-            <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Startbd"
-              name="Startbd" autocomplete="off">
-          </div>
-          <select mode="station" class="select-box" name="Start" id="Start">
-            <?php
-            foreach ($allbusstop as $value)
-              echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
-            ?>
-          </select>
-        </div>
-        <div class="functionbuttons">
-          <img alt="Get Current Location" width='23px' height='23px' class='image-wrapper' src='Images/GPS.jpg'
-            id='Start-GPS-box' onclick='getLocation(this.id);'></img>
-        </div>
-      </div>
-
-      <div class="locationchooser">
-        <label for="Dest" id="Dest-label"> <?php echo $translation["Form-Dest"][$lang] ?></label>
-        <div class="locationinput">
-          <div mode="building" class="autocomplete">
-            <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Destbd"
-              name="Destbd" autocomplete="off">
-          </div>
-          <select mode="station" class="select-box" name="Dest" id="Dest">
-            <?php
-            foreach ($allbusstop as $value)
-              echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
-            ?>
-          </select>
-        </div>
-        <div class="functionbuttons">
-          <img alt="Get Current Location" width='23px' height='23px' class="image-wrapper" src="Images/GPS.jpg"
-            id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
-        </div>
-      </div>
+      ?>
 
       <input id="routesubmitbtn" class="submit-btn" type="submit" name="submit"
         value=" <?php echo $translation["route-submit"][$lang] ?> " />

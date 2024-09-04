@@ -51,41 +51,15 @@
 }
 
 /* Selection boxes */
-.search-boxes {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 .info-box {
-  text-align: center;
-  padding: 40px;
-  border-radius: 20px;
-  margin: 30px;
-  box-shadow: 0 5px 10px rgba(154, 160, 185, 0.05),
-    0 15px 40px rgba(166, 173, 201, 0.2);
-  background-color: #fff;
-  width: 75%;
-  transition: all 0.5s ease-in-out;
-}
-
-@media (min-width: 768px) and (max-width: 1024px), (max-width: 850px) {
-  .search-boxes {
-    display: unset;
-  }
-
-  .search-boxes .info-box {
-    margin: 30px auto;
-  }
+  display: grid;
+  padding: 10px;
 }
 
 /* Options Selector */
 .optionssel {
   height: min-content;
-}
-
-.bus-options {
-  margin-bottom: 30px;
 }
 
 .slider-wrapper {
@@ -175,24 +149,20 @@ input:checked + .slider:before {
 }
 
 .locationchooser {
-  display: flex;
+  display: grid;
+  grid-template-columns: 100px 1fr 100px;
+  justify-content: center;
   align-items: center;
-  width: 100%;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-top: 25px;
+  gap: 10px;
 }
 
 .locationchooser #Start-label,
 .locationchooser #Dest-label {
-  text-align: right;
-  width: 27.5%;
-  color: #34495e;
+  text-align: center;
 }
 
 .locationinput {
   display: inline-block;
-  width: 45%;
 }
 
 .text-box {
@@ -267,7 +237,6 @@ input:checked + .slider:before {
   padding: 15px 30px;
   text-decoration: none;
   cursor: pointer;
-  margin-top: 25px;
 }
 
 .image-wrapper {
