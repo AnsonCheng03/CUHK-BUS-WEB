@@ -1,9 +1,20 @@
 <?php
 $version = "1.2.7";
-$placeads = false;
-
 include_once('Essential/functions/functions.php');
-$lang = urlquery("lang") == "en" ? 1 : 0;
+
+// detect language from browser
+if (isset($_GET['lang'])) {
+  $lang = $_GET['lang'] == "en" ? 1 : 0;
+} else {
+  if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+    $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+    if ($lang == "zh" || $lang == "zh-HK" || $lang == "zh-TW" || $lang == "zh-CN")
+      $lang = 0;
+    else
+      $lang = 1;
+  } else
+    $lang = 0;
+}
 date_default_timezone_set("Asia/Hong_Kong");
 include('Essential/functions/initdatas.php');
 
