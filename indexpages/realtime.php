@@ -1,8 +1,5 @@
 <body>
 
-
-    <h1><?php echo $translation['title_realtime'][$lang]; ?></h1>
-
     <!--GPS Details Box!-->
     <div id="details-box">
         <div class="details-box">
@@ -30,10 +27,7 @@
     ?>
 
     <form class="stopselector" method="POST" onchange="submitform(this, '.realtimeresult', 'realtime/index.php');">
-        <span><?php echo $translation['DescTxt-yrloc'][$lang] ?>
-            <img alt="Get Current Location" class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box"
-                onclick="getLocation(this.id);"></img>
-        </span>
+        <span><?php echo $translation['DescTxt-yrloc'][$lang] ?></span>
         <select mode="station" class="select-box" name="Dest" id="Dest">
             <option disabled selected><?php echo $translation['DescTxt2'][$lang] ?></option>
             <?php
@@ -41,6 +35,8 @@
                 echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
             ?>
         </select>
+        <img alt="Get Current Location" class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box"
+            onclick="getLocation(this.id);"></img>
         <input type="hidden" name="lang" hidden value="<?php echo $lang ?>"></input>
         <input type="hidden" name="loop" hidden value="0"></input>
     </form>

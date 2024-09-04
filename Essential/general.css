@@ -19,7 +19,9 @@ nav h1 {
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: -1px;
-  padding: 10px 0px;
+  padding: 10px 30px;
+  text-align: left;
+  white-space: nowrap;
 }
 
 nav ul {
@@ -69,10 +71,6 @@ nav a.active:link {
   nav ul {
     gap: auto;
     justify-content: space-around;
-  }
-
-  nav a {
-    gap: 0;
   }
 
   main {
