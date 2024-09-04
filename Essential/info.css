@@ -1,0 +1,57 @@
+/* Website Suggestions */
+.abouts {
+  display: flex;
+  padding: 0 5%;
+  justify-content: center;
+  align-items: center;
+}
+
+.websitesugg {
+  width: 45%;
+  height: min-content;
+  margin: 50px auto;
+  padding: 1px;
+  border-radius: 10px;
+  box-shadow: 0 3px 5px rgba(154, 160, 185, 0.05),
+    0 15px 40px rgba(166, 173, 201, 0.2);
+  background-color: #fff;
+}
+
+.websitesugg .headingt {
+  text-align: left;
+  margin: 5px 15px;
+  border-left: 3px solid #2196f3;
+  padding: 5px 5px 5px 15px;
+  border-radius: 2px;
+}
+
+.websitesugg .websites {
+  display: block;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}
+
+.abouttxt {
+  display: block;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+  line-height: 30px;
+  max-height: 250px;
+  overflow: scroll;
+}
+
+.websitesugg h2 {
+  margin: 0;
+  text-align: left;
+  font-size: 1em;
+}
+
+@media (min-width: 768px) and (max-width: 1024px), (max-width: 850px) {
+  .websitesugg {
+    width: 80%;
+  }
+
+  .aboutdiv {
+    display: none;
+  }
+}
