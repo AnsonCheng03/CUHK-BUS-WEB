@@ -24,12 +24,13 @@ if ($_POST['loop'] !== 'loop') {
 
 // Process bus status
 $currentbusservices = end($busservices);
-$thirtyminbusservice = array_slice($busservices, -30, 1)[0] ?? [];
+$thirtyminbusservice = array_slice($busservices, -60, 1)[0] ?? [];
 
 if (isset($currentbusservices['ERROR'])) {
     alert("alert", $translation["fetch-error"][$lang]);
     $bus = filterBusesBySchedule($bus);
 } else {
+    $bus = filterBusesBySchedule($bus);
     $bus = processBusStatus($currentbusservices, $thirtyminbusservice, $bus);
 }
 
@@ -40,6 +41,7 @@ $_SESSION['_token'] = bin2hex(openssl_random_pseudo_bytes(32));
 
 // Process and display bus information
 $allBuses = processAndSortBuses($outputschedule, $bus, $lang, $translation);
+
 displayBuses($allBuses, $lang, $_SESSION['_token'] ?? 'null', $translation, $dest);
 
 function logRequest($dest, $lang)
@@ -54,12 +56,9 @@ function logRequest($dest, $lang)
 
 function filterBusesBySchedule($bus)
 {
-    $currenttime = time();
-    return array_filter($bus, function ($busarr) use ($currenttime) {
-        $starttime = strtotime($busarr["schedule"][0]);
-        $endtime = strtotime($busarr["schedule"][1]);
+    return array_filter($bus, function ($busarr) {
         $weekday = "WK-" . date('D');
-        return $currenttime >= $starttime && $currenttime <= $endtime && strpos($busarr["schedule"][4], $weekday) !== false;
+        return strpos($busarr["schedule"][4], $weekday) !== false;
     });
 }
 
@@ -76,7 +75,6 @@ function processBusStatus($currentbusservices, $thirtyminbusservice, $bus)
     }
     // Instead of filtering out buses, we'll keep them all and add a warning flag
     foreach ($bus as $busnumber => &$busarr) {
-        // $busarr["warning"] = ($busarr["stats"]["status"] == "no" && $busarr["stats"]["prevstatus"] != "normal");
         if ($busarr["stats"]["status"] == "no" && $busarr["stats"]["prevstatus"] != "normal") {
             $busarr["warning"] = "No-bus-available";
         } else if ($busarr["stats"]["status"] != "normal") {
@@ -93,14 +91,14 @@ function processAndSortBuses($outputschedule, $bus, $lang, $translation)
     $stmt = prepareStatement($conn);
 
     $nowtime = date('H:i:s');
-    $currtime = date('H:i:s', strtotime("-30 minutes"));
+    $currtime = date('H:i:s', strtotime("-5 minutes"));
 
     foreach ($outputschedule as $stationname => $schedule) {
         foreach ($schedule as $busno => $timetable) {
             if (isset($bus[$busno]) && $timetable) {
                 $warning = $bus[$busno]['warning'] ?? false;
                 $nextStation = getNextStation($bus[$busno]['stations'], $stationname);
-                $allBuses = array_merge($allBuses, getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation, $warning, $nextStation));
+                // $allBuses = array_merge($allBuses, getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation, $warning, $nextStation));
                 $allBuses = array_merge($allBuses, getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime, $lang, $translation, $warning, $nextStation));
             }
         }
@@ -168,26 +166,6 @@ function prepareStatement($conn)
         GROUP BY CONCAT( DATE_FORMAT(`Time`,'%m-%d-%Y %H:'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2)");
 }
 
-function getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation, $warning, $nextStation)
-{
-    $stmt->bind_param("ss", $busno, $stationname);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $userReportedTimes = [];
-    while ($row = $result->fetch_array(MYSQLI_NUM)) {
-        $userReportedTimes[] = [
-            'busno' => $busno,
-            'direction' => $translation['schoolbus_arrival'][$lang],
-            'time' => $row[0] . ":" . sprintf('%02d', $row[1]),
-            'isUserReport' => true,
-            'reportTime' => $row[2],
-            'warning' => $warning,
-            'nextStation' => $nextStation
-        ];
-    }
-    return $userReportedTimes;
-}
-
 function getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime, $lang, $translation, $warning, $nextStation)
 {
     $scheduledTimes = [];
@@ -212,13 +190,19 @@ function displayBuses($allBuses, $lang, $token, $translation, $dest)
     echo "<div class='bus-grid'>";
     $countoutput = 0;
 
+
     foreach ($allBuses as $bus) {
+
+        if ($countoutput >= 10) {
+            break;
+        }
+
         $busName = $bus['busno'];
         $direction = $bus['direction'] !== $translation["mode-realtime"][$lang] ? "<br>" . $bus['direction'] : "";
         $arrivalTime = $bus['time'];
 
 
-        echo "<div class='bus-row' onclick='window.open(\"/pages/blogs/routes/$busName/\"); return false;'>";
+        echo "<div class='bus-row" . ($bus['arrived'] ? ' arrived' : '') . "' onclick='window.open(\"/pages/blogs/routes/$busName/\"); return false;'>";
 
         // Bus name and direction
         echo "<div class='bus-info'><span class='bus-name'>" . $busName . "</span>";
@@ -246,6 +230,13 @@ function displayBuses($allBuses, $lang, $token, $translation, $dest)
     echo "</div>"; // Close bus-grid
 
     if ($countoutput == 0) {
-        echo '<div class="no-bus">' . htmlspecialchars($translation["No-bus-time"][$lang]) . '</div>';
+        echo '<div class="no-bus">
+            <div class="no-bus-icon">
+                <i class="fa-solid fa-ban"></i>
+            </div>
+        <p>' .
+
+
+            htmlspecialchars($translation["No-bus-time"][$lang]) . '</p></div>';
     }
 }

@@ -15,6 +15,7 @@ h1 {
   border: 1px solid black;
   border-radius: 30%;
   cursor: pointer;
+  margin: auto;
 }
 
 #details-box {
@@ -96,13 +97,19 @@ h1 {
 
 .stopselector {
   text-align: center;
-  padding: 25px;
+  padding: 20px 5%;
   background-color: #fff;
   display: grid;
   grid-template-columns: 1fr 2fr 50px;
-  gap: 40px;
+  gap: 5%;
   border-bottom: 1px solid #ddd;
   margin: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.stopselector span {
+  padding: 4px;
 }
 
 .select-box {
@@ -124,6 +131,7 @@ form span {
   align-items: center;
   border: 1px solid #000;
   border-radius: 5px;
+  padding: 2px 0;
 }
 
 .bussect {
@@ -161,8 +169,7 @@ form span {
 }
 
 .arrived {
-  background: #f4efef;
-  font-weight: light;
+  opacity: 0.5;
 }
 
 .userreport {
@@ -322,4 +329,18 @@ form span {
   color: red;
   display: block;
   font-size: 0.7rem;
+}
+
+.no-bus {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.no-bus i {
+  font-size: 10rem;
+  margin-bottom: 20px;
+  color: #bbb;
 }

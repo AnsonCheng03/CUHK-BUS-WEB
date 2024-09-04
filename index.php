@@ -20,17 +20,15 @@ include('Essential/functions/initdatas.php');
 
 // detect current page
 switch (urlquery('mode')) {
-  case 'realtime':
-    $currentpage = 'realtime';
-    break;
   case 'route':
     $currentpage = 'routeselection';
     break;
   case 'info':
     $currentpage = 'info';
     break;
+  case 'realtime':
   default:
-    $currentpage = 'routeselection';
+    $currentpage = 'realtime';
     break;
 }
 ?>
@@ -128,11 +126,11 @@ switch (urlquery('mode')) {
   }
   ?>
 </main>
-<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3579541618707661" data-ad-slot="8668958470"
+<!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3579541618707661" data-ad-slot="8668958470"
   data-ad-format="auto" data-full-width-responsive="true"></ins>
 <script>
   (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+</script> -->
 
 
 
