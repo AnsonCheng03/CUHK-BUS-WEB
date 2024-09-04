@@ -3,6 +3,7 @@
 
 date_default_timezone_set("Asia/Hong_Kong");
 include('../Essential/functions/functions.php');
+include_once('../Essential/functions/loadenv.php');
 $lang = $_POST['lang'];
 $initdataitems = array(
     "Route" => true,
@@ -12,20 +13,18 @@ include('../Essential/functions/initdatas.php');
 
 $busschedule = json_decode(file_get_contents('../Data/timetable.json'), true);
 
-try {
-    if(strpos(__DIR__, "beta") === false)
-        if ($_POST['loop'] != 'loop') {
-            $conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
-            if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
-            $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) 
+if ($_POST['loop'] != 'loop') {
+    $conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'));
+    if ($conn->connect_error)
+        die("Connection failed: " . $conn->connect_error);
+    $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) 
             VALUES (?, 'realtime', ?, ?);");
-            $stmt->bind_param("sss", $Time, $_POST['Dest'], $lang);
-            $Time = (new DateTime())->format('Y-m-d H:i:s');
-            $stmt->execute();
-            $stmt->close();
-            $conn->close();
-        }
-} catch (Exception $e) { }
+    $stmt->bind_param("sss", $Time, $_POST['Dest'], $lang);
+    $Time = (new DateTime())->format('Y-m-d H:i:s');
+    $stmt->execute();
+    $stmt->close();
+    $conn->close();
+}
 
 
 //Bus Status
@@ -76,8 +75,9 @@ $outputschedule = array_filter($busschedule, function ($key) {
 $_SESSION['_token'] = bin2hex(openssl_random_pseudo_bytes(32));
 
 session_start();
-$conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
-if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+$conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'));
+if ($conn->connect_error)
+    die("Connection failed: " . $conn->connect_error);
 $conn->query("SET SESSION time_zone = '+8:00'");
 $stmt = $conn->prepare("SELECT
 DATE_FORMAT(`Time`,'%H'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2 , COUNT(*) 
@@ -96,7 +96,7 @@ foreach ($outputschedule as $stationname => $schedule) {
             echo "
                 <div class='bussect'>
                     <div class='busname'>" . $busno .
-                "<button data='" . $busno . "' lang='" . $lang . "' tk='" . $_SESSION['_token'] . "' stop='" .  $stationname . "' onclick='realtimesubmit(this);'>" . $translation['bus-arrive-btn'][$lang] . "</button>" .
+                "<button data='" . $busno . "' lang='" . $lang . "' tk='" . $_SESSION['_token'] . "' stop='" . $stationname . "' onclick='realtimesubmit(this);'>" . $translation['bus-arrive-btn'][$lang] . "</button>" .
                 "</div>";
 
             $busnum = $busno;
@@ -122,7 +122,8 @@ foreach ($outputschedule as $stationname => $schedule) {
                     if ($time <= $nowtime) {
                         echo "<div class='bustype arrived'>";
                     } else {
-                        if ($outputtimecount > 4) break;
+                        if ($outputtimecount > 4)
+                            break;
                         $outputtimecount++;
                         echo "<div class='bustype'>";
                     }

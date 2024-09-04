@@ -2,6 +2,7 @@
 
 if (!isset($_POST))
     die();
+include_once('../Essential/functions/loadenv.php');
 
 /* Init Program */
 date_default_timezone_set("Asia/Hong_Kong");
@@ -45,9 +46,10 @@ $forceshowexchange = isset($_POST['showallroute']);
 $departnowbtn = isset($_POST['deptnow']);
 
 try {
-    if(strpos(__DIR__, "beta") === false) {
-        $conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
-        if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+    if (strpos(__DIR__, "beta") === false) {
+        $conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'));
+        if ($conn->connect_error)
+            die("Connection failed: " . $conn->connect_error);
         $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Start`, `Dest`, `Mode`, `Showallroute`, `Departnow`, `Lang`) 
         VALUES (?, 'routesearch', ?, ?, ?, ?, ?, ?);");
         $stmt->bind_param("sssssss", $Time, $Startsql, $Destsql, $postmode, $forceshowexchange, $departnowbtn, $lang);
@@ -58,7 +60,8 @@ try {
         $stmt->close();
         $conn->close();
     }
-} catch (Exception $e) { }
+} catch (Exception $e) {
+}
 
 // Get Available Buses
 if (!$departnowbtn) {
@@ -125,7 +128,8 @@ if ($postmode == "building") {
                 $postdestbd = $buildingcode;
                 $flag[1]++;
             }
-            if ($flag[0] == 1 && $flag[1] == 1) break 2;
+            if ($flag[0] == 1 && $flag[1] == 1)
+                break 2;
         }
     }
 
@@ -159,7 +163,8 @@ if ($postmode == "building") {
 
 do {
     do {
-        if ($startstation[$currstart] == $deststation[$currdest]) $samestation = true;
+        if ($startstation[$currstart] == $deststation[$currdest])
+            $samestation = true;
 
         //Startline Bus (Test : 39區 → 善衡書院)
         foreach ($bus as $busno => $line) {
@@ -474,7 +479,7 @@ foreach ($routeresult["busno"] as $index => $startloc) {
 
 
 echo
-'<table id="routeresult" cellspacing="1" cellpadding="10">
+    '<table id="routeresult" cellspacing="1" cellpadding="10">
         <tr style="background-color: #009879; color: #ffffff; text-align: center;">
         <td style="width: 45px">' . $translation["table-line"][$lang] . '</td>
         <td>' . $translation["table-route"][$lang] . '</td>
@@ -512,12 +517,12 @@ foreach ($routegroupresult as $start => $temp) {
                     if ($departnowbtn)
                         if (($bus[$busnostr[0]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[0]]["stats"]["status"] == "no") || ($bus[$busnostr[1]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[1]]["stats"]["status"] == "no"))
                             echo '<br><span class="eoswarning">' . $translation["justeos-warning"][$lang] . '</span>';
-                    echo  '</td>
+                    echo '</td>
                             <td style="text-align:center;">' .
-                                $translation["time-heading-arriving"][$lang] . "<br>" . $busroutes["timeused"][$index] . " min<br>";
-                    if($busroutes["timeused"][$index] != "N/A")    
-                        echo "<button class='detailsbtn' onclick=\" localStorage.setItem('startingpt', '".$start."'); append_query('mode', 'realtime'); \">".$translation['table-detals'][$lang]."</button>";
-                    echo    '</td>
+                        $translation["time-heading-arriving"][$lang] . "<br>" . $busroutes["timeused"][$index] . " min<br>";
+                    if ($busroutes["timeused"][$index] != "N/A")
+                        echo "<button class='detailsbtn' onclick=\" localStorage.setItem('startingpt', '" . $start . "'); append_query('mode', 'realtime'); \">" . $translation['table-detals'][$lang] . "</button>";
+                    echo '</td>
                             </tr> ';
                 }
             }
