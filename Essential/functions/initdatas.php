@@ -25,7 +25,10 @@ if ($initdataitems["Route"] === true)
         }
     }
 
-if ($initdataitems["Translate"] === true)
+if (
+    isset($initdataitems["Translate"]) &&
+    $initdataitems["Translate"] === true
+)
     foreach (array_slice(csv_to_array(__DIR__ . "/../../Data/Translate"), 1) as $row) {
         if ($row[0] !== "" && substr($row[0], 0, 2) !== "//") {
             $translation[$row[0]] = array($row[2], $row[3]);
@@ -33,24 +36,36 @@ if ($initdataitems["Translate"] === true)
         }
     }
 
-if ($initdataitems["Station"] === true)
+if (
+    isset($initdataitems["Station"]) &&
+    $initdataitems["Station"] === true
+)
     foreach (array_slice(csv_to_array(__DIR__ . "/../../Data/Station"), 1) as $row) {
         $station[$row[1]][] = $row[0];
     }
 
-if ($initdataitems["Notice"] === true)
+if (
+    isset($initdataitems["Notice"]) &&
+    $initdataitems["Notice"] === true
+)
     foreach (array_slice(csv_to_array(__DIR__ . "/../../Data/Notice"), 1) as $index => $row) {
         $notice[$index]["content"] = array_slice($row, 1);
         $notice[$index]["pref"]["type"] = $row[0];
     }
 
-if ($initdataitems["GPS"] === true)
+if (
+    isset($initdataitems["GPS"]) &&
+    $initdataitems["GPS"] === true
+)
     foreach (array_slice(csv_to_array(__DIR__ . "/../../Data/GPS"), 1) as $row) {
         $GPS[$row[0]]["Lat"] = $row[1];
         $GPS[$row[0]]["Lng"] = $row[2];
     }
 
-if ($initdataitems["Websites"] === true)
+if (
+    isset($initdataitems["Websites"]) &&
+    $initdataitems["Websites"] === true
+)
     foreach (array_slice(csv_to_array("Data/Websites"), 1) as $row) {
         if ($row[2] !== "" && substr($row[2], 0, 2) !== "//") {
             $WebsiteLinks[] = [[$row[0], $row[1]], $row[2]];
@@ -59,7 +74,10 @@ if ($initdataitems["Websites"] === true)
 
 
 //Load building name to js
-if ($initdataitems["JSTranslate"] === true) {
+if (
+    isset($initdataitems["JSTranslate"]) &&
+    $initdataitems["JSTranslate"] === true
+) {
     echo "<script>const Translation = [];";
 
     foreach ($translation as $name => $value)
@@ -69,7 +87,10 @@ if ($initdataitems["JSTranslate"] === true) {
     echo "</script>";
 }
 
-if ($initdataitems["JSGPS"] === true) {
+if (
+    isset($initdataitems["JSGPS"]) &&
+    $initdataitems["JSGPS"] === true
+) {
     echo "<script>const GPSdata = [";
 
     foreach ($GPS as $name => $location) {

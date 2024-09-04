@@ -96,7 +96,9 @@ foreach ($outputschedule as $stationname => $schedule) {
             echo "
                 <div class='bussect'>
                     <div class='busname'>" . $busno .
-                "<button data='" . $busno . "' lang='" . $lang . "' tk='" . $_SESSION['_token'] . "' stop='" . $stationname . "' onclick='realtimesubmit(this);'>" . $translation['bus-arrive-btn'][$lang] . "</button>" .
+                "<button data='" . $busno . "' lang='" . $lang . "' tk='" .
+                (isset($_SESSION) && isset($_SESSION['_token']) ? $_SESSION['_token'] : 'null')
+                . "' stop='" . $stationname . "' onclick='realtimesubmit(this);'>" . $translation['bus-arrive-btn'][$lang] . "</button>" .
                 "</div>";
 
             $busnum = $busno;

@@ -50,13 +50,6 @@ include('Essential/functions/initdatas.php'); //Download datas from server
     onclick="window.location.reload();" /><?php echo $translation["refresh-btn"][$lang] ?></button>
 </div>
 
-
-
-
-
-
-
-
 <!--Title & Alert-->
 <h1><?php echo $translation["WEB-Title"][$lang] ?></h1>
 <h2>v.
