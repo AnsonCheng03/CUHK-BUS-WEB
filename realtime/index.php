@@ -44,12 +44,12 @@ displayBuses($allBuses, $lang, $_SESSION['_token'] ?? 'null', $translation, $des
 
 function logRequest($dest, $lang)
 {
-    $conn = connectToDatabase();
-    $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) VALUES (NOW(), 'realtime', ?, ?)");
-    $stmt->bind_param("ss", $dest, $lang);
-    $stmt->execute();
-    $stmt->close();
-    $conn->close();
+    // $conn = connectToDatabase();
+    // $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Dest`, `Lang`) VALUES (NOW(), 'realtime', ?, ?)");
+    // $stmt->bind_param("ss", $dest, $lang);
+    // $stmt->execute();
+    // $stmt->close();
+    // $conn->close();
 }
 
 function filterBusesBySchedule($bus)
@@ -74,11 +74,16 @@ function processBusStatus($currentbusservices, $thirtyminbusservice, $bus)
             $bus[$busnumber . "#"]["stats"] = $bus[$busnumber]["stats"];
         }
     }
-    return array_filter(
-        $bus,
-        fn($busarr) =>
-        $busarr["stats"]["status"] != "no" || $busarr["stats"]["prevstatus"] == "normal"
-    );
+    // Instead of filtering out buses, we'll keep them all and add a warning flag
+    foreach ($bus as $busnumber => &$busarr) {
+        // $busarr["warning"] = ($busarr["stats"]["status"] == "no" && $busarr["stats"]["prevstatus"] != "normal");
+        if ($busarr["stats"]["status"] == "no" && $busarr["stats"]["prevstatus"] != "normal") {
+            $busarr["warning"] = "No-bus-available";
+        } else if ($busarr["stats"]["status"] != "normal") {
+            $busarr["warning"] = "Bus-status-unusual";
+        }
+    }
+    return $bus;
 }
 
 function processAndSortBuses($outputschedule, $bus, $lang, $translation)
@@ -93,8 +98,10 @@ function processAndSortBuses($outputschedule, $bus, $lang, $translation)
     foreach ($outputschedule as $stationname => $schedule) {
         foreach ($schedule as $busno => $timetable) {
             if (isset($bus[$busno]) && $timetable) {
-                $allBuses = array_merge($allBuses, getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation));
-                $allBuses = array_merge($allBuses, getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime, $lang, $translation));
+                $warning = $bus[$busno]['warning'] ?? false;
+                $nextStation = getNextStation($bus[$busno]['stations'], $stationname);
+                $allBuses = array_merge($allBuses, getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation, $warning, $nextStation));
+                $allBuses = array_merge($allBuses, getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime, $lang, $translation, $warning, $nextStation));
             }
         }
     }
@@ -104,6 +111,42 @@ function processAndSortBuses($outputschedule, $bus, $lang, $translation)
 
     usort($allBuses, fn($a, $b) => strtotime($a['time']) - strtotime($b['time']));
     return $allBuses;
+}
+
+function getNextStation($stations, $currentStation)
+{
+    $currentStationParts = explode('|', $currentStation);
+    $currentStationName = $currentStationParts[0];
+    $currentStationAttr = $currentStationParts[1] ?? null;
+
+    $stationCount = count($stations['name']);
+    $foundIndex = -1;
+
+    // Search for the current station
+    for ($i = 0; $i < $stationCount; $i++) {
+        if ($stations['name'][$i] === $currentStationName) {
+            // If there's an attribute, check if it matches
+            if ($currentStationAttr) {
+                if ($stations['attr'][$i] === $currentStationAttr) {
+                    $foundIndex = $i;
+                    break;
+                }
+                // If attribute doesn't match, continue searching
+            } else {
+                // If no attribute, we've found our station
+                $foundIndex = $i;
+                break;
+            }
+        }
+    }
+
+    // If we didn't find the station or it's the last station, return null
+    if ($foundIndex === -1 || $foundIndex === $stationCount - 1) {
+        return null;
+    }
+
+    // Return the next station name
+    return $stations['name'][$foundIndex + 1];
 }
 
 function connectToDatabase()
@@ -125,7 +168,7 @@ function prepareStatement($conn)
         GROUP BY CONCAT( DATE_FORMAT(`Time`,'%m-%d-%Y %H:'), FLOOR(DATE_FORMAT(`Time`,'%i')/2)*2)");
 }
 
-function getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation)
+function getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation, $warning, $nextStation)
 {
     $stmt->bind_param("ss", $busno, $stationname);
     $stmt->execute();
@@ -137,13 +180,15 @@ function getUserReportedTimes($stmt, $busno, $stationname, $lang, $translation)
             'direction' => $translation['schoolbus_arrival'][$lang],
             'time' => $row[0] . ":" . sprintf('%02d', $row[1]),
             'isUserReport' => true,
-            'reportTime' => $row[2]
+            'reportTime' => $row[2],
+            'warning' => $warning,
+            'nextStation' => $nextStation
         ];
     }
     return $userReportedTimes;
 }
 
-function getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime, $lang, $translation)
+function getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime, $lang, $translation, $warning, $nextStation)
 {
     $scheduledTimes = [];
     foreach ($timetable as $time) {
@@ -153,7 +198,9 @@ function getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime
                 'direction' => (explode("|", $stationname)[1] ? $translation[explode("|", $stationname)[1]][$lang] : $translation["mode-realtime"][$lang]),
                 'time' => substr($time, 0, -3),
                 'isUserReport' => false,
-                'arrived' => ($time <= $nowtime)
+                'arrived' => ($time <= $nowtime),
+                'warning' => $warning,
+                'nextStation' => $nextStation
             ];
         }
     }
@@ -162,30 +209,43 @@ function getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime
 
 function displayBuses($allBuses, $lang, $token, $translation, $dest)
 {
+    echo "<div class='bus-grid'>";
     $countoutput = 0;
+
     foreach ($allBuses as $bus) {
-        echo "<div class='bussect'>";
-        echo "<div class='busname'>" . $bus['busno'] .
-            "<button data='" . $bus['busno'] . "' lang='" . $lang . "' tk='" . $token .
-            "' stop='" . $dest . "' onclick='realtimesubmit(this);'>" . $translation['bus-arrive-btn'][$lang] . "</button>" .
-            "</div>";
+        $busName = $bus['busno'];
+        $direction = $bus['direction'] !== $translation["mode-realtime"][$lang] ? "<br>" . $bus['direction'] : "";
+        $arrivalTime = $bus['time'];
 
-        if ($bus['isUserReport']) {
-            echo "<div class=\"userreport\">";
-            echo "<div class=\"businfo\">[ " . $bus['reportTime'] . " ] " . $bus['direction'] . "</div>";
-        } else {
-            echo "<div class='" . ($bus['arrived'] ? 'bustype arrived' : 'bustype') . "'>";
-            echo "<div class='businfo'>" . $bus['direction'] . "</div>";
+
+        echo "<div class='bus-row' onclick='window.open(\"/pages/blogs/routes/$busName/\"); return false;'>";
+
+        // Bus name and direction
+        echo "<div class='bus-info'><span class='bus-name'>" . $busName . "</span>";
+        echo "<span class='direction'>$direction</span>";
+        echo "</div>";
+
+        // Warning
+        echo "<div class='next-station-display'>";
+        echo "<p class='next-station-text'>" . $translation["next-station"][$lang] . "</p>";
+        if ($bus['nextStation'])
+            echo "<p class='next-station'>" . $translation[$bus['nextStation']][$lang] . "</p>";
+        if (isset($bus['warning']) && $bus['warning']) {
+
+            echo "<span></span><span class='warning'>" . htmlspecialchars($translation[$bus['warning']][$lang]) . "</span>";
         }
+        echo "</div>";
 
-        echo "<div class='arrtime'> ~ " . $bus['time'] . "</div>";
-        echo "</div>";
-        echo "</div>";
+        // Arrival time
+        echo "<div class='arrival-time'>" . htmlspecialchars($arrivalTime) . "</div>";
+
+        echo "</div>"; // Close bus-row
 
         $countoutput++;
     }
+    echo "</div>"; // Close bus-grid
 
     if ($countoutput == 0) {
-        echo '<div class=\'bussect\'><div class=\'busname\'>' . $translation["No-bus-time"][$lang] . '</div></div>';
+        echo '<div class="no-bus">' . htmlspecialchars($translation["No-bus-time"][$lang]) . '</div>';
     }
 }

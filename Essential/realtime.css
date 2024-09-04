@@ -97,12 +97,12 @@ h1 {
 .stopselector {
   text-align: center;
   padding: 25px;
-  margin: 10px auto;
   background-color: #fff;
   display: grid;
   grid-template-columns: 1fr 2fr 50px;
   gap: 40px;
   border-bottom: 1px solid #ddd;
+  margin: 0;
 }
 
 .select-box {
@@ -113,7 +113,7 @@ h1 {
   text-align: -moz-center;
   text-align: -webkit-center;
   text-align-last: center;
-  border-radius: 0;
+  border-radius: 5px;
 }
 
 /* Result */
@@ -123,6 +123,7 @@ form span {
   justify-content: center;
   align-items: center;
   border: 1px solid #000;
+  border-radius: 5px;
 }
 
 .bussect {
@@ -236,4 +237,89 @@ form span {
 .networkerror .heading {
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+.bus-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.bus-row {
+  display: grid;
+  grid-template-columns: 30px 1fr 40px;
+  align-items: center;
+  padding: 10px 7%;
+  border-bottom: 1px solid #ddd;
+  gap: 7%;
+  cursor: pointer;
+  min-height: 50px;
+}
+
+.bus-info .bus-name {
+  font-size: 1.2rem;
+}
+
+.bus-info .direction {
+  font-size: 0.75rem;
+}
+
+.arrival-info {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  background-color: #e9edc9;
+  border-radius: 50px;
+  padding: 3px 20px;
+}
+
+.arrival-time {
+  text-align: right;
+  font-size: 1.5rem;
+}
+
+.down-arrow {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s;
+  transform: rotate(-90deg);
+}
+
+.down-arrow.active {
+  transform: rotate(0deg);
+}
+
+.bus-arrival {
+  background-color: #e9edc9;
+  border: none;
+  cursor: pointer;
+  border-radius: 50px;
+  padding: 3px 15px;
+  font-size: 0.75rem;
+}
+
+.next-station-display {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  flex-direction: column;
+  gap: 0 10px;
+}
+
+.next-station {
+  font-size: 1.2rem;
+}
+
+.next-station-display p {
+  margin: 0;
+}
+
+.next-station-text {
+  display: flex;
+  align-items: end;
+  font-size: 0.75rem;
+}
+
+.next-station-display .warning {
+  color: red;
+  display: block;
+  font-size: 0.7rem;
 }

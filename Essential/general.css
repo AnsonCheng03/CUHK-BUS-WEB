@@ -1,11 +1,20 @@
+/* 
+https://huemint.com/website-3/#palette=fdfefe-FEFAE0-001062-1d40b9-f4532c-fdf815
+#fdf815 
+#f4532c
+#1d40b9
+#D4A373
+#FEFAE0
+#CCD5AE
+*/
+
 html,
 body {
   overscroll-behavior: none;
 }
 
 nav {
-  background-color: #fffcf6;
-  color: white;
+  background-color: #fefae0;
   position: sticky;
   top: 0;
   display: grid;
@@ -15,7 +24,7 @@ nav {
 
 nav h1 {
   margin: 0;
-  color: #6b1a69;
+  color: #d4a373;
   font-size: 2rem;
   font-weight: 600;
   letter-spacing: -1px;
@@ -27,16 +36,16 @@ nav h1 {
 nav ul {
   list-style-type: none;
   padding: 0;
-  margin: 0 5em;
+  margin: 0 5%;
   display: flex;
   justify-content: right;
   align-items: center;
-  gap: 5em;
+  gap: 5%;
 }
 
 nav a,
 nav a:link {
-  color: #9d9d9d;
+  color: #ccd5ae;
   text-decoration: none;
   padding: 1em 0;
   display: flex;
@@ -45,15 +54,16 @@ nav a:link {
   gap: 5px;
   justify-content: center;
   transition: color 0.3s;
+  white-space: nowrap;
 }
 
 nav a:hover {
-  color: #6b1a69;
+  color: #d4a373;
 }
 
 nav a.active,
 nav a.active:link {
-  color: #6b1a69;
+  color: #d4a373;
 }
 
 @media screen and (max-width: 768px) {
@@ -74,6 +84,6 @@ nav a.active:link {
   }
 
   main {
-    margin: 20px 0 95px 0;
+    margin: 10px 0 75px 0;
   }
 }
