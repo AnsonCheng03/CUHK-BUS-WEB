@@ -11,7 +11,7 @@ function download_files($filename, $url, $skipfilesize = false, $forcedownload =
         $filesize = 10000;
     }
 
-    if (($moditime + 15 * 60) <= time() || $filesize < 300 || $forcedownload) {
+    if (($moditime + 10 * 60) <= time() || $filesize < 300 || $forcedownload) {
         $source = file_get_contents($url);
         file_put_contents($filename, $source);
     }

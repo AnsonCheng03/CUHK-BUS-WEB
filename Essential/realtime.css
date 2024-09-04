@@ -86,7 +86,7 @@ h1 {
 }
 
 .map-submit-btn {
-  font-size: max(16px, 1.9vmin);
+  font-size: 16px;
   background-color: #62529c;
   color: #fff;
   padding: 15px 30px;
@@ -129,7 +129,7 @@ h1 {
   text-align: center;
   padding: 25px;
   border-radius: 20px;
-  margin: 4vmin auto;
+  margin: 10px auto;
   box-shadow: 0 5px 10px rgba(154, 160, 185, .05), 0 15px 40px rgba(166, 173, 201, .2);
   background-color: #fff;
   width: fit-content;
@@ -137,7 +137,7 @@ h1 {
 }
 
 .select-box {
-  font-size: max(14px, 1.5vmin);
+  font-size: 14px;
   width: 100%;
   box-shadow: 0 1px 3px -2px #9098A9;
   padding: 7px 12px 7px 12px;

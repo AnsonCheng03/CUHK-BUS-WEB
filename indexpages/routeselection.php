@@ -36,30 +36,6 @@ include('Essential/functions/initdatas.php'); //Download datas from server
   <meta name="google" value="notranslate">
   <link rel="stylesheet" href="Essential/mainpage.css?v=<?php echo $version ?>">
   <script src="Essential/mainpage.js?v=<?php echo $version ?>"></script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KCD7N2ZG3H"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'G-KCD7N2ZG3H');
-  </script>
-  <?php
-  if ($placeads === true)
-    echo "
-      <script>
-        if (!sessionStorage.getItem('routesearch-submit') || sessionStorage.getItem('routesearch-submit') !== 'submitted') {
-          const d = document.createElement('script')
-          d.src = 'https://oaphoace.net/401/5344479';
-          try {
-            (document.body || document.documentElement).appendChild(d);
-          } catch (e) {}
-        }
-      </script>
-      ";
-  ?>
 </head>
 
 <!--Select Language && Function Buttons-->
@@ -362,14 +338,18 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
 
 </div>
 
-
-<script type="text/javascript" src="https://s.skimresources.com/js/221050X1702490.skimlinks.js"></script>
 </body>
 
 <footer>
 
   <div class="abouts">
     <!-- Website Suggestions-->
+
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3579541618707661" data-ad-slot="8668958470" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
     <?
     echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
     foreach ($WebsiteLinks as $row) {
@@ -384,7 +364,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
     <?
     if ($lang == 0) {
       echo "<div class='websitesugg aboutdiv'><div class='headingt'>" . $translation['about_page'][$lang] . "</div>
-      <p><a target='_blank' class='abouttxt' >
+      <p><a target='_blank' class='abouttxt'>
         中大校巴資訊站是由中大本校學生建立。由於中文大學校方並無提供過多校巴資訊，學生難以得知校巴何時到站。
         同時，校巴路線繁多，新入學同學難以迅速找到自己需要乘搭什麼校巴。
         為此，本人建立了中大校巴資訊站，本站提供點對點路線搜尋、實時校巴查詢服務，亦讓學生實時報告校巴位置，讓中大學生輕鬆在校園穿梭。
@@ -402,6 +382,11 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
     }
     ?>
   </div>
+
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3579541618707661" data-ad-slot="8668958470" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 
   <!--Ads!-->
   <a class="bmc-btn" target="_blank" href="https://payme.hsbc/anson03">
@@ -428,6 +413,11 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
 
   <h2><a style="color: #685206; text-decoration: none;" href="https://github.com/AnsonCheng03"><?php echo $translation["author-notes"][$lang] ?>@AnsonCheng03</a></h2>
 
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3579541618707661" data-ad-slot="8668958470" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+
 
   <!--Script!-->
   <script>
@@ -445,8 +435,12 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
       }, 3000);
     }
 
-    window.addEventListener('online', ()=> {onlineofflineswitch("<?php echo $translation["internet_online"][$lang]; ?>", "#23C552")});
-    window.addEventListener('offline', ()=> {onlineofflineswitch("<?php echo $translation["internet_offline"][$lang]; ?>", "#F84F31")});
+    window.addEventListener('online', () => {
+      onlineofflineswitch("<?php echo $translation["internet_online"][$lang]; ?>", "#23C552")
+    });
+    window.addEventListener('offline', () => {
+      onlineofflineswitch("<?php echo $translation["internet_offline"][$lang]; ?>", "#F84F31")
+    });
   </script>
 
 

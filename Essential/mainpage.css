@@ -11,7 +11,7 @@ select::-ms-expand {
 h1 {
   margin: 100px auto auto auto;
   color: #111;
-  font-size: max(40px, 5vmin);
+  font-size: 40px;
   font-weight: bold;
   letter-spacing: -1px;
   text-align: center;
@@ -26,7 +26,7 @@ h2 {
 
 h3 {
   color: #2c3e50;
-  font-size: max(20px, 3vmin);
+  font-size: 20px;
   display: inline;
 }
 
@@ -106,7 +106,7 @@ a:active {
   text-align: center;
   padding: 25px;
   border-radius: 20px;
-  margin: 4vmin auto;
+  margin: 10px auto;
   box-shadow: 0 5px 10px rgba(154, 160, 185, .05), 0 15px 40px rgba(166, 173, 201, .2);
   background-color: #fff;
   width: fit-content;
@@ -226,7 +226,7 @@ input:checked+.slider:before {
 }
 
 .select-time {
-  font-size: max(16px, 1.5vmin);
+  font-size: 16px;
   width: 50px;
   margin: 2px 5px;
   text-align-last: center;
@@ -236,7 +236,7 @@ input:checked+.slider:before {
 }
 
 .select-date {
-  font-size: max(16px, 1.5vmin);
+  font-size: 16px;
   width: 100px;
   margin: 2px 5px;
   text-align-last: center;
@@ -246,7 +246,7 @@ input:checked+.slider:before {
 }
 
 .show-time {
-  font-size: max(16px, 1.5vmin);
+  font-size: 16px;
   width: 100%;
   text-align: center;
   padding: 8px 13px;
@@ -282,7 +282,7 @@ input:checked+.slider:before {
 
 .text-box {
   width: 100%;
-  font-size: max(16px, 2vmin);
+  font-size: 16px;
   border: 0;
   border-bottom: 2px solid gray;
   outline: 0;
@@ -294,7 +294,7 @@ input:checked+.slider:before {
 }
 
 .select-box {
-  font-size: max(14px, 1.5vmin);
+  font-size: 14px;
   width: 100%;
   box-shadow: 0 1px 3px -2px #9098A9;
   padding: 7px 12px 7px 12px;
@@ -345,7 +345,7 @@ input:checked+.slider:before {
 }
 
 .submit-btn {
-  font-size: max(16px, 1.9vmin);
+  font-size: 16px;
   background-color: #62529c;
   border: none;
   color: #fff;
@@ -412,7 +412,7 @@ input:checked+.slider:before {
 #routeresult {
   margin: auto;
   width: 90%;
-  font-size: max(16px, 2vmin);
+  font-size: 16px;
   font-family: sans-serif;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
@@ -447,7 +447,7 @@ input:checked+.slider:before {
 
 /* Others */
 .map-submit-btn {
-  font-size: max(16px, 1.9vmin);
+  font-size: 16px;
   background-color: #62529c;
   color: #fff;
   padding: 15px 30px;

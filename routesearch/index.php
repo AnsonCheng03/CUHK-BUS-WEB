@@ -46,20 +46,18 @@ $forceshowexchange = isset($_POST['showallroute']);
 $departnowbtn = isset($_POST['deptnow']);
 
 try {
-    if (strpos(__DIR__, "beta") === false) {
-        $conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'));
-        if ($conn->connect_error)
-            die("Connection failed: " . $conn->connect_error);
-        $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Start`, `Dest`, `Mode`, `Showallroute`, `Departnow`, `Lang`) 
+    $conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'));
+    if ($conn->connect_error)
+        die("Connection failed: " . $conn->connect_error);
+    $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Start`, `Dest`, `Mode`, `Showallroute`, `Departnow`, `Lang`) 
         VALUES (?, 'routesearch', ?, ?, ?, ?, ?, ?);");
-        $stmt->bind_param("sssssss", $Time, $Startsql, $Destsql, $postmode, $forceshowexchange, $departnowbtn, $lang);
-        $Time = (new DateTime())->format('Y-m-d H:i:s');
-        $Startsql = $postmode == "building" ? $_POST['Startbd'] : $_POST['Start'];
-        $Destsql = $postmode == "building" ? $_POST['Destbd'] : $_POST['Dest'];
-        $stmt->execute();
-        $stmt->close();
-        $conn->close();
-    }
+    $stmt->bind_param("sssssss", $Time, $Startsql, $Destsql, $postmode, $forceshowexchange, $departnowbtn, $lang);
+    $Time = (new DateTime())->format('Y-m-d H:i:s');
+    $Startsql = $postmode == "building" ? $_POST['Startbd'] : $_POST['Start'];
+    $Destsql = $postmode == "building" ? $_POST['Destbd'] : $_POST['Dest'];
+    $stmt->execute();
+    $stmt->close();
+    $conn->close();
 } catch (Exception $e) {
 }
 

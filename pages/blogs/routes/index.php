@@ -109,7 +109,10 @@ switch ($busno) {
         <meta charset="utf-8">
         <script async src="/Essential/amp.js"></script>
         <title>校巴資訊 - <?php echo $busno ?> | 中大校巴資訊站 CU BUS INFOPAGE</title>
-        <link rel="canonical" href="/">
+        <?php
+        if (urlquery('mode') !== 'norm')
+            echo '<link rel="canonical" href="./&?mode=norm"/>';
+        ?>
         <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
         <style amp-boilerplate>
             body {
