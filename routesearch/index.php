@@ -13,10 +13,13 @@ $initdataitems = array(
     "Station" => true,
 );
 include('../Essential/functions/initdatas.php');
+include_once('../realtime/getRealTimeFunc.php');
 
 
 //Bus Status
 $busservices = json_decode(file_get_contents(__DIR__ . '/../Data/Status.json'), true);
+$busschedule = json_decode(file_get_contents(__DIR__ . '/../Data/timetable.json'), true);
+
 $temp = array_slice($busservices, -30, 1);
 $thirtyminbusservice = array_pop($temp);
 $currentbusservices = end($busservices);
@@ -71,7 +74,7 @@ if (!$departnowbtn) {
         if ($currenttime < $starttime || $currenttime > $endtime)
             unset($bus[$index]);
 
-        //Base on weekday or day
+        // Base on weekday or day
         if (strpos($busarr["schedule"][3], $posttravdt) === false && $busarr["schedule"][3] !== $posttravdt)
             unset($bus[$index]);
         if (strpos($busarr["schedule"][4], $posttravwk) === false)
@@ -243,7 +246,7 @@ function buildRouteResult($busno, $start, $dest, $line, $attrline, $timeline, $s
 
     return [
         "busno" => [$busno],
-        "start" => [$startpos],
+        "start" => [[$startpos, $start, $newlineattr[$startIndex] ?? null]],
         "end" => [$endpos . $endposattr],
         "time" => [array_sum($newlinetime)],
         "route" => [$route]
@@ -272,30 +275,69 @@ if (empty($searchResult['routeresult'])) {
 foreach ($searchResult['routeresult']["busno"] as $index => $startloc) {
     //time process
     ($searchResult['routeresult']["time"][$index] == 0) ? $timeoutput = "N/A" : $timeoutput = round($searchResult['routeresult']["time"][$index] / 60);
-    $routegroupresult[$searchResult['routeresult']["start"][$index]][$searchResult['routeresult']["end"][$index]]["busno"][] = $searchResult['routeresult']["busno"][$index];
-    $routegroupresult[$searchResult['routeresult']["start"][$index]][$searchResult['routeresult']["end"][$index]]["route"][] = $searchResult['routeresult']["route"][$index];
-    $routegroupresult[$searchResult['routeresult']["start"][$index]][$searchResult['routeresult']["end"][$index]]["timeused"][] = $timeoutput;
+    $routegroupresult[
+        $searchResult['routeresult']["start"][$index][1]
+    ][
+        $searchResult['routeresult']["busno"][$index]
+    ][] = array(
+        "end" => $searchResult['routeresult']["end"][$index],
+        "start" => array(
+            "translatedName" => $searchResult['routeresult']["start"][$index][0],
+            "attr" => $searchResult['routeresult']["start"][$index][2]
+        ),
+        "route" => $searchResult['routeresult']["route"][$index],
+        "timeused" => $timeoutput
+    );
 }
-?>
 
-<?php
+
+
+
 // Sort the results by time
 $sortedResults = [];
+echo "<pre>";
+// print_r($bus);
 foreach ($routegroupresult as $start => $temp) {
-    foreach ($temp as $end => $busroutes) {
-        foreach ($busroutes["busno"] as $index => $busno) {
-            $time = $busroutes["timeused"][$index];
+    // get all bus arrival times
+    $outputschedule = array_filter($busschedule, fn($key) => explode("|", $key)[0] == $start, ARRAY_FILTER_USE_KEY);
+
+    foreach ($temp as $busno => $busWithSameNo) {
+        foreach ($busWithSameNo as $busarray) {
+            $time = $busarray["timeused"];
             if ($time == "N/A") {
                 $time = PHP_INT_MAX; // Put "N/A" times at the end
             }
-            $sortedResults[] = [
-                'time' => $time,
+
+            // Get each bus arrival time
+            $allBuses = processAndSortBuses($outputschedule, $bus, $lang, $translation, array(
                 'busno' => $busno,
-                'start' => $start,
-                'end' => $end,
-                'route' => $busroutes["route"][$index],
-                'timeDisplay' => $busroutes["timeused"][$index]
-            ];
+                'currtime' => $departnowbtn ? date('H:i:s') : date('H:i:s', strtotime($posttravhr . ":" . $posttravmin))
+            ));
+
+            foreach ($allBuses as $busdata) {
+                $waitTime = (
+                    strtotime($busdata['time']) -
+                    ($departnowbtn ? strtotime(date('H:i:s')) : strtotime($posttravhr . ":" . $posttravmin))
+                ) / 60;
+                $waitTime = $waitTime < 0 ? 0 : intval($waitTime);
+
+                if ($waitTime > 30) {
+                    continue;
+                }
+
+                $busarray["arrivalTime"] = date('H:i', strtotime($busdata['time']));
+
+                $sortedResults[] = [
+                    'time' => $time + $waitTime,
+                    'busno' => $busno,
+                    'start' => $busarray["start"]["translatedName"],
+                    'end' => $busarray["end"],
+                    'route' => $busarray["route"],
+                    'timeDisplay' => $busarray["timeused"],
+                    'arrivalTime' => $busarray["arrivalTime"]
+                ];
+            }
+
         }
     }
 }
@@ -322,18 +364,9 @@ foreach ($sortedResults as $result) {
     // if ($busnostr[0] . "#" != $busnostr[1] && $busnostr[1] . "#" != $busnostr[0]) {
     echo '<tr style="background-color: #ecf0f1;">
             <td>
-                <div>' . $result['busno'] . ' | ' . $result['timeDisplay'] . ' min</div>
+                <div>' . $result['busno'] . ' | 車程：' . $result['timeDisplay'] . ' min | 到達：' . $result['arrivalTime'] . ' | 總時間：' . $result['time'] . ' min</div>
                 <div>' . $result['start'] . ' → ' . $result['end'] . '</div>
                 <div>' . $result['route'] . '</div>';
-
-    if ($departnowbtn) {
-        if (
-            ($bus[$busnostr[0]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[0]]["stats"]["status"] == "no") ||
-            (isset($busnostr[1]) && $bus[$busnostr[1]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[1]]["stats"]["status"] == "no")
-        ) {
-            echo '<div><span class="eoswarning">' . $translation["justeos-warning"][$lang] . '</span></div>';
-        }
-    }
 
     if ($result['timeDisplay'] != "N/A") {
         echo "<div><button class='detailsbtn' onclick=\"localStorage.setItem('startingpt', '" . $result['start'] . "'); append_query('mode', 'realtime');\">" . $translation['table-detals'][$lang] . "</button></div>";
