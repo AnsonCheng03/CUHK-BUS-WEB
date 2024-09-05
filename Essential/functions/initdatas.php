@@ -104,7 +104,7 @@ if (isset($initdataitems["Websites"]) && $initdataitems["Websites"] === true) {
     $result = $stmt->get_result();
     while ($row = $result->fetch_assoc()) {
         if ($row['URL'] !== "" && substr($row['URL'], 0, 2) !== "//") {
-            $WebsiteLinks[] = [[$row['中文'], $row['英文']], $row['URL']];
+            $WebsiteLinks[] = [[$row['英文'], $row['中文']], $row['URL']];
         }
     }
 }
