@@ -244,7 +244,7 @@ function buildRouteResult($busno, $start, $dest, $line, $attrline, $timeline, $s
     return [
         "busno" => [$busno],
         "start" => [$startpos],
-        "end" => [$endpos],
+        "end" => [$endpos . $endposattr],
         "time" => [array_sum($newlinetime)],
         "route" => [$route]
     ];
