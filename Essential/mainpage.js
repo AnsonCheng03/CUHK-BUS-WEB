@@ -72,6 +72,7 @@ function changevaluebyGPS(item, locname, loccode) {
     );
   }
   document.getElementById("details-box").style.display = "none";
+  autoSubmitForm();
 }
 
 function printneareststation() {
