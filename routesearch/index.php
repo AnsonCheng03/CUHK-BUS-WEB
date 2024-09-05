@@ -329,7 +329,7 @@ foreach ($sortedResults as $result) {
     if ($departnowbtn) {
         if (
             ($bus[$busnostr[0]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[0]]["stats"]["status"] == "no") ||
-            ($bus[$busnostr[1]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[1]]["stats"]["status"] == "no")
+            (isset($busnostr[1]) && $bus[$busnostr[1]]["stats"]["prevstatus"] == "normal" && $bus[$busnostr[1]]["stats"]["status"] == "no")
         ) {
             echo '<div><span class="eoswarning">' . $translation["justeos-warning"][$lang] . '</span></div>';
         }
