@@ -66,7 +66,7 @@ switch (urlquery('mode')) {
     echo "<meta name='title' content='" . $translation['title_info'][$lang] . " | 中大校巴資訊站 CU BUS INFOPAGE'>";
     echo "<meta name='description' content='" . $translation['meta_desc_info'][$lang] . "'>";
     echo "<link rel='stylesheet' href='Essential/info.css?v=" . $version . "'>";
-    echo "<script src='Essential/info.js?v=" . $version . "'></script>";
+    echo "<script defer src='Essential/info.js?v=" . $version . "'></script>";
   } else {
     echo "<title>中大校巴資訊站 CU BUS INFOPAGE</title>";
     echo "<meta name='title' content='中大校巴資訊站 CU BUS INFOPAGE'>";

@@ -1,34 +1,40 @@
-<?php
-echo "<div class='websitesugg'><div class='headingt'>" . $translation['website_suggest'][$lang] . "</div>";
-foreach ($WebsiteLinks as $row) {
+<div class='option-list'>
+  <?php
+  foreach ($WebsiteLinks as $row) {
     if ($row[0][$lang])
-        echo "<a target='_blank' class='websites'  href='" . $row[1] . "'>" . $row[0][$lang] . "</a>";
-}
-echo "</div>";
-?>
+      echo "<div class='option'><a target='_blank' class='websites'  href='" . $row[1] . "'>" . $row[0][$lang] . "</a></div>";
+  }
+  ?>
 
 
-<div class="abouts">
-    <!-- About !-->
 
-    <?php
-    if ($lang == 0) {
-        echo "<div class='websitesugg aboutdiv'><div class='headingt'>" . $translation['about_page'][$lang] . "</div>
-      <p><a target='_blank' class='abouttxt'>
-        中大校巴資訊站是由中大本校學生建立。由於中文大學校方並無提供過多校巴資訊，學生難以得知校巴何時到站。
-        同時，校巴路線繁多，新入學同學難以迅速找到自己需要乘搭什麼校巴。
-        為此，本人建立了中大校巴資訊站，本站提供點對點路線搜尋、實時校巴查詢服務，亦讓學生實時報告校巴位置，讓中大學生輕鬆在校園穿梭。
-        <br><br>本站具有以下功能：<br>
-        - 可選擇中大建築物作起點/終點<br>
-        - 尋找校巴路線時可同時搜尋上下行車站<br>
-        - 提供校巴轉車方案<br>
-        - 自動篩選服務時間外之校巴<br>
-        - 可預先查看某日之路線<br>
-        - 不用下載即可使用<br>
-        - 離線時亦可查看地圖<br>
-        - 可加入主畫面使用<br>
-      </a></p>";
-        echo "</div>";
-    }
-    ?>
+  <!-- About !-->
+
+  <?php
+  if ($lang == 1) {
+    echo "
+      <div class='option expandable'><div>" . $translation['about_page'][$lang] . "</div>
+      <div class='option-expand'>
+      <div class='option-expand-wrapper'>
+      <div class='option-expand-content'>
+        中大校巴資訊站是由香港中文大學(中大)本校學生精心打造的網上平台。這個中大校巴資訊站旨在解決中大學生在校園內交通方面的諸多困擾。由於中文大學校方並未提供足夠的校巴資訊,導致中大學生經常難以準確得知校巴何時到站。同時,中大校園廣闊,校巴路線繁多複雜,尤其對於剛入學的中大新生來說,要迅速找到自己需要乘搭的校巴路線往往是一大挑戰。
+        為了徹底解決這些問題,中大校巴資訊站應運而生。這個專為中大學生設計的校巴資訊平台提供了一系列實用的功能:
+        <ul>
+          <li>點對點校巴路線搜尋:中大學生可以輕鬆查找從一個中大校園地點到另一個地點的最佳校巴路線。</li>
+          <li>實時中大校巴查詢服務:讓中大學生隨時掌握校巴的即時位置和到站時間。</li>
+          <li>中大學生實時報告校巴位置:鼓勵中大學生互助,共同更新校巴實時資訊。</li>
+          <li>靈活選擇中大建築物作起點/終點:方便中大學生規劃校園內的行程。</li>
+          <li>同時搜尋上行和下行校巴站:全面覆蓋中大校巴的所有可能路線。</li>
+          <li>提供中大校巴轉車方案:幫助中大學生在複雜路線中找到最優解。</li>
+          <li>智能篩選服務時間外之校巴:避免中大學生查到無效資訊。</li>
+          <li>預覽功能:中大學生可提前查看未來某日的校巴路線安排。</li>
+          <li>無需下載即可使用:中大校巴資訊站設計成網頁版,方便快捷。</li>
+          <li>離線地圖功能:即使在網絡不穩定的情況下,中大學生仍可查看校園地圖。</li>
+          <li>可添加至主畫面:讓中大學生像使用App一樣方便地訪問校巴資訊。</li>
+        </ul>
+        這些精心設計的功能使得中大校巴資訊站成為了中大學生在校園內穿梭的得力助手。無論是往返中大各學院、宿舍,還是探索中大校園的不同角落,中大校巴資訊站都能為中大學生提供最及時、最準確的校巴資訊。通過使用中大校巴資訊站,中大學生可以更有效地規劃自己的校園行程,省去等待校巴的煩惱,充分利用寶貴的學習時間。
+      </div>";
+    echo "</div></div></div>";
+  }
+  ?>
 </div>

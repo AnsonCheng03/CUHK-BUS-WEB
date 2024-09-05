@@ -1,57 +1,49 @@
-/* Website Suggestions */
-.abouts {
+.option-list {
   display: flex;
-  padding: 0 5%;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
 }
 
-.websitesugg {
-  width: 45%;
-  height: min-content;
-  margin: 50px auto;
-  padding: 1px;
-  border-radius: 10px;
-  box-shadow: 0 3px 5px rgba(154, 160, 185, 0.05),
-    0 15px 40px rgba(166, 173, 201, 0.2);
-  background-color: #fff;
+.option {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+  gap: 0 10px;
+  border-bottom: 1px solid #ccd5ae;
+  padding: 20px 5%;
+  cursor: pointer;
 }
 
-.websitesugg .headingt {
-  text-align: left;
-  margin: 5px 15px;
-  border-left: 3px solid #2196f3;
-  padding: 5px 5px 5px 15px;
-  border-radius: 2px;
+.option.expandable {
+  grid-template-columns: 1fr;
 }
 
-.websitesugg .websites {
-  display: block;
-  border-top: 1px solid #ddd;
-  padding: 10px;
+.option:nth-child(even) {
+  background: rgba(253, 250, 227, 0.5);
 }
 
-.abouttxt {
-  display: block;
-  border-top: 1px solid #ddd;
-  padding: 10px;
-  line-height: 30px;
-  max-height: 250px;
-  overflow: scroll;
+.option-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 1s;
+  overflow: hidden;
 }
 
-.websitesugg h2 {
-  margin: 0;
-  text-align: left;
-  font-size: 1em;
+.option-expand.expanded {
+  grid-template-rows: 1fr;
 }
 
-@media (min-width: 768px) and (max-width: 1024px), (max-width: 850px) {
-  .websitesugg {
-    width: 80%;
-  }
+.option-expand-wrapper {
+  min-height: 0;
+  transition: visibility 1s;
+  visibility: hidden;
+}
 
-  .aboutdiv {
-    display: none;
-  }
+.option-expand.expanded .option-expand-wrapper {
+  visibility: visible;
+}
+
+.option-expand-content {
+  border-radius: 5px;
+  background-color: #ddd;
+  margin-top: 10px;
+  padding: 20px 5%;
 }

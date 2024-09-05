@@ -373,7 +373,7 @@ if ($sortedResults == null || $noroute) {
         echo "<div class='route-result-busno-details'>";
         echo "<div class='route-result-busno-details-time'>";
         echo "<div class='route-result-busno-details-totaltime'><p class='route-result-busno-details-totaltime-text'>" . $result['time'] . "</p> min</div>";
-        echo "<div class='route-result-busno-details-arrivaltime'>Next bus arriving in " . $result['arrivalTime'] . "</div>";
+        echo "<div class='route-result-busno-details-arrivaltime'>" . $translation["next-bus-arrival-info"][$lang] . $result['arrivalTime'] . ", " . $result['timeDisplay'] . $translation["bus-length-info"][$lang] . "</div>";
         echo "</div>";
         echo "<div class='route-result-busno-simple-route'>";
         echo "<div class='route-result-busno-simple-route-start'>" . $result['start'] . "</div>";
