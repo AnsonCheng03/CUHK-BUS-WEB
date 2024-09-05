@@ -107,7 +107,7 @@ function getNextStation($stations, $currentStation)
     foreach ($stations['name'] as $index => $name) {
         if (
             $name === $currentStationName &&
-            ($currentStationAttr === null || $stations['attr'][$index] === $currentStationAttr)
+            ($currentStationAttr == null || $stations['attr'][$index] === $currentStationAttr)
         ) {
             $foundIndex = $index;
             break;
