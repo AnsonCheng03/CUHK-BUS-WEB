@@ -66,6 +66,7 @@ nav {
   align-items: center;
   left: 0;
   width: 100%;
+  z-index: 9999;
 }
 
 nav h1 {
@@ -119,7 +120,6 @@ nav a.active:link {
     top: auto;
     bottom: 0;
     width: 100%;
-    z-index: 9999;
   }
   nav h1 {
     display: none;

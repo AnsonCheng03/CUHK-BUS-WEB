@@ -51,10 +51,50 @@
 }
 
 /* Selection boxes */
+form {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+}
+
+@media screen and (min-width: 768px) {
+  form,
+  .routeresult {
+    max-width: 768px;
+    position: relative;
+  }
+
+  form {
+    margin-top: 10px;
+    justify-self: right;
+    width: 100%;
+    max-width: 768px;
+  }
+
+  .info-box {
+    border-radius: 10px;
+    border: 1px solid #ccd5ae;
+  }
+
+  .route-result {
+    max-height: calc(100vh - 130px);
+    overflow: scroll;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px 20px 0 20px;
+  }
+}
 
 .info-box {
-  display: grid;
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-bottom: 1px solid #ccd5ae;
+  padding: 20px 0 10px 0;
 }
 
 /* Options Selector */
@@ -63,19 +103,26 @@
 }
 
 .slider-wrapper {
-  display: inline-flex;
+  display: flex;
   margin: 0 auto;
   align-items: center;
-  vertical-align: middle;
-  text-align: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.slider-container {
+  width: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .switch {
-  margin-left: 20px;
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
+  scale: 0.6;
 }
 
 .switch input {
@@ -107,35 +154,45 @@
 }
 
 input:checked + .slider {
-  background-color: #2196f3;
+  background-color: #d4a373;
 }
 
 input:checked + .slider:before {
   transform: translateX(26px);
 }
 
+.time-schedule {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  gap: 10px;
+}
+
 .select-time {
-  font-size: 16px;
-  width: 50px;
-  margin: 2px 5px;
+  font-size: 14px;
+  width: 50%;
   text-align-last: center;
-  box-shadow: 0 1px 3px -2px #9098a9;
-  padding: 7px 12px;
+  padding: 4px 12px;
+  border: 1px solid #d4a373;
+  appearance: none;
+  border-radius: 5px;
   -webkit-appearance: none;
 }
 
 .select-date {
-  font-size: 16px;
-  width: 100px;
-  margin: 2px 5px;
+  font-size: 14px;
+  width: 100%;
   text-align-last: center;
-  box-shadow: 0 1px 3px -2px #9098a9;
-  padding: 7px 12px;
+  border: 1px solid #d4a373;
+  padding: 4px 12px;
+  appearance: none;
+  border-radius: 5px;
   -webkit-appearance: none;
 }
 
 .show-time {
-  font-size: 16px;
+  font-size: 14px;
   width: 100%;
   text-align: center;
   padding: 8px 13px;
@@ -150,15 +207,16 @@ input:checked + .slider:before {
 
 .locationchooser {
   display: grid;
-  grid-template-columns: 100px 1fr 100px;
+  grid-template-columns: 75px 1fr 50px;
   justify-content: center;
   align-items: center;
   gap: 10px;
+  padding: 0 20px;
 }
 
 .locationchooser #Start-label,
 .locationchooser #Dest-label {
-  text-align: center;
+  text-align: left;
 }
 
 .locationinput {
@@ -167,11 +225,10 @@ input:checked + .slider:before {
 
 .text-box {
   width: 100%;
-  font-size: 16px;
-  border: 0;
-  border-bottom: 2px solid gray;
+  font-size: 14px;
+  border: 1px solid #d4a373;
+  border-radius: 5px;
   outline: 0;
-  color: #34495e;
   padding: 7px 0;
   background: transparent;
   transition: border-color 0.2s;
@@ -226,24 +283,27 @@ input:checked + .slider:before {
 }
 
 .locationchooser .functionbuttons {
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .submit-btn {
-  font-size: 16px;
-  background-color: #62529c;
+  font-size: 14px;
+  background-color: #d4a373;
   border: none;
+  width: 75%;
+  border-radius: 5px;
+  padding: 5px 15px;
   color: #fff;
-  padding: 15px 30px;
   text-decoration: none;
   cursor: pointer;
 }
 
 .image-wrapper {
   padding: 5px;
-  margin-left: 15px;
-  border: 1px solid black;
-  border-radius: 30%;
+  border: 1px solid #d4a373;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -285,48 +345,6 @@ input:checked + .slider:before {
 
 #GPSresult {
   overflow: auto;
-}
-
-/* Get result */
-
-.routeresult {
-  margin: 50px auto;
-}
-
-#routeresult {
-  margin: auto;
-  width: 90%;
-  font-size: 16px;
-  font-family: sans-serif;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-}
-
-.departtime {
-  display: block;
-  background-color: #009879;
-  border-radius: 5px;
-  padding: 3.5px;
-  color: #fff;
-}
-
-.eoswarning {
-  display: block;
-  background-color: #96281b;
-  border-radius: 5px;
-  padding: 3.5px;
-  color: #fff;
-}
-
-.detailsbtn {
-  display: block;
-  outline: none;
-  border: none;
-  margin: 10px auto 0 auto;
-  background-color: #62529c;
-  border-radius: 5px;
-  padding: 3px 7px;
-  color: #fff;
-  cursor: pointer;
 }
 
 /* Others */
@@ -411,4 +429,68 @@ footer h2 {
 .networkerror .heading {
   font-size: 1.2rem;
   font-weight: bold;
+}
+
+/* result page */
+.route-result {
+  padding-bottom: 10px;
+}
+.route-result-busno {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  border: #ccd5ae 1px solid;
+  margin: 10px 10px;
+}
+
+.route-result-busno-number {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 10px;
+  background-color: #d4a373;
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.route-result-busno-details-totaltime-text {
+  font-size: 20px;
+  font-weight: bold;
+  display: inline-block;
+  margin: 0;
+}
+
+.route-result-busno-details-arrivaltime {
+  font-size: 0.9rem;
+  color: #222;
+  font-weight: 200;
+}
+
+.route-result-busno-simple-route {
+  display: grid;
+  grid-template-columns: fit-content(100%) auto fit-content(100%);
+  gap: 10px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: left;
+  margin-top: 10px;
+}
+
+.route-result-busno-simple-route-start,
+.route-result-busno-simple-route-end {
+  border-radius: 5px;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.route-result-busno-simple-route-arrow {
+  color: #d4a373;
 }

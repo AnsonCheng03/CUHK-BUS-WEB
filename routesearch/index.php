@@ -295,8 +295,6 @@ foreach ($searchResult['routeresult']["busno"] as $index => $startloc) {
 
 // Sort the results by time
 $sortedResults = [];
-echo "<pre>";
-// print_r($bus);
 foreach ($routegroupresult as $start => $temp) {
     // get all bus arrival times
     $outputschedule = array_filter($busschedule, fn($key) => explode("|", $key)[0] == $start, ARRAY_FILTER_USE_KEY);
@@ -344,37 +342,39 @@ foreach ($routegroupresult as $start => $temp) {
 
 // Sort the results
 usort($sortedResults, function ($a, $b) {
+    if ($a['time'] == $b['time']) {
+        return strtotime($a['arrivalTime']) <=> strtotime($b['arrivalTime']);
+    }
     return $a['time'] <=> $b['time'];
 });
 
-// Display the sorted results
-echo '<table id="routeresult" cellspacing="1" cellpadding="10">
-    <tr style="background-color: #009879; color: #ffffff; text-align: center;">
-        <td>' . $translation["table-line"][$lang] . ' | ' . $translation["time-heading-arriving"][$lang] . '</td>
-    </tr>';
+
 
 if ($searchResult['samestation']) {
-    echo '<tr style="background-color: red; color: #ecf0f1; text-align: center;">
-        <td>' . $translation["searchResult['samestation']-info"][$lang] . '</td>
-    </tr>';
+    echo '<p>' . $translation["searchResult['samestation']-info"][$lang] . '</p>';
 }
+
+echo "<div class='route-result'>";
 
 foreach ($sortedResults as $result) {
     $busnostr = explode("→", $result['busno']);
-    // if ($busnostr[0] . "#" != $busnostr[1] && $busnostr[1] . "#" != $busnostr[0]) {
-    echo '<tr style="background-color: #ecf0f1;">
-            <td>
-                <div>' . $result['busno'] . ' | 車程：' . $result['timeDisplay'] . ' min | 到達：' . $result['arrivalTime'] . ' | 總時間：' . $result['time'] . ' min</div>
-                <div>' . $result['start'] . ' → ' . $result['end'] . '</div>
-                <div>' . $result['route'] . '</div>';
-
-    if ($result['timeDisplay'] != "N/A") {
-        echo "<div><button class='detailsbtn' onclick=\"localStorage.setItem('startingpt', '" . $result['start'] . "'); append_query('mode', 'realtime');\">" . $translation['table-detals'][$lang] . "</button></div>";
-    }
-
-    echo '</td></tr>';
-    // }
+    echo "<div class='route-result-busno'>";
+    echo "<div class='route-result-busno-number'>" . $result['busno'] . "</div>";
+    echo "<div class='route-result-busno-details'>";
+    echo "<div class='route-result-busno-details-time'>";
+    echo "<div class='route-result-busno-details-totaltime'><p class='route-result-busno-details-totaltime-text'>" . $result['time'] . "</p> min</div>";
+    echo "<div class='route-result-busno-details-arrivaltime'>Next bus arriving in " . $result['arrivalTime'] . "</div>";
+    echo "</div>";
+    echo "<div class='route-result-busno-simple-route'>";
+    echo "<div class='route-result-busno-simple-route-start'>" . $result['start'] . "</div>";
+    echo "<div class='route-result-busno-simple-route-arrow'>➤</div>";
+    echo "<div class='route-result-busno-simple-route-end'>" . $result['end'] . "</div>";
+    echo "</div>";
+    // echo "<div class='route-result-busno-details-route'>" . $result['route'] . "</div>";
+    echo "</div>";
+    echo "</div>";
 }
+echo "</div>";
 
-echo '</table>';
+
 ?>

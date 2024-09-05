@@ -120,7 +120,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
           </select>
         </div>
         <div class="functionbuttons">
-          <img alt="Get Current Location" width='23px' height='23px' class='image-wrapper' src='Images/GPS.jpg'
+          <img alt="Get Current Location" width='20px' height='20px' class='image-wrapper' src='Images/GPS.jpg'
             id='Start-GPS-box' onclick='getLocation(this.id);'></img>
         </div>
       </div>
@@ -140,7 +140,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
           </select>
         </div>
         <div class="functionbuttons">
-          <img alt="Get Current Location" width='23px' height='23px' class="image-wrapper" src="Images/GPS.jpg"
+          <img alt="Get Current Location" width='20px' height='20px' class="image-wrapper" src="Images/GPS.jpg"
             id="Dest-GPS-box" onclick="getLocation(this.id);"></img>
         </div>
       </div>
@@ -148,65 +148,70 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
       <div class="bus-options">
         <span class="slider-wrapper">
           <label for="deptnow"><?php echo $translation["info-deptnow"][$lang] ?></label>
-          <label class="switch"><input type="checkbox" id="deptnow" name="deptnow" checked onchange="time_change();">
-            <span class="slider"></span>
-          </label>
+          <div class="slider-container">
+            <label class="switch"><input type="checkbox" id="deptnow" name="deptnow" checked onchange="time_change();">
+              <span class="slider"></span>
+            </label>
+          </div>
         </span>
       </div>
 
 
 
       <!--手動時間!-->
-      <div id="time-schedule" style="display: none;">'
-        <select class="select-date" name="Trav-wk" id="Trav-wk" onchange="date_change();">
-          <?php
-          $weekday = ["WK-Sun", "WK-Mon", "WK-Tue", "WK-Wed", "WK-Thu", "WK-Fri", "WK-Sat"];
-          foreach ($weekday as $weekdays => $value)
-            echo '<option ' . (date('N') == $weekdays ? 'selected ' : '') . 'value="' . $value . '" >' . $translation[$value][$lang] . "</option>";
-          ?>
-        </select>
+      <div id="time-schedule" style="display: none;">
+        <div class="time-schedule">
+          <select class="select-date" name="Trav-wk" id="Trav-wk" onchange="date_change();">
+            <?php
+            $weekday = ["WK-Sun", "WK-Mon", "WK-Tue", "WK-Wed", "WK-Thu", "WK-Fri", "WK-Sat"];
+            foreach ($weekday as $weekdays => $value)
+              echo '<option ' . (date('N') == $weekdays ? 'selected ' : '') . 'value="' . $value . '" >' . $translation[$value][$lang] . "</option>";
+            ?>
+          </select>
 
-        <select class="select-date" name="Trav-dt" id="Trav-dt">
-          <?php
-          $busdate = array_filter(array_unique(array_column(array_column($bus, 'schedule'), 3)));
-          foreach ($busdate as $value)
-            if (strpos($value, ",") == false)
-              echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
-          ?>
-        </select>
+          <select class="select-date" name="Trav-dt" id="Trav-dt">
+            <?php
+            $busdate = array_filter(array_unique(array_column(array_column($bus, 'schedule'), 3)));
+            foreach ($busdate as $value)
+              if (strpos($value, ",") == false)
+                echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
+            ?>
+          </select>
 
-        <select class="select-time" name="Trav-hr" id="Trav-hr">
-          <?php
-          $hour = array("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
-          foreach ($hour as $value) {
-            echo "<option " . (date('H') == $value ? 'selected ' : '') . 'value="' . $value . '">' . $value . "</option>";
-          }
-          ?>
-        </select>
-        :
-        <select class="select-time" name="Trav-min" id="Trav-min">
-          <?php
-          $minute = array("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55");
-          foreach ($minute as $value) {
-            echo "<option " . ($value >= date('i') && $value < date('i') + 5 ? ' selected ' : '') . 'value="' . $value . '">' . $value . "</option>";
-          }
-          ?>
-        </select>
+          <select class="select-time" name="Trav-hr" id="Trav-hr">
+            <?php
+            $hour = array("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
+            foreach ($hour as $value) {
+              echo "<option " . (date('H') == $value ? 'selected ' : '') . 'value="' . $value . '">' . $value . "</option>";
+            }
+            ?>
+          </select>
+          :
+          <select class="select-time" name="Trav-min" id="Trav-min">
+            <?php
+            $minute = array("00", "05", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55");
+            foreach ($minute as $value) {
+              echo "<option " . ($value >= date('i') && $value < date('i') + 5 ? ' selected ' : '') . 'value="' . $value . '">' . $value . "</option>";
+            }
+            ?>
+          </select>
+          <input id="routesubmitbtn" class="submit-btn" type="submit" name="submit"
+            value=" <?php echo $translation["route-submit"][$lang] ?> " />
+        </div>
+
+        <!--自動時間!-->
+        <?php
+        if ($fetcherror) {
+          echo '<div id="time-now" class="show-time" style="display: none;">';
+          echo $translation["fetch-error"][$lang];
+          echo "</div>";
+        }
+
+        ?>
+
       </div>
-
-      <!--自動時間!-->
-      <?php
-      if ($fetcherror) {
-        echo '<div id="time-now" class="show-time" style="display: none;">';
-        echo $translation["fetch-error"][$lang];
-        echo "</div>";
-      }
-
-      ?>
-
-      <input id="routesubmitbtn" class="submit-btn" type="submit" name="submit"
-        value=" <?php echo $translation["route-submit"][$lang] ?> " />
     </div>
+
   </div>
 </form>
 
