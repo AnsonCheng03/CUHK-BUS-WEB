@@ -1,0 +1,42 @@
+/* Ads */
+
+.bmc-btn {
+  display: block;
+  margin: 30px auto;
+  width: 125px;
+  color: #000;
+  background-color: #ffdd00 !important;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: Bold;
+  border: none;
+  padding: 13px 20px;
+  white-space: nowrap;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+.bmc-btn svg {
+  height: 32px !important;
+  margin-bottom: 0px !important;
+  box-shadow: none !important;
+  border: none !important;
+  vertical-align: middle !important;
+  flex-shrink: 0;
+}
+
+.bmc-btn-text {
+  margin-left: 8px;
+  line-height: 0;
+  width: 100%;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+.logo-outline {
+  fill: #000000;
+}
+
+.logo-coffee {
+  fill: #ffffff;
+}

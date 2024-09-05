@@ -1,5 +1,5 @@
 <?php
-$version = "2.0.0b0.3";
+$version = "2.0.0b0.5";
 include_once('Essential/functions/functions.php');
 
 // detect language from browser
