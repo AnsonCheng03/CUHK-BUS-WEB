@@ -229,10 +229,11 @@ input:checked + .slider:before {
   border: 1px solid #d4a373;
   border-radius: 5px;
   outline: 0;
-  padding: 7px 0;
+  padding: 7px 15px;
   background: transparent;
   transition: border-color 0.2s;
   -webkit-appearance: none;
+  text-align: center;
 }
 
 .select-box {
@@ -251,26 +252,28 @@ input:checked + .slider:before {
 
 .autocomplete-items {
   position: absolute;
-  border: 1px solid #d4d4d4;
+  border: 1px solid #d4a373;
+  box-shadow: 0 1px 3px -2px #9098a9;
+  overscroll-behavior: none;
   border-bottom: none;
   border-top: none;
   z-index: 99;
   top: 100%;
   left: 0;
   right: 0;
+  max-height: 50vh;
+  overflow: scroll;
 }
 
 .autocomplete-items div {
-  padding: 5px;
+  padding: 5px 0;
   text-align: center;
   cursor: pointer;
   background-color: #fff;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #d4a373;
   width: 100%;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
+  white-space: no-wrap;
+  text-overflow: ellipsis;
 }
 
 .autocomplete-items div:hover {
@@ -450,4 +453,22 @@ footer h2 {
 
 .route-result-busno-simple-route-arrow {
   color: #d4a373;
+}
+
+.samestation-info {
+  border: 1px solid #d4a373;
+  margin: 10px 20px;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.error-text {
+  text-align: center;
+  margin: 20px;
+  padding: 40px 20px;
+  color: red;
+}
+
+.error-text i {
+  font-size: 50px;
 }

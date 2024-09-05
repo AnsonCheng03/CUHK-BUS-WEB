@@ -84,7 +84,7 @@ switch (urlquery('mode')) {
   <meta name="author" content="Anson Cheng">
   <link rel="icon" href="Images/bus.ico" type="image/x-icon">
   <link rel="shortcut icon" href="Images/bus.ico" type="image/x-icon">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
   <link rel="manifest" href="manifest/manifest.webmanifest">
   <meta name="application-name" content="CU BUS">
   <meta name="msapplication-TileColor" content="#62529c">

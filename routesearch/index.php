@@ -102,7 +102,9 @@ if ($postmode == "building") {
     $postdestbd = strstr($_POST['Destbd'], ' (', true) ?: $_POST['Destbd'];
 
     if ($poststartbd == "" || $postdestbd == "")
-        die("<h4>" . $translation["warning-noinput"][$lang] . "</h4>");
+        die("<div class='error-text'>" .
+            "<i class='fas fa-exclamation-triangle'></i>" .
+            "<p>" . $translation["warning-noinput"][$lang] . "</p></div>");
 
 
     //Building name to Building Code
@@ -143,7 +145,9 @@ if ($postmode == "building") {
 
     //Check Error
     if ($totalstart <= 0 || $totaldest <= 0)
-        die("<h4>" . $translation["building-error"][$lang] . "</h4>");
+        die("<div class='error-text'>" .
+            "<i class='fas fa-exclamation-triangle'></i>" .
+            "<p>" . $translation["building-error"][$lang] . "</p></div>");
 } else {
     $startstation = [$poststart];
     $deststation = [$postdest];
@@ -295,50 +299,51 @@ foreach ($searchResult['routeresult']["busno"] as $index => $startloc) {
 
 // Sort the results by time
 $sortedResults = [];
-foreach ($routegroupresult as $start => $temp) {
-    // get all bus arrival times
-    $outputschedule = array_filter($busschedule, fn($key) => explode("|", $key)[0] == $start, ARRAY_FILTER_USE_KEY);
+if (isset($routegroupresult))
+    foreach ($routegroupresult as $start => $temp) {
+        // get all bus arrival times
+        $outputschedule = array_filter($busschedule, fn($key) => explode("|", $key)[0] == $start, ARRAY_FILTER_USE_KEY);
 
-    foreach ($temp as $busno => $busWithSameNo) {
-        foreach ($busWithSameNo as $busarray) {
-            $time = $busarray["timeused"];
-            if ($time == "N/A") {
-                $time = PHP_INT_MAX; // Put "N/A" times at the end
-            }
-
-            // Get each bus arrival time
-            $allBuses = processAndSortBuses($outputschedule, $bus, $lang, $translation, array(
-                'busno' => $busno,
-                'currtime' => $departnowbtn ? date('H:i:s') : date('H:i:s', strtotime($posttravhr . ":" . $posttravmin))
-            ));
-
-            foreach ($allBuses as $busdata) {
-                $waitTime = (
-                    strtotime($busdata['time']) -
-                    ($departnowbtn ? strtotime(date('H:i:s')) : strtotime($posttravhr . ":" . $posttravmin))
-                ) / 60;
-                $waitTime = $waitTime < 0 ? 0 : intval($waitTime);
-
-                if ($waitTime > 30) {
-                    continue;
+        foreach ($temp as $busno => $busWithSameNo) {
+            foreach ($busWithSameNo as $busarray) {
+                $time = $busarray["timeused"];
+                if ($time == "N/A") {
+                    $time = PHP_INT_MAX; // Put "N/A" times at the end
                 }
 
-                $busarray["arrivalTime"] = date('H:i', strtotime($busdata['time']));
-
-                $sortedResults[] = [
-                    'time' => $time + $waitTime,
+                // Get each bus arrival time
+                $allBuses = processAndSortBuses($outputschedule, $bus, $lang, $translation, array(
                     'busno' => $busno,
-                    'start' => $busarray["start"]["translatedName"],
-                    'end' => $busarray["end"],
-                    'route' => $busarray["route"],
-                    'timeDisplay' => $busarray["timeused"],
-                    'arrivalTime' => $busarray["arrivalTime"]
-                ];
-            }
+                    'currtime' => $departnowbtn ? date('H:i:s') : date('H:i:s', strtotime($posttravhr . ":" . $posttravmin))
+                ));
 
+                foreach ($allBuses as $busdata) {
+                    $waitTime = (
+                        strtotime($busdata['time']) -
+                        ($departnowbtn ? strtotime(date('H:i:s')) : strtotime($posttravhr . ":" . $posttravmin))
+                    ) / 60;
+                    $waitTime = $waitTime < 0 ? 0 : intval($waitTime);
+
+                    if ($waitTime > 30) {
+                        continue;
+                    }
+
+                    $busarray["arrivalTime"] = date('H:i', strtotime($busdata['time']));
+
+                    $sortedResults[] = [
+                        'time' => $time + $waitTime,
+                        'busno' => $busno,
+                        'start' => $busarray["start"]["translatedName"],
+                        'end' => $busarray["end"],
+                        'route' => $busarray["route"],
+                        'timeDisplay' => $busarray["timeused"],
+                        'arrivalTime' => $busarray["arrivalTime"]
+                    ];
+                }
+
+            }
         }
     }
-}
 
 // Sort the results
 usort($sortedResults, function ($a, $b) {
@@ -351,30 +356,36 @@ usort($sortedResults, function ($a, $b) {
 
 
 if ($searchResult['samestation']) {
-    echo '<p>' . $translation["searchResult['samestation']-info"][$lang] . '</p>';
+    echo '<p class="samestation-info">' . $translation["samestation-info"][$lang] . '</p>';
 }
 
-echo "<div class='route-result'>";
+if ($sortedResults == null || $noroute) {
+    echo "<div class='error-text'>" .
+        "<i class='fas fa-exclamation-triangle'></i>" .
+        "<p>" . $translation["No-BUS"][$lang] . "</p></div>";
+} else {
+    echo "<div class='route-result'>";
 
-foreach ($sortedResults as $result) {
-    $busnostr = explode("→", $result['busno']);
-    echo "<div class='route-result-busno'>";
-    echo "<div class='route-result-busno-number'>" . $result['busno'] . "</div>";
-    echo "<div class='route-result-busno-details'>";
-    echo "<div class='route-result-busno-details-time'>";
-    echo "<div class='route-result-busno-details-totaltime'><p class='route-result-busno-details-totaltime-text'>" . $result['time'] . "</p> min</div>";
-    echo "<div class='route-result-busno-details-arrivaltime'>Next bus arriving in " . $result['arrivalTime'] . "</div>";
-    echo "</div>";
-    echo "<div class='route-result-busno-simple-route'>";
-    echo "<div class='route-result-busno-simple-route-start'>" . $result['start'] . "</div>";
-    echo "<div class='route-result-busno-simple-route-arrow'>➤</div>";
-    echo "<div class='route-result-busno-simple-route-end'>" . $result['end'] . "</div>";
-    echo "</div>";
-    // echo "<div class='route-result-busno-details-route'>" . $result['route'] . "</div>";
-    echo "</div>";
+    foreach ($sortedResults as $result) {
+        $busnostr = explode("→", $result['busno']);
+        echo "<div class='route-result-busno'>";
+        echo "<div class='route-result-busno-number'>" . $result['busno'] . "</div>";
+        echo "<div class='route-result-busno-details'>";
+        echo "<div class='route-result-busno-details-time'>";
+        echo "<div class='route-result-busno-details-totaltime'><p class='route-result-busno-details-totaltime-text'>" . $result['time'] . "</p> min</div>";
+        echo "<div class='route-result-busno-details-arrivaltime'>Next bus arriving in " . $result['arrivalTime'] . "</div>";
+        echo "</div>";
+        echo "<div class='route-result-busno-simple-route'>";
+        echo "<div class='route-result-busno-simple-route-start'>" . $result['start'] . "</div>";
+        echo "<div class='route-result-busno-simple-route-arrow'>➤</div>";
+        echo "<div class='route-result-busno-simple-route-end'>" . $result['end'] . "</div>";
+        echo "</div>";
+        // echo "<div class='route-result-busno-details-route'>" . $result['route'] . "</div>";
+        echo "</div>";
+        echo "</div>";
+    }
     echo "</div>";
 }
-echo "</div>";
 
 
 ?>

@@ -204,9 +204,15 @@ function autocomplete(inp, arr) {
         //
         b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
         b.addEventListener("click", function (e) {
-          inp.value = this.getElementsByTagName("input")[0].value;
-          sessionStorage.setItem("routesearch-" + inp.name, inp.value);
-          closeAllLists();
+          try {
+            inp.value = this.getElementsByTagName("input")[0].value;
+            sessionStorage.setItem("routesearch-" + inp.name, inp.value);
+            autoSubmitForm();
+          } catch (e) {
+            console.log(e);
+          } finally {
+            closeAllLists();
+          }
         });
         a.appendChild(b);
       }
@@ -281,7 +287,6 @@ function submitform(form, replacecontent, target = "/") {
         newScript.appendChild(document.createTextNode(oldScript.innerHTML));
         oldScript.parentNode.replaceChild(newScript, oldScript);
       });
-      elm.scrollIntoView({ behavior: "smooth" });
     }
   };
   xhr.send(formData);

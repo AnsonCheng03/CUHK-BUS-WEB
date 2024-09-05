@@ -109,8 +109,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
         <label for="Start" id="Start-label"><?php echo $translation["Form-Start"][$lang] ?></label>
         <div class="locationinput">
           <div mode="building" class="autocomplete">
-            <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Startbd"
-              name="Startbd" autocomplete="off">
+            <input class="text-box" type="text" onclick="this.select();" id="Startbd" name="Startbd" autocomplete="off">
           </div>
           <select mode="station" class="select-box" name="Start" id="Start">
             <?php
@@ -129,8 +128,7 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
         <label for="Dest" id="Dest-label"> <?php echo $translation["Form-Dest"][$lang] ?></label>
         <div class="locationinput">
           <div mode="building" class="autocomplete">
-            <input style="text-align: center;" class="text-box" type="text" onclick="this.select();" id="Destbd"
-              name="Destbd" autocomplete="off">
+            <input class="text-box" type="text" onclick="this.select();" id="Destbd" name="Destbd" autocomplete="off">
           </div>
           <select mode="station" class="select-box" name="Dest" id="Dest">
             <?php
@@ -215,6 +213,36 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
   </div>
 </form>
 
+<script>
+  // submit the form when the enter key is pressed or changed (event listener)
+  const autoSubmitForm = () => {
+    // log both locationinput and slider value
+    const from = document.querySelector('#Startbd').value;
+    const to = document.querySelector('#Destbd').value;
+    const slider = document.querySelector('.slider-container input').checked;
+
+    if (from === "" || to === "" || slider === false) {
+      return;
+    }
+    // submit the form
+    document.querySelector('#routesubmitbtn').click();
+  }
+
+  // add event listener to the form
+  document.querySelector('form').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      autoSubmitForm();
+    }
+  });
+
+  document.querySelectorAll('.slider-container').forEach(element => {
+    // only 
+    element.addEventListener('change', autoSubmitForm);
+  });
+
+
+</script>
+
 <!--GPS Details Box!-->
 <div id="details-box">
   <div class="details-box">
@@ -245,9 +273,6 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
       autocomplete(document.getElementById("Destbd"), choices);
     }
 
-    if (document.getElementById("routeresult") && document.getElementById("routesubmitbtn")) {
-      document.getElementById("routesubmitbtn").scrollIntoView();
-    }
   </script>
 
   <script>
