@@ -63,27 +63,6 @@
   text-decoration: none;
 }
 
-/* Title & Alert */
-.alert-box {
-  margin: 40px auto;
-  padding: 10px;
-  border-radius: 5px;
-  color: rgb(97, 26, 21);
-  background-color: #fff;
-  box-shadow: none;
-  width: 80%;
-}
-
-.alert-box table {
-  width: 100%;
-}
-
-.alert-box table td:first-child {
-  width: 100px;
-  text-align: center;
-  margin: 10px auto;
-}
-
 /* Form */
 
 .stopselector {

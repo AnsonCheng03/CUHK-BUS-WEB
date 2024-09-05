@@ -4,12 +4,6 @@ $fetcherror = false;
 ?>
 
 
-<?php
-foreach ($notice as $noti) {
-  alert($noti["pref"]["type"], $noti["content"][$lang]);
-}
-?>
-
 <!--Fetch Busstop && Buildings to Array!-->
 <!--Need Fix!-->
 <?php
@@ -22,7 +16,7 @@ $thirtyminbusservice = array_pop($temp);
 
 if (isset($currentbusservices['ERROR'])) {
   $fetcherror = true;
-  alert("alert", $translation["fetch-error"][$lang]);
+  // alert("alert", $translation["fetch-error"][$lang]);
 } else {
   foreach ($currentbusservices as $busnumber => $busstatus) {
     $bus[$busnumber]["stats"]["status"] = $busstatus;
@@ -55,8 +49,8 @@ if (isset($buserrstat["delay"]) && isset($buserrstat["suspended"]))
   $finalerrbus = $finalerrbus . "<br>";
 if (isset($buserrstat["suspended"]))
   $finalerrbus = $finalerrbus . $translation["suspended-alert"][$lang] . implode(", ", $buserrstat["suspended"]);
-if ($finalerrbus !== "")
-  alert("alert", $finalerrbus);
+// if ($finalerrbus !== "")
+//   alert("alert", $finalerrbus);
 
 
 //Concat all bus stops
@@ -256,7 +250,13 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
 </div>
 
 <!--Output result!-->
-<div class="routeresult"></div>
+<div class="routeresult">
+  <div class='error-text'>
+    <i class='fas fa-info-circle''></i>
+    <p> <?php echo $translation["input-text-reminder"][$lang] ?></p>
+  </div>
+
+</div>
 
 </body>
 
@@ -285,8 +285,8 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
     date_change();
     modechange();
 
-    document.querySelectorAll('input[name="mode"]').forEach(element => {
+    document.querySelectorAll(' input[name="mode" ]').forEach(element => {
       element.addEventListener('change', modechange);
     });
   </script>
-</footer>
+      </footer>

@@ -26,7 +26,7 @@ $currentbusservices = end($busservices);
 $thirtyminbusservice = array_slice($busservices, -60, 1)[0] ?? [];
 
 if (isset($currentbusservices['ERROR'])) {
-    alert("alert", $translation["fetch-error"][$lang]);
+    // alert("alert", $translation["fetch-error"][$lang]);
     $bus = filterBusesBySchedule($bus);
 } else {
     $bus = filterBusesBySchedule($bus);

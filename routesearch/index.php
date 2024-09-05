@@ -25,7 +25,7 @@ $thirtyminbusservice = array_pop($temp);
 $currentbusservices = end($busservices);
 if (isset($currentbusservices['ERROR'])) {
     $fetcherror = true;
-    alert("alert", $translation["fetch-error"][$lang]);
+    // alert("alert", $translation["fetch-error"][$lang]);
 } else {
     foreach ($currentbusservices as $busnumber => $busstatus) {
         $bus[$busnumber]["stats"]["status"] = $busstatus;
@@ -53,7 +53,7 @@ try {
     if ($conn->connect_error)
         die("Connection failed: " . $conn->connect_error);
     $stmt = $conn->prepare("INSERT INTO `logs` (`Time`, `Webpage`, `Start`, `Dest`, `Mode`, `Departnow`, `Lang`) 
-        VALUES (?, 'routesearch', ?, ?, ?, ?, ?, ?);");
+        VALUES (?, 'routesearch', ?, ?, ?, ?, ?);");
     $stmt->bind_param("ssssss", $Time, $Startsql, $Destsql, $postmode, $departnowbtn, $lang);
     $Time = (new DateTime())->format('Y-m-d H:i:s');
     $Startsql = $postmode == "building" ? $_POST['Startbd'] : $_POST['Start'];
