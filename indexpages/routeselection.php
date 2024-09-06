@@ -244,6 +244,9 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
       <h4 id="details-box-heading">
         <?php echo $translation["nearst_txt"][$lang] ?>
       </h4>
+      <div class="map-submit-btn" onclick='document.getElementById("details-box").style.display="none"'>
+        <?php echo $translation["cancel_btntxt"][$lang] ?>
+      </div>
     </div>
     <div id="GPSresult"></div>
   </div>

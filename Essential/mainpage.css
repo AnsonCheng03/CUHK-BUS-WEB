@@ -157,6 +157,8 @@ input:checked + .slider:before {
   appearance: none;
   border-radius: 5px;
   -webkit-appearance: none;
+  background: none;
+  color: #000;
 }
 
 .select-date {
@@ -168,6 +170,8 @@ input:checked + .slider:before {
   appearance: none;
   border-radius: 5px;
   -webkit-appearance: none;
+  background: none;
+  color: #000;
 }
 
 .show-time {
@@ -218,6 +222,8 @@ input:checked + .slider:before {
 .select-box {
   font-size: 14px;
   width: 100%;
+  color: #000;
+  background-color: none;
   box-shadow: 0 1px 3px -2px #9098a9;
   padding: 7px 12px 7px 12px;
   -webkit-appearance: none;
@@ -295,50 +301,57 @@ input:checked + .slider:before {
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
   width: 100%;
+  height: 100%;
+  background-color: rgba(50, 50, 50, 0.77);
+  z-index: 999999;
+  border-radius: 5px;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
 }
 
 .details-box {
-  overflow: scroll;
-  box-shadow: rgba(240, 46, 170, 0.4) -5px 5px,
-    rgba(240, 46, 170, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px,
-    rgba(240, 46, 170, 0.1) -20px 20px, rgba(240, 46, 170, 0.05) -25px 25px;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #fff;
+  width: 50%;
+}
+
+.gpsOptions {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  background-color: #51f5ea;
-  width: 80%;
-  margin: auto;
-  padding: 20px;
-  z-index: 999999;
+  gap: 10px;
+  padding: 20px 5%;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
 }
 
 .showdetails {
-  float: center;
-  height: 100px;
+  text-align: left;
+  padding: 20px 5%;
+  width: 90%;
+  background-color: #d4a373;
+  color: #fff;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  border: 1px solid #d4a373;
 }
 
 #details-box-heading {
   display: inline;
-  color: black;
-  margin: auto;
-}
-
-#GPSresult {
-  overflow: auto;
+  color: #fff;
+  margin: 0;
 }
 
 /* Others */
 .map-submit-btn {
-  font-size: 16px;
-  background-color: #62529c;
-  color: #fff;
-  padding: 15px 30px;
-  margin: 5px;
-  text-decoration: none;
-  cursor: pointer;
-  width: max(120px, 3vw);
+  display: inline-block;
+  background: none;
+  border: none;
+  color: white;
 }
 
 footer h2 {
@@ -436,7 +449,7 @@ footer h2 {
 
 .samestation-info {
   border: 1px solid #d4a373;
-  margin: 10px 20px;
+  margin: 10px;
   padding: 20px;
   border-radius: 5px;
 }

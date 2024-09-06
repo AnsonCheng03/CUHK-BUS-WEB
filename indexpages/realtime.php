@@ -7,6 +7,9 @@
                 <h4 id="details-box-heading">
                     <?php echo $translation["nearst_txt"][$lang] ?>
                 </h4>
+                <div class="map-submit-btn" onclick='document.getElementById("details-box").style.display="none"'>
+                    <?php echo $translation["cancel_btntxt"][$lang] ?>
+                </div>
             </div>
             <div id="GPSresult"></div>
         </div>
@@ -26,13 +29,16 @@
 
     ?>
 
-    <form class="stopselector" method="POST" onchange="submitform(this, '.realtimeresult', 'realtime/index.php');">
+    <form class="stopselector" method="POST" onchange="submitform(this, ' .realtimeresult', 'realtime/index.php'
+                    );">
         <span><?php echo $translation['DescTxt-yrloc'][$lang] ?></span>
         <select mode="station" class="select-box" name="Dest" id="Dest">
-            <option disabled selected><?php echo $translation['DescTxt2'][$lang] ?></option>
+            <!-- <option disabled selected><?php echo $translation['DescTxt2'][$lang] ?></option> -->
             <?php
             foreach ($allbusstop as $value)
-                echo '<option value="' . $value . '">' . $translation[$value][$lang] . "</option>";
+                echo '<option ' .
+                    ($value == 'MTR' ? 'selected' : '') .
+                    ' value="' . $value . '">' . $translation[$value][$lang] . "</option>";
             ?>
         </select>
         <img alt="Get Current Location" class="image-wrapper" src="Images/GPS.jpg" id="Dest-GPS-box"

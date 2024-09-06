@@ -14,49 +14,57 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
   width: 100%;
+  height: 100%;
+  background-color: rgba(50, 50, 50, 0.77);
+  z-index: 999999;
+  border-radius: 5px;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
 }
 
 .details-box {
-  overflow: scroll;
-  box-shadow: rgba(240, 46, 170, 0.4) -5px 5px,
-    rgba(240, 46, 170, 0.3) -10px 10px, rgba(240, 46, 170, 0.2) -15px 15px,
-    rgba(240, 46, 170, 0.1) -20px 20px, rgba(240, 46, 170, 0.05) -25px 25px;
+  border-radius: 5px;
+  overflow: hidden;
+  background: #fff;
+  width: 50%;
+}
+
+.gpsOptions {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  background-color: #51f5ea;
-  width: 80%;
-  margin: auto;
-  padding: 20px;
-  z-index: 999999;
+  gap: 10px;
+  padding: 20px 5%;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
 }
 
 .showdetails {
-  float: center;
-  height: 100px;
+  text-align: left;
+  padding: 20px 5%;
+  width: 90%;
+  background-color: #d4a373;
+  color: #fff;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  border: 1px solid #d4a373;
 }
 
 #details-box-heading {
   display: inline;
-  color: black;
-  margin: auto;
-}
-
-#GPSresult {
-  overflow: auto;
-}
-
-.map-submit-btn {
-  font-size: 16px;
-  background-color: #62529c;
   color: #fff;
-  padding: 15px 30px;
-  margin: 5px;
-  text-decoration: none;
-  cursor: pointer;
-  width: max(120px, 3vw);
+  margin: 0;
+}
+
+/* Others */
+.map-submit-btn {
+  display: inline-block;
+  background: none;
+  border: none;
+  color: white;
 }
 
 #GPSresult a {
@@ -107,6 +115,7 @@
   text-align: -webkit-center;
   text-align-last: center;
   border-radius: 5px;
+  color: #000;
   width: 100%;
   border: 1px solid #d4a373;
   background-color: transparent;

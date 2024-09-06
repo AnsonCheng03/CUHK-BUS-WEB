@@ -82,7 +82,7 @@ function printneareststation() {
     htmlcode = "";
     htmlcode =
       htmlcode +
-      '<table width="70%" style="background-color: #145D90; color: #fff; border-radius: 20px; margin: 0px auto 20px auto; text-align: center;"><tr><td width="70%" height="100px"><a style="color: white" href="javascript:changevaluebyGPS(\'' +
+      '<div class="gpsOptions"><div class="gpsText"><a href="javascript:changevaluebyGPS(\'' +
       item +
       "','" +
       GPSdata[i]["location"] +
@@ -97,15 +97,13 @@ function printneareststation() {
       ? (GPSdatamodi = "> 9999")
       : (GPSdatamodi = GPSdata[i]["distance"].toFixed(3) * 1000);
     htmlcode =
-      htmlcode + "</a></td><td>" + GPSdatamodi + " m</td></tr></table>";
+      htmlcode +
+      "</a></div><div class='gpsMeter'>" +
+      GPSdatamodi +
+      " m</div></div>";
     document.getElementById("GPSresult").innerHTML =
       document.getElementById("GPSresult").innerHTML + htmlcode;
   }
-  document.getElementById("GPSresult").innerHTML =
-    document.getElementById("GPSresult").innerHTML +
-    '<div style="height:100px; text-align: center; margin-top: 50px"><span class="map-submit-btn" onclick=\'document.getElementById("details-box").style.display = "none"; \'>' +
-    Translation["cancel_btntxt"] +
-    "</span></div>";
 }
 
 function distanceBetweenTwoPlace(
