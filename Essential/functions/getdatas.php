@@ -60,24 +60,25 @@ if (pingAddress(gethostbyname($host))) {
 
         // get .home-popup-text > p
         $homePopupText = (new DOMXPath($dom))->query('//div[contains(@class, "home-popup-text")]/p');
-        $webWarning = $homePopupText->item(0)->textContent;
+        if ($homePopupText->length == 1) {
+            $webWarning = $homePopupText->item(0)->textContent;
+            if ($webWarning) {
+                // also get chinese version(connect to /tc)
+                try {
+                    $html = file_get_contents('https://' . $host . '/tc/', 0, stream_context_create(["http" => ["timeout" => 20]]));
+                    $dom = new DOMDocument();
+                    libxml_use_internal_errors(true);
+                    $dom->loadHTML($html);
+                    $homePopupText = (new DOMXPath($dom))->query('//div[contains(@class, "home-popup-text")]/p');
+                    $webWarningTc = $homePopupText->item(0)->textContent;
+                } catch (Exception $e) {
+                    $webWarningTc = $webWarning;
+                }
 
-        if ($webWarning) {
-            // also get chinese version(connect to /tc)
-            try {
-                $html = file_get_contents('https://' . $host . '/tc/', 0, stream_context_create(["http" => ["timeout" => 20]]));
-                $dom = new DOMDocument();
-                libxml_use_internal_errors(true);
-                $dom->loadHTML($html);
-                $homePopupText = (new DOMXPath($dom))->query('//div[contains(@class, "home-popup-text")]/p');
-                $webWarningTc = $homePopupText->item(0)->textContent;
-            } catch (Exception $e) {
-                $webWarningTc = $webWarning;
+
+                $busAlert = [$webWarningTc, $webWarning];
+
             }
-
-
-            $busAlert = [$webWarningTc, $webWarning];
-
         }
         // save current alert
         file_put_contents(__DIR__ . '/../../Data/Alert.json', json_encode($busAlert ?? array(), JSON_PRETTY_PRINT));
