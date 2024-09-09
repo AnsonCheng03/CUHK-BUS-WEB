@@ -59,9 +59,9 @@ function printneareststation() {
     htmlcode = "";
     htmlcode =
       htmlcode +
-      '<div class="gpsOptions"><div class="gpsText"><a href="javascript:changevaluebyGPS(\'' +
+      '<div class="gpsOptions" onclick="changevaluebyGPS(\'' +
       GPSdata[i]["code"] +
-      "');\">" +
+      "');\"><div class=GpsText'>" +
       GPSdata[i]["location"];
     if (GPSdata[i]["attr"]) {
       htmlcode = htmlcode + "(" + GPSdata[i]["attr"] + ")";
@@ -71,7 +71,7 @@ function printneareststation() {
       : (GPSdatamodi = GPSdata[i]["distance"].toFixed(3) * 1000);
     htmlcode =
       htmlcode +
-      "</a></div><div class='gpsMeter'>" +
+      "</div><div class='gpsMeter'>" +
       GPSdatamodi +
       " m</div></div>";
     document.getElementById("GPSresult").innerHTML =

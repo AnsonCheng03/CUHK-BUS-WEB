@@ -72,15 +72,17 @@ function getNextStation($stations, $currentStation)
     [$currentStationName, $currentStationAttr] = explode('|', $currentStation) + [1 => null];
 
     $foundIndex = -1;
-    foreach ($stations['name'] as $index => $name) {
-        if (
-            $name === $currentStationName &&
-            ($currentStationAttr == null || $stations['attr'][$index] === $currentStationAttr)
-        ) {
-            $foundIndex = $index;
-            break;
+
+    if (isset($stations['name']))
+        foreach ($stations['name'] as $index => $name) {
+            if (
+                $name === $currentStationName &&
+                ($currentStationAttr == null || $stations['attr'][$index] === $currentStationAttr)
+            ) {
+                $foundIndex = $index;
+                break;
+            }
         }
-    }
 
     if ($foundIndex === -1 || $foundIndex === count($stations['name']) - 1) {
         return null;

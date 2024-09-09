@@ -10,6 +10,39 @@
 
   <!-- About !-->
 
+
+
+  <div class="option expandable">
+    <div><?php echo $translation['privacy_page'][$lang] ?></div>
+    <div class="option-expand">
+      <div class="option-expand-wrapper">
+        <div class="option-expand-content">
+          本網站會在您每次造訪時記錄訪客數量和基本使用模式。部分此類資訊及您的個人化數據將通過Cookie收集。Cookie是一種小型資訊檔案，會自動儲存在訪客電腦的瀏覽器中，並可被本網站讀取。每當用戶訪問本網站時，伺服器日誌檔案會自動辨識並記錄訪客的IP地址、造訪日期和時間，以及瀏覽的總頁數。您的網路服務供應商會自動為您的電腦或其他電子設備分配IP地址。在互聯網上，收集IP地址是一種普遍做法，許多網站都會自動執行。IP地址將用於多種用途，包括監測網站流量、診斷伺服器問題、為您提供更個人化的線上和離線體驗、管理網站和/或提高合規性和安全水平。此資訊僅保留七天。本網頁會儲存大部分用戶輸入的資料，如目的地、提交時間等，但用戶IP地址等可識別身份的資料不會與輸入資料連結，因此無法直接通過用戶輸入的資料辨識其身份。這些資料將用於調整巴士班次和服務時間等用途，詳情可查閱網站原始碼。用戶的所有資料都不會被出售。與CUSIS服務相關的網頁不會被列入資料收集範圍，用戶在這些頁面的所有資料都不會被儲存。本網頁使用多家公司的服務進行廣告投放和數據分析，相關公司包括Google
+          Analytics、Skimlinks、Cloudflare和PropellerAds，詳細資訊請參閱各機構的隱私聲明。網站的隱私聲明會不定期更新，為確保您了解最新版本的內容，請經常查看本網頁。<br><br>
+          This website records visitor numbers and basic usage patterns every time you visit. Some of this information
+          and your personalized data are collected through cookies. A cookie is a small information file that is
+          automatically stored in the visitor's browser on their computer and can be read by this website. Whenever a
+          user accesses this website, the server log file automatically identifies and records the visitor's IP address,
+          visit date and time, and the total number of pages viewed. Your internet service provider automatically
+          assigns an IP address to your computer or other electronic device. Collecting IP addresses is a common
+          practice on the internet, and many websites do this automatically. IP addresses are used for various purposes,
+          including monitoring website traffic, diagnosing server issues, providing you with a more personalized online
+          and offline experience, managing the website, and/or improving compliance and security levels. This
+          information is retained for only seven days. This webpage stores most of the data input by users, such as
+          destination and submission time, but personally identifiable information like user IP addresses is not linked
+          to the input data, so users cannot be directly identified by their input. This data will be used for purposes
+          such as adjusting bus schedules and service times, with details available in the website's source code. None
+          of the user's data will be sold. Web pages related to CUSIS services are not included in the data collection
+          scope, and all user data on these pages will not be stored. This webpage uses services from multiple companies
+          for advertising and data analysis, including Google Analytics, Skimlinks, Cloudflare, and PropellerAds. For
+          detailed information, please refer to the privacy statements of each organization. The website's privacy
+          statement is updated periodically. To ensure you are familiar with the latest version of the content, please
+          check this webpage frequently.
+        </div>
+      </div>
+    </div>
+  </div>
+
   <?php
   if ($lang == 1) {
     echo "
