@@ -88,7 +88,8 @@ function getNextStation($stations, $currentStation)
         return null;
     }
 
-    return $stations['name'][$foundIndex + 1];
+    // return $stations['name'][$foundIndex + 1];
+    return array_slice($stations['name'], $foundIndex + 1, count($stations['name']) - $foundIndex);
 }
 function connectToDatabase()
 {
@@ -138,7 +139,7 @@ function displayBuses($allBuses, $lang, $translation)
         echo "<div class='next-station-display'>";
         echo "<p class='next-station-text'>" . $translation["next-station"][$lang] . "</p>";
         if ($bus['nextStation']) {
-            echo "<p class='next-station'>" . $translation[$bus['nextStation']][$lang] . "</p>";
+            echo "<p class='next-station'>" . $translation[$bus['nextStation'][0]][$lang] . "</p>";
         }
         if ($bus['warning']) {
             echo "<span></span><span class='warning'>" . htmlspecialchars($translation[$bus['warning']][$lang]) . "</span>";
