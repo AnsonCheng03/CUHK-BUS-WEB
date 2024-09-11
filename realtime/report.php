@@ -2,8 +2,9 @@
 
 date_default_timezone_set("Asia/Hong_Kong");
 session_start();
+include_once('../Essential/functions/loadenv.php');
 
-$_POST["stop"] = explode("|",$_POST["stop"])[1] == "" ? explode("|",$_POST["stop"])[0] : $_POST["stop"] ;
+$_POST["stop"] = explode("|", $_POST["stop"])[1] == "" ? explode("|", $_POST["stop"])[0] : $_POST["stop"];
 
 include_once('../Essential/functions/functions.php');
 $lang = $_POST["lang"];
@@ -28,13 +29,13 @@ function vincentyGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo,
     return $angle * $earthRadius;
 }
 
-if(!isset($GPS[$_POST['stop']]))
+if (!isset($GPS[$_POST['stop']]))
     die("Err: Station not found");
 
-if(vincentyGreatCircleDistance($GPS[$_POST['stop']]["Lat"],$GPS[$_POST['stop']]["Lng"] ,$_POST['positionlat'] ,$_POST['positionlng'] ) > 300)
+if (vincentyGreatCircleDistance($GPS[$_POST['stop']]["Lat"], $GPS[$_POST['stop']]["Lng"], $_POST['positionlat'], $_POST['positionlng']) > 300)
     die($translation['distancetoolong_warning'][$lang]);
 
-if (!isset($_POST['CSRF']) || $_POST['CSRF'] != $_SESSION['_token']) 
+if (!isset($_POST['CSRF']) || $_POST['CSRF'] != $_SESSION['_token'])
     die($translation['token_error'][$lang]);
 
 
@@ -43,8 +44,9 @@ if (isset($_SESSION['Lastpost']))
         die($translation['repeat_submit'][$lang]);
 
 // Create connection
-$conn = new mysqli("localhost", "u392756974_cubus", "*rV0J2J5", "u392756974_cubus");
-if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
+$conn = new mysqli(getenv('DB_HOST'), getenv('DB_USER'), getenv('DB_PASS'), getenv('DB_NAME'));
+if ($conn->connect_error)
+    die("Connection failed: " . $conn->connect_error);
 
 // prepare and bind
 $stmt = $conn->prepare("INSERT INTO `report` (`Serial`, `Time`, `BusNum`, `StopAttr`) VALUES (NULL, ?, ?, ?);");

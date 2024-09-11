@@ -1,7 +1,7 @@
 <!doctype html>
 
 
-<?
+<?php
 
 include('../../Essential/functions/functions.php');
 
@@ -28,7 +28,6 @@ foreach (csv_to_array(__DIR__ . "/../../Data/Route") as $busno) {
         <meta charset="utf-8">
         <script async src="/Essential/amp.js"></script>
         <title>校巴資訊 | 中大校巴資訊站 CU BUS INFOPAGE</title>
-        <link rel="canonical" href="/">
         <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
         <style amp-boilerplate>
             body {
@@ -113,7 +112,8 @@ foreach (csv_to_array(__DIR__ . "/../../Data/Route") as $busno) {
                                 "item": "https://cu-bus.online/pages/blogs/routes/' . str_replace("#", "|ext|", $busnumber) . '/"
                             }
                         ';
-                        if (count($bus) > $count) echo ',';
+                        if (count($bus) > $count)
+                            echo ',';
                         $count++;
                     }
                     ?>
@@ -124,8 +124,13 @@ foreach (csv_to_array(__DIR__ . "/../../Data/Route") as $busno) {
         <meta http-equiv="Content-Language" content="zh">
         <meta name="title" content="校巴資訊 | 中大校巴資訊站 CU BUS INFOPAGE">
         <meta name="description" content="你可在本頁搜尋到校巴之資訊，包括開出時間、是否允許行李等。">
-        <meta name="keywords" content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
+        <meta name="keywords"
+            content="CUHK, 中大, 香港中文大學, The Chinese University of Hong Kong, BUS, CUBUS, 巴士, 校巴, School Bus, 路線, route, 校巴站, busstop">
         <meta name="robots" content="index, follow">
+        <?php
+        if (urlquery('mode') !== 'norm')
+            echo '<link rel="canonical" href="./&?mode=norm"/>';
+        ?>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="author" content="Anson Cheng">
         <link rel="icon" href="Images/bus.ico" type="image/x-icon">
@@ -324,9 +329,9 @@ foreach (csv_to_array(__DIR__ . "/../../Data/Route") as $busno) {
                             <h3>服務時間</h3>
                             <p class="time">' . $busline['schedule'][0] . ' - ' . $busline['schedule'][1] . '</p>
                             <p class="days">' . (strpos($busline["schedule"][3], "HD") !== false || $busline["schedule"][3] === "HD" ?
-                "假日" : (strpos($busline["schedule"][3], "TD") === false && $busline["schedule"][3] !== "TD" ?
-                    "非教學日" : "教學日"
-                )) . '</p>
+                    "假日" : (strpos($busline["schedule"][3], "TD") === false && $busline["schedule"][3] !== "TD" ?
+                        "非教學日" : "教學日"
+                    )) . '</p>
                         </div>
                         <div class="details">
                             <h3>開出時間</h3> 
