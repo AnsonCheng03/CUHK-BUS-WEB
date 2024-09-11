@@ -10,10 +10,10 @@ function pingAddress($ip)
     }
 }
 
-// if (isset($_SERVER['REMOTE_ADDR'])) {
-//     header('HTTP/1.0 403 Forbidden');
-//     die('No Permission');
-// }
+if (isset($_SERVER['REMOTE_ADDR'])) {
+    header('HTTP/1.0 403 Forbidden');
+    die('No Permission');
+}
 
 date_default_timezone_set('Asia/Hong_Kong');
 $host = 'www.transport.cuhk.edu.hk';
