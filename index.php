@@ -1,5 +1,5 @@
 <?php
-$version = "2.0.1b1";
+$version = "2.0.1b2";
 include_once('Essential/functions/functions.php');
 
 // detect language from browser
@@ -158,26 +158,34 @@ if ($notice) {
       <li>
         <a onclick="append_query('mode','realtime');" class="<?php echo $currentpage == 'realtime' ? 'active' : ''; ?>">
           <i class="fa-solid fa-house"></i>
-          <?php echo $translation["NAV-Home"][$lang] ?>
+          <p class="navtext">
+            <?php echo $translation["NAV-Home"][$lang] ?>
+          </p>
         </a>
       </li>
       <li>
         <a onclick="append_query('mode','route');"
           class="<?php echo $currentpage == 'routeselection' ? 'active' : ''; ?>">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <?php echo $translation["NAV-StationSearch"][$lang] ?>
+          <p class="navtext">
+            <?php echo $translation["NAV-StationSearch"][$lang] ?>
+          </p>
         </a>
       </li>
       <li>
         <a onclick="append_query('mode','info');" class="<?php echo $currentpage == 'info' ? 'active' : ''; ?>">
           <i class="fa-solid fa-info"></i>
-          <?php echo $translation["NAV-Info"][$lang] ?>
+          <p class="navtext">
+            <?php echo $translation["NAV-Info"][$lang] ?>
+          </p>
         </a>
       </li>
       <li>
         <a onclick="append_query('mode','settings');" class="<?php echo $currentpage == 'settings' ? 'active' : ''; ?>">
           <i class="fa-solid fa-gear"></i>
-          <?php echo $translation["NAV-Settings"][$lang] ?>
+          <p class="navtext">
+            <?php echo $translation["NAV-Settings"][$lang] ?>
+          </p>
         </a>
       </li>
     </ul>

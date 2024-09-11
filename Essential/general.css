@@ -92,6 +92,7 @@ nav ul {
 
 nav a,
 nav a:link {
+  font-size: 1.2rem;
   color: #ccd5ae;
   text-decoration: none;
   padding: 1em 0;
@@ -111,6 +112,11 @@ nav a:hover {
 nav a.active,
 nav a.active:link {
   color: #d4a373;
+}
+
+nav .navtext {
+  margin: 0;
+  font-size: 0.8rem;
 }
 
 @media screen and (max-width: 768px) {
