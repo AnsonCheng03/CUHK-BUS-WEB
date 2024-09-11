@@ -163,7 +163,8 @@ function searchRoutes($startstation, $deststation, $bus, $translation, $lang)
         "start" => [],
         "end" => [],
         "time" => [],
-        "route" => []
+        "route" => [],
+        "routeIndex" => []
     ];
 
     for ($currdest = 0; $currdest < $totaldest; $currdest++) {
@@ -229,31 +230,35 @@ function searchDirection($start, $dest, $busno, $line, $attrline, $timeline, $tr
 
 function buildRouteResult($busno, $start, $dest, $line, $attrline, $timeline, $startIndex, $endIndex, $translation, $lang)
 {
-
-    $newline = array_slice($line, $startIndex + 1, $endIndex + 1, true);
-    $newlineattr = array_slice($attrline, $startIndex, $endIndex + 2, true);
-    $newlinetime = array_slice($timeline, $startIndex, $endIndex + 2, true);
-    $newline = array_map(fn($stop) => $translation[$stop][$lang], $newline);
-
-    // function buildStationString($station, $attr, $translation, $lang)
+    // Build start position string
     $startpos = $translation[$start][$lang];
-    if (isset($translation[$newlineattr[$startIndex] ?? ""][$lang])) {
-        $startpos .= " ({$translation[$newlineattr[$startIndex] ?? ""][$lang]})";
-    }
-    $endpos = end($newline);
-    $endposattr = "";
-    if (isset($translation[end($newlineattr) ?? ""][$lang])) {
-        $endposattr = " ({$translation[end($newlineattr) ?? ""][$lang]})";
+    if (isset($translation[$attrline[$startIndex] ?? ""][$lang])) {
+        $startpos .= " ({$translation[$attrline[$startIndex] ?? ""][$lang]})";
     }
 
-    $route = "$startpos ➤ " . implode(" ➤ ", $newline) . "$endposattr";
+    // Build end position string
+    $endpos = $translation[$dest][$lang];
+    $endposattr = "";
+    if (isset($translation[$attrline[$startIndex + $endIndex + 1] ?? ""][$lang])) {
+        $endposattr = " ({$translation[$attrline[$startIndex + $endIndex + 1] ?? ""][$lang]})";
+    }
+
+    // Build route
+    $route = json_encode(array_map(function ($index) use ($line, $attrline, $translation, $lang) {
+        return $translation[$line[$index]][$lang] .
+            ($attrline[$index] != "NULL" ? " (" . $translation[$attrline[$index]][$lang] . ")" : "");
+    }, range(0, $startIndex + $endIndex + 1)));
+
+    // Calculate total time
+    $totalTime = array_sum(array_slice($timeline, $startIndex, $endIndex - $startIndex + 1));
 
     return [
         "busno" => [$busno],
-        "start" => [[$startpos, $start, $newlineattr[$startIndex] ?? null]],
+        "start" => [[$startpos, $start, $attrline[$startIndex] ?? null]],
         "end" => [$endpos . $endposattr],
-        "time" => [array_sum($newlinetime)],
-        "route" => [$route]
+        "time" => [array_sum(array_slice($timeline, $startIndex, $endIndex + 2, true))],
+        "route" => [$route],
+        "routeIndex" => [$startIndex]
     ];
 }
 
@@ -290,6 +295,7 @@ foreach ($searchResult['routeresult']["busno"] as $index => $startloc) {
             "attr" => $searchResult['routeresult']["start"][$index][2]
         ),
         "route" => $searchResult['routeresult']["route"][$index],
+        "routeIndex" => $searchResult['routeresult']["routeIndex"][$index],
         "timeused" => $timeoutput
     );
 }
@@ -337,6 +343,7 @@ if (isset($routegroupresult))
                         'end' => $busarray["end"],
                         'route' => $busarray["route"],
                         'timeDisplay' => $busarray["timeused"],
+                        'routeIndex' => $busarray["routeIndex"],
                         'arrivalTime' => $busarray["arrivalTime"]
                     ];
                 }
@@ -368,7 +375,8 @@ if ($sortedResults == null || $noroute) {
 
     foreach ($sortedResults as $result) {
         $busnostr = explode("→", $result['busno']);
-        echo "<div class='route-result-busno'>";
+        echo "<div class='route-result-busno' 
+            onclick='createRouteMap(" . $result['route'] . ", " . $result['routeIndex'] . ")'>";
         echo "<div class='route-result-busno-number'>" . $result['busno'] . "</div>";
         echo "<div class='route-result-busno-details'>";
         echo "<div class='route-result-busno-details-time'>";

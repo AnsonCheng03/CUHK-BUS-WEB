@@ -258,7 +258,11 @@ foreach ($translation as $buildingcode => $buildingnamearr) {
     <i class='fas fa-info-circle''></i>
     <p> <?php echo $translation["input-text-reminder"][$lang] ?></p>
   </div>
+</div>
 
+<div id="detail-route-container">
+    <div id="close-button" onclick="closeRouteMap()">&times;</div>
+    <div id="map-container"></div>
 </div>
 
 </body>

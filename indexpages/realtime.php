@@ -50,4 +50,13 @@
 
     <div class="realtimeresult"></div>
 
+    <div id="detail-route-container">
+        <div id="close-button" onclick="closeRouteMap()">&times;</div>
+        <div id="map-container">
+            <div id="route-bar"></div>
+            <div id="start-point" class="endpoint"><i class="fas fa-map-marker-alt"></i></div>
+            <div id="end-point" class="endpoint"><i class="fas fa-flag-checkered"></i></div>
+        </div>
+    </div>
+
 </body>
