@@ -57,7 +57,7 @@ function processAndSortBuses($outputschedule, $bus, $lang, $translation, $pref =
 
             if (isset($bus[$busno]) && $timetable) {
                 $warning = $bus[$busno]['warning'] ?? false;
-                $nextStation = getNextStation($bus[$busno]['stations'] ?? [], $stationname);
+                $nextStation = getNextStation($bus[$busno]['stations'] ?? [], $stationname, $translation, $lang);
                 $allBuses = array_merge($allBuses, getScheduledTimes($timetable, $busno, $stationname, $currtime, $nowtime, $lang, $translation, $warning, $nextStation));
             }
         }
@@ -67,7 +67,7 @@ function processAndSortBuses($outputschedule, $bus, $lang, $translation, $pref =
     return $allBuses;
 }
 
-function getNextStation($stations, $currentStation)
+function getNextStation($stations, $currentStation, $translation, $lang)
 {
     [$currentStationName, $currentStationAttr] = explode('|', $currentStation) + [1 => null];
 
@@ -88,8 +88,18 @@ function getNextStation($stations, $currentStation)
         return null;
     }
 
-    // return $stations['name'][$foundIndex + 1];
-    return array_slice($stations['name'], $foundIndex + 1, count($stations['name']) - $foundIndex);
+    // return array_slice($stations['name'], $foundIndex + 1, count($stations['name']) - $foundIndex);
+    $route = array_map(function ($index) use ($stations, $translation, $lang) {
+        return $translation[$stations['name'][$index]][$lang]
+            . ($stations['attr'][$index] != "NULL" ? " (" . $translation[$stations['attr'][$index]][$lang] . ")" : "");
+
+    }, array_keys($stations['name']));
+
+    return array(
+        'route' => $route,
+        'stationName' => $stations['name'][$foundIndex + 1],
+        'startIndex' => $foundIndex
+    );
 }
 function connectToDatabase()
 {
@@ -134,12 +144,13 @@ function displayBuses($allBuses, $lang, $translation)
         $direction = $bus['direction'] !== $translation["mode-realtime"][$lang] ? "<br>" . $bus['direction'] : "";
         $arrivalTime = $bus['time'];
 
-        echo "<div class='bus-row" . ($bus['arrived'] ? ' arrived' : '') . "' onclick='window.open(\"/pages/blogs/routes/$busName/\"); return false;'>";
+        echo "<div class='bus-row" . ($bus['arrived'] ? ' arrived' : '') . "' 
+            onclick='createRouteMap(" . json_encode($bus['nextStation']['route']) . ", " . $bus['nextStation']['startIndex'] . ")'>";
         echo "<div class='bus-info'><span class='bus-name'>" . $busName . "</span><span class='direction'>$direction</span></div>";
         echo "<div class='next-station-display'>";
         echo "<p class='next-station-text'>" . $translation["next-station"][$lang] . "</p>";
         if ($bus['nextStation']) {
-            echo "<p class='next-station'>" . $translation[$bus['nextStation'][0]][$lang] . "</p>";
+            echo "<p class='next-station'>" . $translation[$bus['nextStation']['stationName']][$lang] . "</p>";
         }
         if ($bus['warning']) {
             echo "<span></span><span class='warning'>" . htmlspecialchars($translation[$bus['warning']][$lang]) . "</span>";
